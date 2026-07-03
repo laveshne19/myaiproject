@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "in.shivaaionline.twa",
+    "sha256_cert_fingerprints": [
+      "63:46:92:05:35:F5:DB:54:66:C4:EC:6E:70:9F:DC:41:CB:22:CE:CE:51:64:F9:14:59:20:A2:23:86:0E:87:C3"
+    ]
+  }
+}]
