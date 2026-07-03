@@ -11,5 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
       - name: Deploy to Netlify (production)
         run: npx netlify-cli deploy --prod --dir . --functions netlify/functions --site 029f8eee-f713-4ef2-9225-48ed6c672587 --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --message "Deploy Shiv AI v4 from GitHub Actions"
