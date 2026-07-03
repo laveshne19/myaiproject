@@ -18,4 +18,4 @@ jobs:
       - run: npm ci
 
       - name: Deploy to Netlify (production)
-        run: npx netlify-cli deploy --prod --dir . --functions netlify/functions --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --message "Deploy from GitHub Actions"
+        run: npx netlify-cli deploy --prod --dir . --functions netlify/functions --site 029f8eee-f713-4ef2-9225-48ed6c672587 --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --message "Deploy Shiv AI v4 from GitHub Actions"
