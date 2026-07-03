@@ -4,5 +4,8 @@
   "private": true,
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^26.1.0"
   }
 }
