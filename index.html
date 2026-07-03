@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Shiv AI — Divine Wisdom</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<style>
+  :root {
+    --bg: #0a0a1a;
+    --surface: #12122a;
+    --surface2: #1a1a35;
+    --accent: #ff6b35;
+    --accent2: #c0392b;
+    --gold: #f39c12;
+    --text: #e8e8f0;
+    --text2: #9999bb;
+    --border: #2a2a4a;
+    --nav-h: 60px;
+    --header-h: 56px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* HEADER */
+  .header { height: var(--header-h); background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 16px; gap: 10px; flex-shrink: 0; }
+  .header-logo { font-size: 22px; }
+  .header-title { font-size: 18px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+  .header-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .header-spacer { flex: 1; }
+  .settings-btn { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; padding: 6px; border-radius: 8px; }
+  .settings-btn:hover { background: var(--surface2); }
+
+  /* TABS */
+  .tab-content { flex: 1; overflow: hidden; position: relative; }
+  .tab-panel { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.2s; }
+  .tab-panel.hidden { opacity: 0; pointer-events: none; }
+
+  /* BOTTOM NAV */
+  .bottom-nav { height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--surface); border-top: 1px solid var(--border); display: flex; flex-shrink: 0; }
+  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: none; background: none; color: var(--text2); cursor: pointer; font-size: 11px; font-weight: 500; padding: 6px 0; transition: color 0.15s; }
+  .nav-btn .nav-icon { font-size: 20px; transition: transform 0.15s; }
+  .nav-btn.active { color: var(--accent); }
+  .nav-btn.active .nav-icon { transform: scale(1.15); }
+
+  /* ===== CHAT TAB ===== */
+  .lang-bar { display: flex; gap: 6px; padding: 8px 12px; background: var(--surface); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .lang-btn { flex: 1; padding: 6px; border-radius: 20px; border: 1px solid var(--border); background: none; color: var(--text2); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .lang-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg { max-width: 88%; word-break: break-word; }
+  .msg.user { align-self: flex-end; }
+  .msg.ai { align-self: flex-start; }
+  .msg-bubble { padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.55; }
+  .msg.user .msg-bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.ai .msg-bubble { background: var(--surface2); border-bottom-left-radius: 4px; border: 1px solid var(--border); }
+  .msg-actions { display: flex; gap: 6px; margin-top: 5px; }
+  .speak-btn { background: none; border: 1px solid var(--border); color: var(--text2); font-size: 12px; padding: 3px 8px; border-radius: 12px; cursor: pointer; transition: all 0.15s; }
+  .speak-btn:hover, .speak-btn.speaking { border-color: var(--accent); color: var(--accent); }
+
+  .typing-indicator { display: flex; gap: 4px; align-items: center; padding: 12px 14px; background: var(--surface2); border-radius: 16px; border-bottom-left-radius: 4px; border: 1px solid var(--border); width: fit-content; }
+  .dot { width: 7px; height: 7px; background: var(--text2); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+
+  .input-area { padding: 10px 12px; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0; padding-bottom: calc(10px + var(--safe-bottom, 0px)); }
+  .chat-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 10px 14px; color: var(--text); font-size: 14px; resize: none; max-height: 100px; overflow-y: auto; outline: none; line-height: 1.4; }
+  .chat-input::placeholder { color: var(--text2); }
+  .chat-input:focus { border-color: var(--accent); }
+  .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: all 0.15s; }
+  .mic-btn { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+  .mic-btn.recording { background: #c0392b; color: #fff; animation: pulse 1s infinite; }
+  .send-btn { background: var(--accent); color: #fff; }
+  .send-btn:hover { background: #e55a25; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.4); } 50% { box-shadow: 0 0 0 8px rgba(192,57,43,0); } }
+
+  /* ===== BHAJANS TAB ===== */
+  .bhajans-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .bhajan-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+  .bhajan-card:hover, .bhajan-card.playing { border-color: var(--accent); background: var(--surface2); }
+  .bhajan-card.playing { box-shadow: 0 0 0 1px var(--accent); }
+  .bhajan-icon { font-size: 28px; flex-shrink: 0; }
+  .bhajan-info { flex: 1; min-width: 0; }
+  .bhajan-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .bhajan-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .bhajan-play { font-size: 22px; color: var(--text2); flex-shrink: 0; transition: color 0.15s; }
+  .bhajan-card.playing .bhajan-play { color: var(--accent); }
+  .bhajan-card.playing .bhajan-play::after { content: "⏸"; }
+  .bhajan-card:not(.playing) .bhajan-play::after { content: "▶"; }
+
+  .mini-player { background: var(--surface2); border-top: 1px solid var(--border); padding: 10px 16px; flex-shrink: 0; display: none; }
+  .mini-player.visible { display: block; }
+  .mini-player-title { font-size: 13px; font-weight: 600; color: var(--gold); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player-controls { display: flex; align-items: center; gap: 12px; }
+  .player-btn { background: none; border: none; cursor: pointer; font-size: 22px; color: var(--text2); padding: 4px; transition: color 0.15s; }
+  .player-btn:hover { color: var(--accent); }
+  .player-btn.primary { font-size: 28px; color: var(--accent); }
+  .progress-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; position: relative; cursor: pointer; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.5s linear; }
+  .progress-time { font-size: 11px; color: var(--text2); min-width: 36px; text-align: right; }
+
+  /* ===== TEACHINGS TAB ===== */
+  .teachings-list { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .teaching-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; }
+  .teaching-card:hover, .teaching-card.active { border-color: var(--gold); background: var(--surface2); }
+  .teaching-card.active { box-shadow: 0 0 0 1px var(--gold); }
+  .teaching-header { display: flex; align-items: center; gap: 10px; }
+  .teaching-cat { font-size: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--text2); padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; display: inline-block; }
+  .teaching-title { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; }
+  .teaching-dur { font-size: 12px; color: var(--text2); flex-shrink: 0; }
+  .teaching-preview { font-size: 12px; color: var(--text2); margin-top: 6px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .teaching-play-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .play-pill { background: var(--accent); color: #fff; border: none; border-radius: 16px; padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer; display: none; }
+  .teaching-card.active .play-pill { display: block; }
+
+  /* SETTINGS MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--surface); border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-width: 480px; transform: translateY(100%); transition: transform 0.3s; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 16px; }
+  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .setting-label { font-size: 14px; color: var(--text); }
+  .setting-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .toggle { width: 44px; height: 24px; background: var(--border); border-radius: 12px; border: none; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+  .toggle.on { background: var(--accent); }
+  .toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: left 0.2s; }
+  .toggle.on::after { left: 23px; }
+  .modal-close { width: 100%; margin-top: 16px; padding: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 14px; cursor: pointer; }
+
+  /* WELCOME */
+  .welcome-msg { text-align: center; padding: 24px 20px; }
+  .welcome-msg .om { font-size: 40px; display: block; margin-bottom: 8px; }
+  .welcome-msg h2 { font-size: 18px; color: var(--gold); margin-bottom: 6px; }
+  .welcome-msg p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .suggestion-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+  .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); font-size: 12px; padding: 6px 12px; border-radius: 16px; cursor: pointer; transition: all 0.15s; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <span class="header-logo">🔱</span>
+  <div>
+    <div class="header-title">Shiv AI</div>
+    <div class="header-sub">Divine Wisdom</div>
+  </div>
+  <div class="header-spacer"></div>
+  <button class="settings-btn" onclick="openSettings()">⚙️</button>
+</div>
+
+<!-- TAB CONTENT -->
+<div class="tab-content">
+
+  <!-- CHAT TAB -->
+  <div class="tab-panel" id="tab-chat">
+    <div class="lang-bar">
+      <button class="lang-btn active" onclick="setLang('en', this)">English</button>
+      <button class="lang-btn" onclick="setLang('hinglish', this)">Hinglish</button>
+      <button class="lang-btn" onclick="setLang('sanskrit', this)">Sanskrit</button>
+    </div>
+    <div class="messages" id="messages">
+      <div class="welcome-msg">
+        <span class="om">🕉️</span>
+        <h2>Har Har Mahadev</h2>
+        <p>I am Shiv AI — your guide for life, business, emotions, and philosophy. Ask me anything.</p>
+        <div class="suggestion-chips">
+          <div class="chip" onclick="sendSuggestion(this)">How do I handle stress?</div>
+          <div class="chip" onclick="sendSuggestion(this)">Business decision help</div>
+          <div class="chip" onclick="sendSuggestion(this)">Purpose of life</div>
+          <div class="chip" onclick="sendSuggestion(this)">Relationship advice</div>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <button class="icon-btn mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
+      <textarea class="chat-input" id="chatInput" placeholder="Ask anything..." rows="1"
+        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="icon-btn send-btn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <!-- BHAJANS TAB -->
+  <div class="tab-panel hidden" id="tab-bhajans">
+    <div class="bhajans-list" id="bhajansList"></div>
+    <div class="mini-player" id="miniPlayer">
+      <div class="mini-player-title" id="miniPlayerTitle">—</div>
+      <div class="player-controls">
+        <button class="player-btn" onclick="prevBhajan()">⏮</button>
+        <button class="player-btn primary" id="mainPlayBtn" onclick="togglePlay()">⏸</button>
+        <button class="player-btn" onclick="nextBhajan()">⏭</button>
+        <div class="progress-bar" onclick="seekProgress(event)" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-time" id="progressTime">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHINGS TAB -->
+  <div class="tab-panel hidden" id="tab-teachings">
+    <div class="teachings-list" id="teachingsList"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-chat" onclick="switchTab('chat')">
+    <span class="nav-icon">💬</span>Chat
+  </button>
+  <button class="nav-btn" id="nav-bhajans" onclick="switchTab('bhajans')">
+    <span class="nav-icon">🎵</span>Bhajans
+  </button>
+  <button class="nav-btn" id="nav-teachings" onclick="switchTab('teachings')">
+    <span class="nav-icon">📖</span>Teachings
+  </button>
+</nav>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal" onclick="closeSettingsOutside(event)">
+  <div class="modal">
+    <div class="modal-title">⚙️ Settings</div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Auto-speak AI replies</div>
+        <div class="setting-sub">Speak responses aloud automatically</div>
+      </div>
+      <button class="toggle on" id="autoSpeakToggle" onclick="toggleSetting('autoSpeak', this)"></button>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Voice speed</div>
+        <div class="setting-sub">Text-to-speech rate</div>
+      </div>
+      <select id="voiceRate" onchange="saveSetting('voiceRate', this.value)"
+        style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:13px;">
+        <option value="0.8">Slow</option>
+        <option value="1" selected>Normal</option>
+        <option value="1.3">Fast</option>
+      </select>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Privacy Policy</div>
+      </div>
+      <a href="/privacy.html" style="font-size:13px;color:var(--accent);">View →</a>
+    </div>
+    <button class="modal-close" onclick="closeSettings()">Close</button>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let currentLang = 'en';
+let chatHistory = [];
+let isLoading = false;
+let recognition = null;
+let isRecording = false;
+let currentSpeechUtterance = null;
+
+const settings = {
+  autoSpeak: true,
+  voiceRate: 1
+};
+
+// ── Tab switching ──────────────────────────────────────────────────────────
+function switchTab(tab) {
+  ['chat','bhajans','teachings'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+    document.getElementById(`nav-${t}`).classList.toggle('active', t === tab);
+  });
+}
+
+// ── Language ──────────────────────────────────────────────────────────────
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('settingsModal').classList.add('open');
+  document.getElementById('autoSpeakToggle').classList.toggle('on', settings.autoSpeak);
+  document.getElementById('voiceRate').value = settings.voiceRate;
+}
+function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+function closeSettingsOutside(e) { if (e.target === e.currentTarget) closeSettings(); }
+function toggleSetting(key, btn) {
+  settings[key] = !settings[key];
+  btn.classList.toggle('on', settings[key]);
+}
+function saveSetting(key, val) { settings[key] = parseFloat(val) || val; }
+
+// ── TTS ────────────────────────────────────────────────────────────────────
+function speak(text, btnEl) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  if (currentSpeechUtterance && btnEl && btnEl.classList.contains('speaking')) {
+    currentSpeechUtterance = null;
+    if (btnEl) btnEl.classList.remove('speaking');
+    return;
+  }
+  const u = new SpeechSynthesisUtterance(text.replace(/[🎯🔱⚡🕉️]/gu, ''));
+  u.rate = parseFloat(settings.voiceRate) || 1;
+  u.onstart = () => { if (btnEl) btnEl.classList.add('speaking'); };
+  u.onend = u.onerror = () => { if (btnEl) btnEl.classList.remove('speaking'); currentSpeechUtterance = null; };
+  currentSpeechUtterance = u;
+  window.speechSynthesis.speak(u);
+}
+
+// ── Chat ──────────────────────────────────────────────────────────────────
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function sendSuggestion(el) { sendMessage(el.textContent); }
+
+function appendMsg(role, text) {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  if (role === 'ai') {
+    div.innerHTML = `<div class="msg-bubble">${formatText(text)}</div>
+      <div class="msg-actions">
+        <button class="speak-btn" onclick="speak('${escStr(text)}', this)">🔊 Listen</button>
+      </div>`;
+  } else {
+    div.innerHTML = `<div class="msg-bubble">${escHtml(text)}</div>`;
+  }
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escStr(s) { return s.replace(/'/g,"\\'").replace(/\n/g,' '); }
+
+function formatText(text) {
+  return escHtml(text)
+    .replace(/🎯 Direct Answer/g, '<strong style="color:var(--accent)">🎯 Direct Answer</strong>')
+    .replace(/🔱 Deeper Insight/g, '<strong style="color:var(--gold)">🔱 Deeper Insight</strong>')
+    .replace(/⚡ Actionable Step/g, '<strong style="color:#2ecc71">⚡ Actionable Step</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+async function sendMessage(overrideText) {
+  if (isLoading) return;
+  const input = document.getElementById('chatInput');
+  const text = (overrideText || input.value).trim();
+  if (!text) return;
+  input.value = '';
+  autoResize(input);
+
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  isLoading = true;
+
+  // typing indicator
+  const msgs = document.getElementById('messages');
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'msg ai';
+  typingDiv.innerHTML = `<div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, language: currentLang, history: chatHistory.slice(-10) })
+    });
+    const data = await res.json();
+    typingDiv.remove();
+    const reply = data.reply || data.error || 'Om Namah Shivaya. Please try again.';
+    const msgEl = appendMsg('ai', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (settings.autoSpeak) {
+      setTimeout(() => speak(reply, msgEl.querySelector('.speak-btn')), 300);
+    }
+  } catch {
+    typingDiv.remove();
+    appendMsg('ai', '🔱 The divine connection flickered. Please try again.');
+  }
+  isLoading = false;
+}
+
+// ── Voice input ────────────────────────────────────────────────────────────
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('Voice input not supported in this browser.');
+    return;
+  }
+  if (isRecording) {
+    recognition && recognition.stop();
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = currentLang === 'en' ? 'en-IN' : 'hi-IN';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onstart = () => { isRecording = true; document.getElementById('micBtn').classList.add('recording'); };
+  recognition.onresult = e => {
+    document.getElementById('chatInput').value = e.results[0][0].transcript;
+  };
+  recognition.onend = () => { isRecording = false; document.getElementById('micBtn').classList.remove('recording'); };
+  recognition.onerror = () => { isRecording = false; document.getElementById('micBtn').classList.remove('recording'); };
+  recognition.start();
+}
+
+// ── Bhajans ────────────────────────────────────────────────────────────────
+const BHAJANS = [
+  { name: 'Om Namah Shivaya', icon: '🕉️', reps: '108 repetitions', text: 'Om Namah Shivaya. I bow to Shiva, the auspicious one, the source of all good. Om Namah Shivaya. Namah Shivaya. Shivaya Namah.' },
+  { name: 'Mahamrityunjaya Mantra', icon: '🔱', reps: '11 repetitions', text: 'Om Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship Shiva, the three-eyed one, who is fragrant and who nourishes all beings. May He liberate us from death as a cucumber is severed from its vine.' },
+  { name: 'Shiv Tandav Stotra', icon: '💃', reps: 'Full stotra', text: 'Jatatavi galaj jala pravaha pavitasthale, galeavalambya lambitam bhujangatunga malikam. Damad damad damad dama ninnadavadamarvayam, chakara chanda tandavam tanotu nah shivah shivam. May Shiva, whose matted hair is filled with the sacred Ganges, who wears the serpent garland, who dances the Tandava with thunderous sound, grant us auspiciousness.' },
+  { name: 'Tryambakam Yajamahe', icon: '⚡', reps: '21 repetitions', text: 'Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed Shiva who is fragrant, who nourishes and nurtures all beings. As a ripened cucumber is severed from its bondage to the vine, may He liberate us from death and not from immortality.' },
+  { name: 'Shambho Mahadeva', icon: '🌙', reps: '21 repetitions', text: 'Shambho Mahadeva Shambo. Shankara Mahadeva Shankara. Har Har Har Har Mahadeva. Jaya Shambho Mahadeva. Oh Shambhu, the giver of joy. Oh Shankara, the bestower of peace. Hail to the great god Shiva. Victory to Shiva, the auspicious one.' },
+  { name: 'Har Har Mahadev', icon: '🌺', reps: '21 repetitions', text: 'Har Har Mahadev. Bom Bom Bhole. Jai Jai Shiva Shankara. Har Har Mahadev. Bom Bhole Nath. Jai Shambhu. Har Har Mahadev. Remove all obstacles. Bless us with liberation. Har Har Mahadev.' },
+  { name: 'Shiva Gayatri', icon: '✨', reps: '9 repetitions', text: 'Om Tatpurushaya vidmahe mahadevaya dhimahi. Tanno Rudrah prachodayat. Om. We know that Supreme Being, we meditate on the Great God. May Rudra illuminate our minds.' },
+  { name: 'Bilvashtakam', icon: '🌿', reps: 'Full stotra', text: 'Tridalam trigunakaraṃ trinetraṃ cha triyayudham. Trijanma papa samharam eka bilvaṃ Shivarpanaṃ. Three leaves representing the three qualities, three eyes, and three weapons. I offer one bilva leaf to Shiva, which destroys the sins of three lifetimes.' },
+  { name: 'Om Shanti Mantra', icon: '🕊️', reps: '11 repetitions', text: 'Om Shanti Shanti Shantih. Om. Peace in body, peace in mind, peace in spirit. Om Shanti. May there be peace above, peace below, peace all around. Om Shanti Shanti Shantih.' },
+  { name: 'Lingashtakam', icon: '🔥', reps: 'Full stotra', text: 'Brahma muraari suraarchita lingam. Nirmala bhashita shobhita lingam. Janmaja dukha vinashaka lingam. Tat pranamami sadashiva lingam. I bow to that eternal Shiva Linga, worshipped by Brahma, Vishnu and Indra, pure and radiant, destroyer of the pain of birth.' },
+];
+
+let currentBhajanIdx = -1;
+let bhajanPlaying = false;
+let bhajanUtterance = null;
+let bhajanTimer = null;
+let bhajanStart = 0;
+let bhajanDuration = 60;
+let bhajanElapsed = 0;
+
+function renderBhajans() {
+  const list = document.getElementById('bhajansList');
+  list.innerHTML = BHAJANS.map((b, i) => `
+    <div class="bhajan-card" id="bc-${i}" onclick="selectBhajan(${i})">
+      <span class="bhajan-icon">${b.icon}</span>
+      <div class="bhajan-info">
+        <div class="bhajan-name">${b.name}</div>
+        <div class="bhajan-meta">${b.reps}</div>
+      </div>
+      <span class="bhajan-play"></span>
+    </div>
+  `).join('');
+}
+
+function selectBhajan(idx) {
+  if (currentBhajanIdx === idx && bhajanPlaying) { pauseBhajan(); return; }
+  stopBhajan();
+  currentBhajanIdx = idx;
+  playBhajan();
+}
+
+function playBhajan() {
+  if (currentBhajanIdx < 0) return;
+  const b = BHAJANS[currentBhajanIdx];
+  document.getElementById('miniPlayer').classList.add('visible');
+  document.getElementById('miniPlayerTitle').textContent = b.name;
+  document.getElementById('mainPlayBtn').textContent = '⏸';
+  document.querySelectorAll('.bhajan-card').forEach((c,i) => c.classList.toggle('playing', i === currentBhajanIdx));
+  bhajanPlaying = true;
+
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  bhajanUtterance = new SpeechSynthesisUtterance(b.text);
+  bhajanUtterance.rate = 0.85;
+  bhajanUtterance.pitch = 0.9;
+  bhajanDuration = Math.max(b.text.split(' ').length * 0.6, 30);
+  bhajanElapsed = 0;
+  bhajanStart = Date.now();
+
+  bhajanUtterance.onend = () => { if (bhajanPlaying) setTimeout(() => nextBhajan(), 1500); };
+  bhajanUtterance.onerror = () => {};
+  window.speechSynthesis.speak(bhajanUtterance);
+  startProgressTimer();
+}
+
+function startProgressTimer() {
+  clearInterval(bhajanTimer);
+  bhajanTimer = setInterval(() => {
+    if (!bhajanPlaying) return;
+    bhajanElapsed = (Date.now() - bhajanStart) / 1000;
+    const pct = Math.min(bhajanElapsed / bhajanDuration * 100, 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    const s = Math.floor(bhajanElapsed);
+    document.getElementById('progressTime').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  }, 500);
+}
+
+function pauseBhajan() {
+  bhajanPlaying = false;
+  window.speechSynthesis && window.speechSynthesis.pause();
+  document.getElementById('mainPlayBtn').textContent = '▶';
+  clearInterval(bhajanTimer);
+}
+
+function resumeBhajan() {
+  bhajanPlaying = true;
+  window.speechSynthesis && window.speechSynthesis.resume();
+  document.getElementById('mainPlayBtn').textContent = '⏸';
+  bhajanStart = Date.now() - bhajanElapsed * 1000;
+  startProgressTimer();
+}
+
+function stopBhajan() {
+  bhajanPlaying = false;
+  clearInterval(bhajanTimer);
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  bhajanUtterance = null;
+  document.querySelectorAll('.bhajan-card').forEach(c => c.classList.remove('playing'));
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressTime').textContent = '0:00';
+}
+
+function togglePlay() {
+  if (bhajanPlaying) pauseBhajan(); else if (currentBhajanIdx >= 0) resumeBhajan();
+}
+
+function nextBhajan() {
+  stopBhajan();
+  currentBhajanIdx = (currentBhajanIdx + 1) % BHAJANS.length;
+  playBhajan();
+}
+
+function prevBhajan() {
+  stopBhajan();
+  currentBhajanIdx = (currentBhajanIdx - 1 + BHAJANS.length) % BHAJANS.length;
+  playBhajan();
+}
+
+function seekProgress(e) {
+  const bar = document.getElementById('progressBar');
+  const pct = e.offsetX / bar.offsetWidth;
+  bhajanElapsed = pct * bhajanDuration;
+  bhajanStart = Date.now() - bhajanElapsed * 1000;
+  document.getElementById('progressFill').style.width = (pct * 100) + '%';
+}
+
+// ── Teachings ──────────────────────────────────────────────────────────────
+const TEACHINGS = [
+  { title: 'The Nature of Impermanence', cat: 'Philosophy', dur: '~4 min', text: 'Shiva teaches us that everything in this universe is impermanent — every joy, every sorrow, every relationship, every success. The great Mahadeva himself represents this truth through his role as the destroyer in the trinity. But destruction is not loss — it is transformation. When we cling to what must change, we suffer. When we flow with impermanence like the Ganges through Shiva\'s matted locks, we find freedom. Ask yourself today: what are you holding onto that is ready to transform?' },
+  { title: 'Detachment Without Indifference', cat: 'Detachment', dur: '~3 min', text: 'Vairagya, or detachment, is one of the most misunderstood teachings of Shiva\'s philosophy. Many think detachment means not caring. But watch how Shiva loves Parvati with complete devotion while remaining untouched by possessiveness. True detachment means engaging fully with life while not being enslaved by outcomes. You give your best effort, your complete love, your deepest work — and then you release. The fruit of action belongs to the universe, not to you.' },
+  { title: 'The Third Eye of Wisdom', cat: 'Wisdom', dur: '~4 min', text: 'Shiva\'s third eye is the eye of discrimination — viveka. It sees through illusion to reality. We all have this capacity. It activates when we stop reacting from habit and start responding from awareness. Every time you pause before anger, every time you question your assumptions, every time you look at a problem from three angles instead of one — you are opening your own third eye. Practice today: before any major decision, ask yourself — am I seeing clearly, or am I seeing what I fear or desire?' },
+  { title: 'Discipline as Liberation', cat: 'Discipline', dur: '~3 min', text: 'Shiva is the great ascetic, Mahayogi, who sits in deep tapas for thousands of years. This discipline is not punishment — it is the highest form of freedom. When we discipline our body through practice, our mind through meditation, our speech through truth — we stop being driven by impulses and start living intentionally. Start with five minutes of stillness each morning. In that silence, Shiva speaks.' },
+  { title: 'Handling Relationship Pain', cat: 'Relationships', dur: '~5 min', text: 'When Sati, Shiva\'s beloved, left her body at her father\'s yajna, Shiva\'s grief was cosmic. He carried her body across the universe in his grief. The gods intervened — Vishnu sent his Sudarshana Chakra to cut the body into pieces across the land. Each piece became a Shakti Peetha, a place of divine power. This is the teaching: your deepest wounds, when processed fully and released, become your greatest sources of strength and wisdom. Don\'t rush your grief. Don\'t suppress your pain. Feel it completely. It is transforming you.' },
+  { title: 'Anger and the Cosmic Tandava', cat: 'Strength', dur: '~3 min', text: 'Shiva dances the Tandava in cosmic fury — and it is beautiful. Shiva does not suppress his fierce nature; he channels it. Rudra, the fierce aspect of Shiva, is the one who removes obstacles with divine force. Your anger is not a problem to eliminate — it is energy to redirect. Ask: what injustice is my anger pointing to? What boundary needs to be set? What needs to change? Use that fire to create, to protect, to transform.' },
+  { title: 'The Poison and the Gift', cat: 'Strength', dur: '~4 min', text: 'When the gods and demons churned the ocean for nectar, the first thing that emerged was Halahala — a poison so deadly it threatened to destroy all creation. Only Shiva stepped forward to drink it. Parvati caught his throat to keep it from reaching his heart. The poison turned his throat blue — he became Neelakantha, the blue-throated one. This is the teaching of Shiva the healer: the willingness to take on what no one else will, to metabolize the poison of the world without being destroyed by it. What poison in your life are you avoiding that you are actually strong enough to transform?' },
+  { title: 'Silence as Practice', cat: 'Wisdom', dur: '~3 min', text: 'Dakshinamurthy — Shiva as the silent teacher — sits under a banyan tree, teaching the four sages through absolute silence. The deepest truths cannot be spoken; they can only be experienced. In our age of constant noise, information, and opinion, the practice of silence is revolutionary. Fifteen minutes of genuine silence daily — no phone, no music, no conversation — will change how your mind works within weeks. In that silence, you will begin to hear what matters.' },
+  { title: 'Business as Dharma', cat: 'Philosophy', dur: '~4 min', text: 'Shiva as Ardhanarishvara — half-man, half-woman — teaches us that creation requires both action and receptivity, both giving and receiving, both structure and flow. Good business is not just profit-seeking — it is dharmic activity that creates value for others. When your business serves a genuine need, treats people with respect, and operates with integrity — it becomes a form of worship. Ask of your work: who does this truly serve? If you can answer that question clearly and honestly, you have found your dharmic purpose.' },
+  { title: 'Fear and the Dance of Shiva', cat: 'Philosophy', dur: '~3 min', text: 'Look carefully at the Nataraja statue — Shiva dancing. Under his right foot is the demon Apasmara, the dwarf of ignorance and forgetfulness. Shiva does not destroy this demon — he pins it down but does not annihilate it. This is profound: our fears, our ignorances, our shadow selves cannot be destroyed — they must be acknowledged and stood upon. You do not become fearless by eliminating fear. You become fearless by continuing to dance even while fear exists beneath you.' },
+  { title: 'The Power of No', cat: 'Detachment', dur: '~3 min', text: 'Shiva is the supreme renunciant. He gave up divine comfort to live on cremation grounds, to wear ash, to carry the simplest things. This was not poverty — this was the ultimate power of choice. When you can say no to what is unnecessary, you free up enormous energy for what truly matters. Practice conscious renunciation today: what one thing can you let go of that is consuming your energy without serving your highest purpose?' },
+  { title: 'Grief and Transformation', cat: 'Relationships', dur: '~4 min', text: 'Shiva represents what modern psychology is only beginning to understand: that grief must be fully felt to be fully healed. The wandering of Shiva with Sati\'s body is not madness — it is complete mourning. He does not skip steps, does not distract himself, does not pretend it is fine. Only when the process is complete does healing begin. If you are grieving — a loss, a failure, a relationship — give yourself permission to grieve completely. Set a time, a place, a practice. Full grief leads to full healing.' },
+  { title: 'The Guru Within', cat: 'Wisdom', dur: '~5 min', text: 'Shiva is Adi Guru — the first teacher. But the deepest teaching of Dakshinamurthy is that the greatest wisdom already exists within you. External teachers, books, practices — these are fingers pointing at the moon. Don\'t mistake the finger for the moon. Every teaching you receive from outside is a mirror for what you already know at a deeper level. When something resonates as truth, it is because it matches something you already carried within. Trust that inner knowing. Develop it through stillness, through honesty, through courageous questioning.' },
+  { title: 'Living with Uncertainty', cat: 'Philosophy', dur: '~3 min', text: 'Shiva carries the trident — past, present, future, all three dimensions of time. Yet he is Mahakala, beyond time entirely. This is the teaching of equanimity: you can hold all three — the lessons of the past, the actions of the present, the possibilities of the future — without being enslaved by any of them. Uncertainty is not the enemy of good action. It is the field in which courage becomes possible.' },
+  { title: 'Energy and the Chakras', cat: 'Discipline', dur: '~4 min', text: 'Shiva is Pashupatinath — lord of all creatures, lord of all energy. The yogic understanding of consciousness that flows from Shiva\'s teachings gives us the model of the chakras — centers of energy that must be cultivated with awareness. Root yourself with daily physical practice. Open your heart with genuine service to others. Speak your truth. See clearly. These are not metaphors — they are practical instructions for how to live with full energy and awareness.' },
+];
+
+let activeTeachingIdx = -1;
+let teachingUtterance = null;
+
+function renderTeachings() {
+  const list = document.getElementById('teachingsList');
+  list.innerHTML = TEACHINGS.map((t, i) => `
+    <div class="teaching-card" id="tc-${i}" onclick="selectTeaching(${i})">
+      <span class="teaching-cat">${t.cat}</span>
+      <div class="teaching-header">
+        <div class="teaching-title">${t.title}</div>
+        <div class="teaching-dur">${t.dur}</div>
+      </div>
+      <div class="teaching-preview">${t.text}</div>
+      <div class="teaching-play-row">
+        <button class="play-pill" onclick="playTeaching(event, ${i})">▶ Listen</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectTeaching(idx) {
+  document.querySelectorAll('.teaching-card').forEach((c,i) => c.classList.toggle('active', i === idx));
+  activeTeachingIdx = idx;
+}
+
+function playTeaching(e, idx) {
+  e.stopPropagation();
+  if (!window.speechSynthesis) { alert('Text-to-speech not available.'); return; }
+  window.speechSynthesis.cancel();
+  const t = TEACHINGS[idx];
+  teachingUtterance = new SpeechSynthesisUtterance(t.title + '. ' + t.text);
+  teachingUtterance.rate = 0.9;
+  window.speechSynthesis.speak(teachingUtterance);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+renderBhajans();
+renderTeachings();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
