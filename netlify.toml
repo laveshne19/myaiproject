@@ -19,6 +19,11 @@
   # Shiv AI's files.
   command = "cd voice-recorder-site && npm install && npm run build && rm -rf ../voice-recorder && cp -r out ../voice-recorder"
 
+[build.environment]
+  # Next.js 16 (used by voice-recorder-site) requires Node >= 20.9; pin the
+  # build image so it doesn't fall back to an older default runtime.
+  NODE_VERSION = "22"
+
 [[redirects]]
   from = "/.well-known/*"
   to = "/.well-known/:splat"
