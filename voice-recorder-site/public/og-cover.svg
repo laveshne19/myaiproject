@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="20%" r="75%">
+      <stop offset="0%" stop-color="#241a0c"/>
+      <stop offset="100%" stop-color="#07070a"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <circle cx="600" cy="315" r="120" fill="#E8A655" opacity="0.14"/>
+  <circle cx="600" cy="315" r="70" fill="#E8A655"/>
+  <rect x="586" y="278" width="28" height="70" rx="14" fill="#07070A"/>
+  <path d="M566 315v10a34 34 0 0 0 68 0v-10" stroke="#07070A" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <text x="600" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="64" font-weight="700" fill="#F6F5F2" letter-spacing="-1">Aura</text>
+  <text x="600" y="512" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#A3A2AC">The last recorder you'll ever carry.</text>
+</svg>

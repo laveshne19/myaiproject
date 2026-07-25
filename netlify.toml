@@ -11,6 +11,13 @@
 
 [build]
   functions = "netlify/functions"
+  publish = "."
+  # Shiv AI (this repo's root index.html) needs no build step. The only thing
+  # that needs building is the Aura voice-recorder site living in
+  # voice-recorder-site/ — build it and drop its static export at /voice-recorder
+  # so both apps can be served from the same Netlify site without touching
+  # Shiv AI's files.
+  command = "cd voice-recorder-site && npm install && npm run build && rm -rf ../voice-recorder && cp -r out ../voice-recorder"
 
 [[redirects]]
   from = "/.well-known/*"
@@ -21,6 +28,13 @@
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
+  status = 200
+
+# Serve the Aura voice-recorder static export as-is; must come before the
+# Shiv AI catch-all below, which force-redirects everything else to /index.html.
+[[redirects]]
+  from = "/voice-recorder/*"
+  to = "/voice-recorder/:splat"
   status = 200
 
 [[redirects]]
