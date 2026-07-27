@@ -16,7 +16,7 @@
   # voice-recorder-site/ — build it and drop its static export at /voice-recorder
   # so both apps can be served from the same Netlify site without touching
   # Shiv AI's files.
-  command = "cd voice-recorder-site && npm install && npm run build && rm -rf ../voice-recorder && cp -r out ../voice-recorder"
+  command = "cd voice-recorder-site && npm install && npm run build && rm -rf ../voice-recorder && mv out ../voice-recorder"
 
 [build.environment]
   # Next.js 16 (used by voice-recorder-site) requires Node >= 20.9; pin the
