@@ -37,6 +37,29 @@ green deploy already means these are live.
 Then open the site on an Android phone and confirm: the splash draws, the tabs
 work, the bell sounds when you tap it, and Vaani answers.
 
+## 2b. Two deploy paths — decide which one you want
+
+Netlify's GitHub app is connected to this repo and builds **deploy previews** for
+pull requests (that is how PR #4 got a preview URL). Production, though, has been
+deployed by the **GitHub Action** via the Netlify CLI — the live deploy shows
+`deploy_source: cli` with no build ID.
+
+So on merge to `main`, both may fire: Netlify's own Git build *and* the Action.
+They publish the same `dist/`, so the end state is identical and nothing breaks.
+It is just two builds where one would do. The post-deploy check now retries with
+backoff so a concurrent publish cannot fail a good deploy.
+
+If you want exactly one, pick either:
+
+- **Keep the Action** (what production has always used): in Netlify →
+  Project configuration → Build & deploy → *Stop builds*. Previews stop too.
+- **Keep Netlify's Git build** (simpler, keeps previews): delete the
+  `Deploy to Netlify` and `Verify` steps from `.github/workflows/deploy.yml`.
+  Check first that Netlify's production branch is set to `main` and auto-publish
+  is on, or deploys will silently stop.
+
+Leaving both is a perfectly reasonable third choice.
+
 ## 3. Digital Asset Links — the one thing that silently breaks a TWA
 
 `.well-known/assetlinks.json` currently lists:

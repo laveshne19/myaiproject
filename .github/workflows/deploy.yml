@@ -47,12 +47,39 @@ jobs:
             --site 029f8eee-f713-4ef2-9225-48ed6c672587 \
             --message "Deploy ${{ github.sha }} from GitHub Actions"
 
+      # Netlify's Git integration also builds this repo, so a second production
+      # deploy can be publishing at the same moment as ours. Both publish the same
+      # dist/, but CDN propagation means a path can 404 for a few seconds. Retry
+      # rather than failing a deploy that is actually fine.
       - name: Verify the deploy is live
         run: |
-          set -e
-          for path in / /manifest.json /icons/icon-512.png /.well-known/assetlinks.json /sitemap.xml /learn/; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "https://shivaaionline.in$path")
+          set -u
+          paths='/ /manifest.json /icons/icon-512.png /.well-known/assetlinks.json /sitemap.xml /learn/'
+          failed=''
+          for path in $paths; do
+            code=''
+            for attempt in 1 2 3 4 5; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "https://shivaaionline.in$path" || echo 000)
+              [ "$code" = "200" ] && break
+              echo "  attempt $attempt: $path -> $code, retrying in $((attempt * 5))s"
+              sleep $((attempt * 5))
+            done
             echo "$code  $path"
-            [ "$code" = "200" ] || { echo "FAILED: $path returned $code"; exit 1; }
+            [ "$code" = "200" ] || failed="$failed $path"
           done
+          if [ -n "$failed" ]; then
+            echo "FAILED — these paths never returned 200:$failed"
+            exit 1
+          fi
           echo "Production is serving."
+
+      # The endpoint must refuse a cross-origin caller. A regression here would
+      # leave the Anthropic key reachable from anywhere.
+      - name: Verify Vaani rejects foreign origins
+        run: |
+          set -u
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 \
+            -X POST -H 'Content-Type: application/json' -H 'Origin: https://example.com' \
+            -d '{"message":"ci origin check"}' https://shivaaionline.in/api/chat || echo 000)
+          echo "foreign origin -> $code (expected 403)"
+          [ "$code" = "403" ] || { echo "SECURITY REGRESSION: expected 403, got $code"; exit 1; }
