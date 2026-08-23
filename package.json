@@ -1,11 +1,21 @@
 {
   "name": "shiv-ai",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0"
+    "@anthropic-ai/sdk": "^0.120.0",
+    "@netlify/blobs": "^11.0.1"
   },
   "devDependencies": {
-    "netlify-cli": "^26.1.0"
+    "netlify-cli": "^27.1.2",
+    "sharp": "^0.35.3"
+  },
+  "type": "module",
+  "description": "Shiv AI — a free devotional Lord Shiva companion (PWA + Android TWA).",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "seo": "node tools/build-seo.mjs",
+    "icons": "node tools/make-icons.mjs",
+    "dev": "netlify dev"
   }
 }

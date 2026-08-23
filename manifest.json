@@ -1,15 +1,20 @@
 {
   "id": "https://shivaaionline.in/",
-  "name": "Shiv AI - Divine Wisdom",
+  "name": "Shiv AI — Divine Wisdom, Mantras & Panchang",
   "short_name": "Shiv AI",
-  "description": "AI-powered spiritual guidance inspired by Lord Shiva's philosophy. Chat with Shiva, get divine wisdom, solve life problems.",
+  "description": "Talk to Lord Shiva, chant Om Namah Shivaya on a 108-bead mala, read the great stotras and aarti, learn the avatars and Jyotirlingas, and follow every Pradosh and Shivaratri. Free, no account, works offline.",
   "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "display_override": ["tabbed", "standalone", "minimal-ui"],
-  "background_color": "#0a0a1a",
-  "theme_color": "#ff6b35",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#080813",
+  "theme_color": "#080813",
   "orientation": "portrait",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["lifestyle", "education", "health"],
   "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "prefer_related_applications": false,
   "related_applications": [
     {
       "platform": "play",
@@ -17,27 +22,27 @@
       "id": "in.shivaaionline.twa"
     }
   ],
-  "prefer_related_applications": false,
   "icons": [
-    { "src": "/icons/icon-72.png", "sizes": "72x72", "type": "image/png" },
-    { "src": "/icons/icon-96.png", "sizes": "96x96", "type": "image/png" },
-    { "src": "/icons/icon-128.png", "sizes": "128x128", "type": "image/png" },
-    { "src": "/icons/icon-144.png", "sizes": "144x144", "type": "image/png" },
-    { "src": "/icons/icon-152.png", "sizes": "152x152", "type": "image/png" },
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icons/icon-384.png", "sizes": "384x384", "type": "image/png" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "screenshots": [
-    {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Shiv AI Chat"
-    }
+    { "src": "/icons/shot-darshan.png", "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Darshan — today's tithi, teaching and mantra" },
+    { "src": "/icons/shot-jaap.png",    "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Jaap — 108-bead mala counter" },
+    { "src": "/icons/shot-gyaan.png",   "sizes": "1080x1920", "type": "image/png", "form_factor": "narrow", "label": "Gyaan — stories, stotras and Jyotirlingas" },
+    { "src": "/icons/shot-wide.png",    "sizes": "1920x1080", "type": "image/png", "form_factor": "wide",   "label": "Shiv AI on a larger screen" }
   ],
-  "categories": ["lifestyle", "health", "education"],
-  "lang": "en",
-  "scope": "/"
+  "shortcuts": [
+    { "name": "Chant", "short_name": "Jaap", "url": "/#/jaap", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Ask Shiva", "short_name": "Vaani", "url": "/#/vaani", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Panchang", "short_name": "Panchang", "url": "/#/panchang", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
 }
