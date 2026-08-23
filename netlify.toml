@@ -2,9 +2,9 @@
 # Static site + one function (Vaani). No build step: the app ships as authored.
 
 [build]
-  publish = "."
+  publish = "dist"
   functions = "netlify/functions"
-  command = "echo 'static site — nothing to build'"
+  command = "npm run build"
 
 [functions]
   node_bundler = "esbuild"

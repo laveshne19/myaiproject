@@ -5,17 +5,54 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - run: npm install
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Check every module parses
+        run: |
+          set -e
+          for f in $(find assets/js assets/data netlify/functions tools -name '*.js' -o -name '*.mjs'); do
+            node --check "$f" || { echo "SYNTAX ERROR in $f"; exit 1; }
+          done
+          node --check sw.js
+          echo "All modules parse."
+
+      - name: Build dist/
+        run: npm run build
 
       - name: Deploy to Netlify (production)
-        run: npx netlify-cli deploy --prod --dir . --functions netlify/functions --site 029f8eee-f713-4ef2-9225-48ed6c672587 --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --message "Deploy Shiv AI v4 from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          npx netlify-cli deploy \
+            --prod \
+            --dir dist \
+            --functions netlify/functions \
+            --site 029f8eee-f713-4ef2-9225-48ed6c672587 \
+            --message "Deploy ${{ github.sha }} from GitHub Actions"
+
+      - name: Verify the deploy is live
+        run: |
+          set -e
+          for path in / /manifest.json /icons/icon-512.png /.well-known/assetlinks.json /sitemap.xml /learn/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 "https://shivaaionline.in$path")
+            echo "$code  $path"
+            [ "$code" = "200" ] || { echo "FAILED: $path returned $code"; exit 1; }
+          done
+          echo "Production is serving."

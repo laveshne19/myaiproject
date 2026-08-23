@@ -1,22 +1,42 @@
-name: Build Android AAB
+name: Build Android App Bundle
+
+# Produces the signed .aab for Google Play. The version code comes from the run
+# number, so every build is uploadable without editing anything by hand.
+#
+# Required repository secrets:
+#   KEYSTORE_BASE64    base64 of the release keystore  (base64 -w0 android.keystore)
+#   KEYSTORE_PASSWORD  keystore password
+#   KEY_PASSWORD       key password (often the same)
+#
+# The SHA-256 fingerprint in .well-known/assetlinks.json must match the key Play
+# actually signs with. With Play App Signing that is the *app signing key* shown
+# under Play Console → Test and release → App integrity, not the upload key.
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'manifest.json'
-      - 'sw.js'
+    inputs:
+      versionName:
+        description: 'Version name shown on Play (e.g. 2.0.0)'
+        required: true
+        default: '2.0.0'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Fail early if signing secrets are missing
+        env:
+          KS: ${{ secrets.KEYSTORE_BASE64 }}
+          KSP: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: |
+          [ -n "$KS" ]  || { echo "KEYSTORE_BASE64 secret is not set."; exit 1; }
+          [ -n "$KSP" ] || { echo "KEYSTORE_PASSWORD secret is not set."; exit 1; }
+
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -25,47 +45,49 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install bubblewrap CLI
-        run: npm install -g @bubblewrap/cli
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v3
 
       - name: Install Android build tools
-        run: |
-          sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools"
+        run: sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools"
+
+      - name: Install bubblewrap
+        run: npm install -g @bubblewrap/cli
 
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android.keystore
 
-      - name: Create twa-manifest.json
+      - name: Write twa-manifest.json
+        env:
+          VERSION_NAME: ${{ github.event.inputs.versionName }}
+          VERSION_CODE: ${{ github.run_number }}
         run: |
-          cat > twa-manifest.json << 'EOF'
+          cat > twa-manifest.json <<EOF
           {
             "packageId": "in.shivaaionline.twa",
             "host": "shivaaionline.in",
-            "name": "Shiv AI - Divine Wisdom",
+            "name": "Shiv AI - Divine Wisdom, Mantras & Panchang",
             "launcherName": "Shiv AI",
             "display": "standalone",
-            "themeColor": "#FF6B35",
-            "themeColorDark": "#0A0A1A",
-            "navigationColor": "#0A0A1A",
-            "navigationColorDark": "#0A0A1A",
-            "navigationDividerColor": "#0A0A1A",
-            "navigationDividerColorDark": "#0A0A1A",
-            "backgroundColor": "#0A0A1A",
-            "enableNotifications": true,
-            "startUrl": "/",
+            "themeColor": "#080813",
+            "themeColorDark": "#080813",
+            "navigationColor": "#080813",
+            "navigationColorDark": "#080813",
+            "navigationDividerColor": "#080813",
+            "navigationDividerColorDark": "#080813",
+            "backgroundColor": "#080813",
+            "enableNotifications": false,
+            "startUrl": "/?source=twa",
             "iconUrl": "https://shivaaionline.in/icons/icon-512.png",
-            "maskableIconUrl": "https://shivaaionline.in/icons/icon-512.png",
+            "maskableIconUrl": "https://shivaaionline.in/icons/maskable-512.png",
             "splashScreenFadeOutDuration": 300,
-            "signingKey": {
-              "path": "./android.keystore",
-              "alias": "my-key-alias"
-            },
-            "appVersionName": "1.0.0",
-            "appVersionCode": 1,
-            "shortcuts": [],
+            "signingKey": { "path": "./android.keystore", "alias": "my-key-alias" },
+            "appVersionName": "${VERSION_NAME}",
+            "appVersionCode": ${VERSION_CODE},
+            "shortcuts": [
+              { "name": "Chant",     "shortName": "Jaap",     "url": "/#/jaap",     "chosenIconUrl": "https://shivaaionline.in/icons/icon-192.png" },
+              { "name": "Ask Shiva", "shortName": "Vaani",    "url": "/#/vaani",    "chosenIconUrl": "https://shivaaionline.in/icons/icon-192.png" },
+              { "name": "Panchang",  "shortName": "Panchang", "url": "/#/panchang", "chosenIconUrl": "https://shivaaionline.in/icons/icon-192.png" }
+            ],
             "generatorApp": "bubblewrap-cli",
             "webManifestUrl": "https://shivaaionline.in/manifest.json",
             "fallbackType": "customtabs",
@@ -77,42 +99,55 @@ jobs:
             "fullScopeUrl": "https://shivaaionline.in/",
             "minSdkVersion": 21,
             "orientation": "portrait",
-            "fingerprints": [
-              {
-                "name": "built-in",
-                "value": "63:46:92:05:35:F5:DB:54:66:C4:EC:6E:70:9F:DC:41:CB:22:CE:CE:51:64:F9:14:59:20:A2:23:86:0E:87:C3"
-              }
-            ],
+            "fingerprints": [],
             "additionalTrustedOrigins": [],
             "retainedBundles": [],
             "protocolHandlers": [],
             "fileHandlers": [],
             "launchHandlerClientMode": "",
             "displayOverride": [],
-            "appVersion": "1.0.0"
+            "appVersion": "${VERSION_NAME}"
           }
           EOF
+          cat twa-manifest.json
 
-      - name: Build TWA project
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_HOME }}
-          JAVA_HOME: ${{ env.JAVA_HOME }}
+      - name: Confirm assetlinks is live and well formed
+        run: |
+          set -e
+          curl -sf --max-time 25 https://shivaaionline.in/.well-known/assetlinks.json -o assetlinks.json
+          cat assetlinks.json
+          node -e "
+            const a = require('./assetlinks.json');
+            const e = a.find(x => x.target && x.target.package_name === 'in.shivaaionline.twa');
+            if (!e) { console.error('assetlinks.json does not list in.shivaaionline.twa'); process.exit(1); }
+            if (!(e.target.sha256_cert_fingerprints || []).length) { console.error('no fingerprint listed'); process.exit(1); }
+            console.log('assetlinks OK —', e.target.sha256_cert_fingerprints.length, 'fingerprint(s)');
+          "
+
+      - name: Build the bundle
         run: |
           bubblewrap build \
             --skipPwaValidation \
             --keystorePassword "${{ secrets.KEYSTORE_PASSWORD }}" \
             --keyPassword "${{ secrets.KEY_PASSWORD }}"
 
-      - name: Find AAB file
+      - name: Locate artefacts
+        id: find
         run: |
-          find . -name "*.aab" -o -name "app-release-bundle.aab" 2>/dev/null | head -5
+          find . -name '*.aab' -o -name '*.apk' | tee artefacts.txt
+          test -s artefacts.txt || { echo "No .aab or .apk was produced."; exit 1; }
 
-      - name: Upload AAB artifact
+      - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
-          name: shiv-ai-android-aab
+          name: shiv-ai-${{ github.event.inputs.versionName }}-${{ github.run_number }}
           path: |
             app-release-bundle.aab
+            app-release-signed.apk
             **/*.aab
-          if-no-files-found: warn
-          retention-days: 30
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Remove keystore from the runner
+        if: always()
+        run: rm -f android.keystore

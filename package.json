@@ -13,8 +13,9 @@
   "type": "module",
   "description": "Shiv AI — a free devotional Lord Shiva companion (PWA + Android TWA).",
   "scripts": {
+    "build": "node tools/build.mjs",
+    "seo": "node tools/build-seo.mjs",
     "icons": "node tools/make-icons.mjs",
-    "dev": "netlify dev",
-    "seo": "node tools/build-seo.mjs"
+    "dev": "netlify dev"
   }
 }
