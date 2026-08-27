@@ -8,8 +8,8 @@ const organization = {
   url: site.url,
   logo: `${site.url}${site.basePath}/icon.svg`,
   sameAs: [
-    "https://twitter.com/auravoice",
-    "https://www.instagram.com/auravoice",
+    "https://twitter.com/recolxai",
+    "https://www.instagram.com/recolxai",
   ],
 };
 
@@ -26,11 +26,6 @@ const product = {
     price: site.price.amount,
     availability: "https://schema.org/InStock",
     url: `${site.url}${site.basePath}#pricing`,
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "2148",
   },
 };
 

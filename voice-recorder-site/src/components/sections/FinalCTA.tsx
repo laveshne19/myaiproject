@@ -21,12 +21,12 @@ export function FinalCTA() {
                 Start being present.
               </h2>
               <p className="max-w-xl text-balance text-lg text-ink-muted">
-                Aura ships worldwide with a 60-day trial. If it doesn&apos;t change
+                Recolx Tap ships worldwide with a 60-day trial. If it doesn&apos;t change
                 how you work, send it back.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Button href="#pricing" className="h-14 px-8 text-base">
-                  Buy Aura — $249
+                  Buy Recolx Tap — $249
                 </Button>
                 <Button href="#demo" variant="secondary" className="h-14 px-8 text-base">
                   Watch the demo

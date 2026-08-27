@@ -6,21 +6,22 @@ import { fadeUp } from "@/lib/motion";
 
 type Cell = true | false | "partial";
 
-const rows: { feature: string; aura: Cell; standard: Cell; phone: Cell }[] = [
-  { feature: "Live AI transcription", aura: true, standard: false, phone: "partial" },
-  { feature: "Speaker identification", aura: true, standard: false, phone: false },
-  { feature: "Real-time translation (42 languages)", aura: true, standard: false, phone: false },
-  { feature: "AI summaries & action items", aura: true, standard: false, phone: false },
-  { feature: "Neural noise reduction", aura: true, standard: "partial", phone: "partial" },
-  { feature: "Offline, on-device processing", aura: true, standard: true, phone: false },
-  { feature: "40-hour battery life", aura: true, standard: "partial", phone: false },
-  { feature: "Dedicated profession modes", aura: true, standard: false, phone: false },
-  { feature: "Encrypted cloud sync", aura: true, standard: false, phone: "partial" },
+const rows: { feature: string; recolx: Cell; plaud: Cell; phone: Cell }[] = [
+  { feature: "Live AI transcription", recolx: true, plaud: true, phone: "partial" },
+  { feature: "Works without the companion app", recolx: true, plaud: false, phone: "partial" },
+  { feature: "On-device processing (no cloud round-trip)", recolx: true, plaud: false, phone: false },
+  { feature: "Full AI features without a subscription", recolx: true, plaud: false, phone: true },
+  { feature: "Speaker identification", recolx: true, plaud: "partial", phone: false },
+  { feature: "Real-time translation (42 languages)", recolx: true, plaud: "partial", phone: false },
+  { feature: "AI summaries & action items", recolx: true, plaud: true, phone: false },
+  { feature: "Dedicated profession modes", recolx: true, plaud: false, phone: false },
+  { feature: "40-hour battery life", recolx: true, plaud: "partial", phone: false },
+  { feature: "Encrypted cloud sync", recolx: true, plaud: "partial", phone: "partial" },
 ];
 
 const columns = [
-  { key: "aura" as const, label: "Aura", highlight: true },
-  { key: "standard" as const, label: "Standard recorders" },
+  { key: "recolx" as const, label: "Recolx Tap", highlight: true },
+  { key: "plaud" as const, label: "Plaud NotePin" },
   { key: "phone" as const, label: "Phone voice memos" },
 ];
 
@@ -49,9 +50,9 @@ export function Comparison() {
     <section id="compare" className="relative py-28 lg:py-36">
       <Container className="flex flex-col gap-14">
         <SectionHeading
-          eyebrow="How it stacks up"
-          title="Not another recorder with an app bolted on."
-          description="Most recorders capture audio. Aura understands it. Here's the honest comparison."
+          eyebrow="Recolx Tap vs Plaud NotePin"
+          title="Not another recorder that needs a subscription to be useful."
+          description="Plaud pairs a small recorder with a phone app and a metered AI-credit plan. Recolx Tap processes transcription and summaries on-device by default — no app dependency, no subscription required to get accurate transcripts. Here's the honest side-by-side."
         />
 
         <Reveal variants={fadeUp}>

@@ -84,7 +84,7 @@ export function AIDemo() {
               <br className="hidden sm:block" /> a finished brief.
             </h2>
             <p className="max-w-lg text-lg leading-relaxed text-ink-muted">
-              This is the same pipeline that runs on every Aura recording —
+              This is the same pipeline that runs on every Recolx Tap recording —
               no uploads, no waiting room. Follow one meeting from first word
               to final action item.
             </p>

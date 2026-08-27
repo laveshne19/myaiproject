@@ -65,7 +65,7 @@ export function Nav() {
               Watch demo
             </Button>
             <Button href="#pricing" className="h-10 px-5">
-              Buy Aura — ${site.price.amount}
+              Buy Recolx Tap — ${site.price.amount}
             </Button>
           </div>
 

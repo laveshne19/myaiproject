@@ -8,7 +8,7 @@ const columns = [
   {
     heading: "Product",
     links: [
-      { label: "Aura Recorder", href: "#product" },
+      { label: "Recolx Tap Recorder", href: "#product" },
       { label: "AI Intelligence", href: "#demo" },
       { label: "Modes", href: "#modes" },
       { label: "Compare", href: "#compare" },
@@ -28,7 +28,7 @@ const columns = [
   {
     heading: "Company",
     links: [
-      { label: "About Aura", href: "#" },
+      { label: "About Recolx Tap", href: "#" },
       { label: "Journal", href: "#" },
       { label: "Careers", href: "#" },
       { label: "Press kit", href: "#" },
@@ -48,10 +48,10 @@ const columns = [
 ];
 
 const socials = [
-  { icon: AtSign, href: "https://twitter.com/auravoice", label: "Twitter" },
-  { icon: Camera, href: "https://instagram.com/auravoice", label: "Instagram" },
-  { icon: Users, href: "https://linkedin.com/company/auravoice", label: "LinkedIn" },
-  { icon: PlayCircle, href: "https://youtube.com/@auravoice", label: "YouTube" },
+  { icon: AtSign, href: "https://twitter.com/recolxai", label: "Twitter" },
+  { icon: Camera, href: "https://instagram.com/recolxai", label: "Instagram" },
+  { icon: Users, href: "https://linkedin.com/company/recolxai", label: "LinkedIn" },
+  { icon: PlayCircle, href: "https://youtube.com/@recolxai", label: "YouTube" },
 ];
 
 export function Footer() {

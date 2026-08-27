@@ -68,8 +68,8 @@ export function Modes() {
       <Container className="flex flex-col gap-14">
         <SectionHeading
           eyebrow="Nine minds, one recorder"
-          title="Aura adapts to what you do."
-          description="Every profession hears a room differently. Aura ships with dedicated modes that retune the AI's vocabulary, formatting, and priorities for the work you actually do."
+          title="Recolx Tap adapts to what you do."
+          description="Every profession hears a room differently. Recolx Tap ships with dedicated modes that retune the AI's vocabulary, formatting, and priorities for the work you actually do."
         />
       </Container>
 

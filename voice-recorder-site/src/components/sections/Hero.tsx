@@ -17,7 +17,7 @@ export function Hero() {
       <Container className="relative grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
         <div className="flex flex-col items-start gap-8">
           <Reveal variants={fadeUp}>
-            <Eyebrow>Aura One · Now shipping</Eyebrow>
+            <Eyebrow>Recolx Tap · Now shipping</Eyebrow>
           </Reveal>
 
           <Reveal variants={fadeUp} delay={0.05}>
@@ -34,7 +34,7 @@ export function Hero() {
 
           <Reveal variants={fadeUp} delay={0.1}>
             <p className="max-w-lg text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
-              Aura is the AI voice recorder built for the moments you can&apos;t
+              Recolx Tap is the AI voice recorder built for the moments you can&apos;t
               afford to lose — meetings, lectures, interviews, rounds. It listens,
               transcribes, and thinks, so you can put the notebook down.
             </p>
@@ -43,7 +43,7 @@ export function Hero() {
           <Reveal variants={fadeUp} delay={0.15}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <Button href="#pricing" variant="primary" className="h-14 px-8 text-base">
-                Buy Aura — $249
+                Buy Recolx Tap — $249
               </Button>
               <Button href="#demo" variant="secondary" className="h-14 px-8 text-base">
                 <Play size={16} className="fill-current" />

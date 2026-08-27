@@ -1,28 +1,33 @@
 export const site = {
-  name: "Aura",
-  fullName: "Aura AI Voice Recorder",
-  tagline: "The last recorder you'll ever carry.",
+  name: "Recolx Tap",
+  fullName: "Recolx Tap AI Voice Recorder",
+  tagline: "The AI recorder that keeps up with everything you say.",
   description:
-    "Aura is the AI voice recorder for people who can't afford to miss a word — meetings, lectures, interviews, and clinical notes, transcribed, translated, and summarized on-device and in the cloud.",
+    "Recolx Tap is the AI voice recorder for people who can't afford to miss a word — meetings, lectures, interviews, and clinical notes, transcribed, translated, and summarized on-device and in the cloud. No phone-app-only workaround, no bolted-on subscription required for the basics.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://shivaaionline.in",
   basePath: "/voice-recorder",
   ogImage: "/og-cover.svg",
-  twitter: "@auravoice",
+  twitter: "@recolxai",
   price: {
     currency: "USD",
     amount: "249",
   },
   keywords: [
+    "Recolx Tap",
     "AI voice recorder",
+    "Plaud alternative",
+    "Plaud NotePin alternative",
     "AI meeting recorder",
     "AI transcription device",
     "voice memo AI",
     "AI note taker",
+    "wearable AI recorder",
     "lecture recorder",
     "digital voice recorder",
     "pocket voice recorder",
     "audio recorder with AI",
     "meeting summary device",
+    "best AI voice recorder 2026",
   ],
 };
 

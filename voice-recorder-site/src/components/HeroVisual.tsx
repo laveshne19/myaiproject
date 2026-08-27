@@ -88,7 +88,7 @@ export function HeroVisual() {
       >
         <div className="flex w-full items-center justify-between">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-            Aura · 01
+            Recolx · 01
           </span>
           <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
             <span className="h-1.5 w-1.5 animate-pulse-ring rounded-full bg-signal" />

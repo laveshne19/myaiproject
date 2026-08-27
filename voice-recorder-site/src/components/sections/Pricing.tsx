@@ -7,7 +7,7 @@ import { fadeUp } from "@/lib/motion";
 
 const plans = [
   {
-    name: "Aura One",
+    name: "Recolx Tap",
     price: "$249",
     cadence: "one-time",
     description: "The recorder, on-device AI, forever.",
@@ -18,16 +18,16 @@ const plans = [
       "All 9 profession modes",
       "1-year hardware warranty",
     ],
-    cta: "Buy Aura One",
+    cta: "Buy Recolx Tap",
     highlight: false,
   },
   {
-    name: "Aura One + AI Pro",
+    name: "Recolx Tap + AI Pro",
     price: "$299",
     cadence: "first year included",
     description: "Everything, plus unlimited cloud intelligence.",
     features: [
-      "Everything in Aura One",
+      "Everything in Recolx Tap",
       "Unlimited cloud transcription & summaries",
       "Real-time translation, 42 languages",
       "Multi-device sync & sharing",
@@ -40,7 +40,7 @@ const plans = [
     name: "AI Pro",
     price: "$12",
     cadence: "/ month, for existing owners",
-    description: "Upgrade an Aura you already own.",
+    description: "Upgrade a Recolx Tap you already own.",
     features: [
       "Unlimited cloud transcription & summaries",
       "Real-time translation, 42 languages",

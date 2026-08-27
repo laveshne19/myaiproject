@@ -1,12 +1,12 @@
 const LOGOS = [
-  "NORTHFIELD",
-  "VELA LABS",
-  "ARGON MEDIA",
-  "KESTREL & CO",
-  "PRIME ROUTE",
-  "HALCYON",
-  "MERIDIAN",
-  "GREYWICK",
+  "CONSULTING",
+  "HEALTHCARE",
+  "LEGAL",
+  "JOURNALISM",
+  "ACADEMIA",
+  "FIELD RESEARCH",
+  "PRODUCT & DESIGN",
+  "SALES TEAMS",
 ];
 
 export function LogoMarquee() {

@@ -77,7 +77,7 @@ export function Features() {
               <br className="hidden sm:block" /> Nine ways it thinks for you.
             </span>
           }
-          description="Aura isn't a microphone with an app attached. Every recording runs through the same on-device and cloud AI stack — before you've even finished the sentence."
+          description="Recolx Tap isn't a microphone with an app attached. Every recording runs through the same on-device and cloud AI stack — before you've even finished the sentence."
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[13rem]">
