@@ -34,8 +34,13 @@ export function Button({
   const classes = clsx(base, sizes, variants[variant], className);
 
   if (href) {
+    const isExternal = /^https?:\/\//.test(href);
     return (
-      <Link href={href} className={classes}>
+      <Link
+        href={href}
+        className={classes}
+        {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
         {children}
       </Link>
     );

@@ -19,7 +19,7 @@ const features = [
     icon: AudioLines,
     title: "AI Transcription",
     description:
-      "Studio-grade speech-to-text at 98.7% accuracy, streaming as you speak — technical terms, accents, and crosstalk included.",
+      "GPT-5.2-powered speech-to-text, structured into a conclusion, to-do list, and suggestions the moment you open the app.",
     span: "lg:col-span-2 lg:row-span-2",
     big: true,
   },
@@ -36,7 +36,7 @@ const features = [
   {
     icon: Languages,
     title: "Live Translation",
-    description: "42 languages, translated in real time as the room talks.",
+    description: "112 languages transcribed through the Recolx app.",
   },
   {
     icon: Waves,
@@ -51,7 +51,7 @@ const features = [
   {
     icon: CloudUpload,
     title: "Cloud Sync",
-    description: "End-to-end encrypted backup the instant you're back online.",
+    description: "Encrypted backup the instant you're back online.",
   },
   {
     icon: Share2,
@@ -77,7 +77,7 @@ export function Features() {
               <br className="hidden sm:block" /> Nine ways it thinks for you.
             </span>
           }
-          description="Recolx Tap isn't a microphone with an app attached. Every recording runs through the same on-device and cloud AI stack — before you've even finished the sentence."
+          description="Record on the device, then let the Recolx app do the thinking — GPT-5.2 transcribes, summarizes, and structures every recording automatically."
         />
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[13rem]">

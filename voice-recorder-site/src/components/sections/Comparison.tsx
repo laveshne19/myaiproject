@@ -6,17 +6,17 @@ import { fadeUp } from "@/lib/motion";
 
 type Cell = true | false | "partial";
 
-const rows: { feature: string; recolx: Cell; plaud: Cell; phone: Cell }[] = [
+const markRows: { feature: string; recolx: Cell; plaud: Cell; phone: Cell }[] = [
   { feature: "Live AI transcription", recolx: true, plaud: true, phone: "partial" },
-  { feature: "Works without the companion app", recolx: true, plaud: false, phone: "partial" },
-  { feature: "On-device processing (no cloud round-trip)", recolx: true, plaud: false, phone: false },
-  { feature: "Full AI features without a subscription", recolx: true, plaud: false, phone: true },
-  { feature: "Speaker identification", recolx: true, plaud: "partial", phone: false },
-  { feature: "Real-time translation (42 languages)", recolx: true, plaud: "partial", phone: false },
-  { feature: "AI summaries & action items", recolx: true, plaud: true, phone: false },
-  { feature: "Dedicated profession modes", recolx: true, plaud: false, phone: false },
-  { feature: "40-hour battery life", recolx: true, plaud: "partial", phone: false },
-  { feature: "Encrypted cloud sync", recolx: true, plaud: "partial", phone: "partial" },
+  { feature: "AI summaries (conclusion, to-do, suggestions)", recolx: true, plaud: true, phone: false },
+  { feature: "Ask AI — chat with your own recordings", recolx: true, plaud: true, phone: false },
+  { feature: "112-language transcription", recolx: true, plaud: true, phone: false },
+  { feature: "One-time price, no recurring subscription", recolx: true, plaud: false, phone: true },
+];
+
+const textRows: { feature: string; recolx: string; plaud: string }[] = [
+  { feature: "Entry price", recolx: "₹12,999 one-time (incl. GST)", plaud: "Device + Free / Pro / Unlimited plans" },
+  { feature: "Built-in summary templates", recolx: "71", plaud: "10,000+" },
 ];
 
 const columns = [
@@ -52,7 +52,7 @@ export function Comparison() {
         <SectionHeading
           eyebrow="Recolx Tap vs Plaud NotePin"
           title="Not another recorder that needs a subscription to be useful."
-          description="Plaud pairs a small recorder with a phone app and a metered AI-credit plan. Recolx Tap processes transcription and summaries on-device by default — no app dependency, no subscription required to get accurate transcripts. Here's the honest side-by-side."
+          description="Plaud gates most of its AI processing behind monthly or annual plans. Recolx Tap pairs with the Recolx app too — but transcription, summaries, and Ask Recolx AI are included in one ₹12,999 purchase, not metered behind a recurring plan."
         />
 
         <Reveal variants={fadeUp}>
@@ -74,11 +74,8 @@ export function Comparison() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, i) => (
-                  <tr
-                    key={row.feature}
-                    className={i !== rows.length - 1 ? "border-b border-border" : ""}
-                  >
+                {markRows.map((row) => (
+                  <tr key={row.feature} className="border-b border-border">
                     <td className="p-5 text-ink-muted">{row.feature}</td>
                     {columns.map((col) => (
                       <td
@@ -90,10 +87,27 @@ export function Comparison() {
                     ))}
                   </tr>
                 ))}
+                {textRows.map((row, i) => (
+                  <tr
+                    key={row.feature}
+                    className={i !== textRows.length - 1 ? "border-b border-border" : ""}
+                  >
+                    <td className="p-5 text-ink-muted">{row.feature}</td>
+                    <td className="bg-signal/[0.04] p-5 text-center font-medium text-ink">
+                      {row.recolx}
+                    </td>
+                    <td className="p-5 text-center text-ink-muted">{row.plaud}</td>
+                    <td className="p-5 text-center text-ink-faint">—</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </Reveal>
+
+        <p className="text-xs italic text-ink-faint">
+          Comparison reflects publicly available information at time of publishing and may change.
+        </p>
       </Container>
     </section>
   );

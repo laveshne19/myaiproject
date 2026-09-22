@@ -121,16 +121,16 @@ export function HeroVisual() {
 
       <div ref={chipsRef} className="pointer-events-none absolute inset-0">
         <div className="glass absolute -left-4 top-6 rounded-2xl px-4 py-3 text-left sm:-left-10">
-          <p className="text-lg font-semibold text-ink">98.7%</p>
-          <p className="text-[11px] text-ink-muted">Transcription accuracy</p>
+          <p className="text-lg font-semibold text-ink">GPT-5.2</p>
+          <p className="text-[11px] text-ink-muted">AI transcription engine</p>
         </div>
         <div className="glass absolute -right-2 top-[38%] rounded-2xl px-4 py-3 text-left sm:-right-8">
-          <p className="text-lg font-semibold text-ink">42</p>
-          <p className="text-[11px] text-ink-muted">Languages, live</p>
+          <p className="text-lg font-semibold text-ink">112</p>
+          <p className="text-[11px] text-ink-muted">Languages transcribed</p>
         </div>
         <div className="glass absolute -left-2 bottom-8 rounded-2xl px-4 py-3 text-left sm:-left-8">
-          <p className="text-lg font-semibold text-ink">40 hrs</p>
-          <p className="text-[11px] text-ink-muted">On a single charge</p>
+          <p className="text-lg font-semibold text-ink">71</p>
+          <p className="text-[11px] text-ink-muted">Pro summary templates</p>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { HeroBackground } from "@/components/HeroBackground";
 import { HeroVisual } from "@/components/HeroVisual";
 import { fadeUp } from "@/lib/motion";
+import { site } from "@/lib/site";
 
 export function Hero() {
   return (
@@ -35,15 +36,16 @@ export function Hero() {
           <Reveal variants={fadeUp} delay={0.1}>
             <p className="max-w-lg text-balance text-lg leading-relaxed text-ink-muted sm:text-xl">
               Recolx Tap is the AI voice recorder built for the moments you can&apos;t
-              afford to lose — meetings, lectures, interviews, rounds. It listens,
-              transcribes, and thinks, so you can put the notebook down.
+              afford to lose — meetings, lectures, and interviews. Pair it with the
+              Recolx app and GPT-5.2 turns every recording into notes you&apos;ll
+              actually read.
             </p>
           </Reveal>
 
           <Reveal variants={fadeUp} delay={0.15}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <Button href="#pricing" variant="primary" className="h-14 px-8 text-base">
-                Buy Recolx Tap — $249
+              <Button href={site.amazonUrl} variant="primary" className="h-14 px-8 text-base">
+                Buy on Amazon — ₹{site.price.display}
               </Button>
               <Button href="#demo" variant="secondary" className="h-14 px-8 text-base">
                 <Play size={16} className="fill-current" />
@@ -53,18 +55,9 @@ export function Hero() {
           </Reveal>
 
           <Reveal variants={fadeUp} delay={0.2}>
-            <div className="flex items-center gap-4 pt-2 text-sm text-ink-faint">
-              <div className="flex -space-x-2.5">
-                {["A", "M", "R", "K"].map((letter) => (
-                  <span
-                    key={letter}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-bg bg-white/10 text-[11px] font-medium text-ink-muted"
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </div>
-              <p>Trusted by 40,000+ professionals across 60 countries</p>
+            <div className="flex items-center gap-3 pt-2 text-sm text-ink-faint">
+              <span className="flex items-center gap-1 text-signal">★★★★</span>
+              <p>3.8 rated · 160+ reviews on Amazon.in</p>
             </div>
           </Reveal>
         </div>

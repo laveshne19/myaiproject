@@ -7,34 +7,33 @@ import { fadeUp } from "@/lib/motion";
 
 const reasons = [
   {
-    title: "No overlapping-voice confusion",
+    title: "One price, not a subscription",
     detail:
-      "Speaker separation untangles multi-person conversations automatically — no manual labeling after the fact.",
+      "GPT-5.2 transcription, summaries, and Ask Recolx AI are included in a single ₹12,999 purchase — no monthly plan required.",
   },
   {
-    title: "Clinical- and legal-grade vocabulary",
+    title: "Structured summaries, not a wall of text",
     detail:
-      "Dedicated Medical and Legal modes retune the transcription engine for technical terminology and chain-of-custody timestamps.",
+      "Every recording becomes a clear conclusion, to-do list, and suggestions inside the Recolx app — not raw transcript you have to read yourself.",
   },
   {
-    title: "Full-day battery, not a session timer",
+    title: "Ask questions about your own recordings",
     detail:
-      "Up to 40 hours of continuous recording, so it survives a full conference day or a semester of back-to-back lectures.",
+      "Ask Recolx AI answers follow-up questions pulled directly from the transcript, powered by GPT-5.2.",
   },
   {
-    title: "Works before you're online",
+    title: "71 Pro Templates",
     detail:
-      "Transcription runs on-device by default — no dead zone or spotty conference-hall Wi-Fi turns your recording into raw, unusable audio.",
+      "Built-in summary formats so notes come out structured for the way you actually work — not one generic format for everything.",
   },
   {
-    title: "Built for how you actually work",
-    detail:
-      "Nine profession-specific modes retune vocabulary, formatting, and summary style — from courtroom depositions to investigative interviews.",
+    title: "Transcribes in 112 languages",
+    detail: "Record in one language, get a transcript you can read in another.",
   },
   {
-    title: "Try it risk-free",
+    title: "Easy on the wallet",
     detail:
-      "Every Recolx Tap ships with a 60-day trial. If it doesn't earn a permanent place in your pocket, send it back for a full refund.",
+      "No-cost EMI available from ₹352/month, secure checkout, and a GST invoice for business purchases.",
   },
 ];
 

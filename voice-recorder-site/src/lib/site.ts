@@ -3,14 +3,17 @@ export const site = {
   fullName: "Recolx Tap AI Voice Recorder",
   tagline: "The AI recorder that keeps up with everything you say.",
   description:
-    "Recolx Tap is the AI voice recorder for people who can't afford to miss a word — meetings, lectures, interviews, and clinical notes, transcribed, translated, and summarized on-device and in the cloud. No phone-app-only workaround, no bolted-on subscription required for the basics.",
+    "Recolx Tap is the AI voice recorder for people who can't afford to miss a word — meetings, lectures, and interviews, transcribed and structured into a conclusion, to-do list, and suggestions via the Recolx app, powered by GPT-5.2.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://shivaaionline.in",
   basePath: "/voice-recorder",
   ogImage: "/og-cover.svg",
   twitter: "@recolxai",
+  amazonUrl: "https://www.amazon.in/dp/B0DYNFTBGS",
   price: {
-    currency: "USD",
-    amount: "249",
+    currency: "INR",
+    amount: "12999",
+    display: "12,999",
+    mrp: "29,990",
   },
   keywords: [
     "Recolx Tap",

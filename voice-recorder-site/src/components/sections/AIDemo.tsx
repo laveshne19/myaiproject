@@ -11,7 +11,7 @@ const STAGES = [
     key: "listen",
     label: "Listening",
     icon: Mic,
-    caption: "0:00 — recording starts, on-device AI activates instantly.",
+    caption: "0:00 — recording starts on the device.",
   },
   {
     key: "transcript",

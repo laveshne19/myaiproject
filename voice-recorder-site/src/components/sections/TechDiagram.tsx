@@ -9,9 +9,9 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const STAGES = [
   { icon: Mic, title: "Voice capture", detail: "Dual MEMS mics, 48kHz lossless." },
-  { icon: Waves, title: "Noise filtering", detail: "Neural denoising, on-device." },
-  { icon: Cpu, title: "On-device AI", detail: "Local inference, zero latency." },
-  { icon: Brain, title: "Neural transcription", detail: "Speech-to-text, speaker ID." },
+  { icon: Waves, title: "Noise filtering", detail: "Neural denoising on capture." },
+  { icon: Cpu, title: "App sync", detail: "Sent to the Recolx app over Bluetooth." },
+  { icon: Brain, title: "GPT-5.2 transcription", detail: "Speech-to-text, structured output." },
   { icon: CloudUpload, title: "Cloud sync", detail: "Encrypted summary, everywhere." },
 ];
 
@@ -67,8 +67,8 @@ export function TechDiagram() {
       <Container className="flex flex-col gap-16">
         <SectionHeading
           eyebrow="Under the hood"
-          title="Three AI engines. One seamless pipeline."
-          description="On-device inference for instant response, neural models for accuracy, cloud intelligence for depth — orchestrated so you never notice the handoff."
+          title="From recording to structured notes."
+          description="Capture on the device, then GPT-5.2 in the Recolx app transcribes, structures, and syncs it — orchestrated so you never notice the handoff."
         />
 
         <div className="relative py-10">

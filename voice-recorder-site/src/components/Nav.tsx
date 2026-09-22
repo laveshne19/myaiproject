@@ -64,8 +64,8 @@ export function Nav() {
             <Button href="#demo" variant="ghost" className="h-10 px-4">
               Watch demo
             </Button>
-            <Button href="#pricing" className="h-10 px-5">
-              Buy Recolx Tap — ${site.price.amount}
+            <Button href={site.amazonUrl} className="h-10 px-5">
+              Buy on Amazon — ₹{site.price.display}
             </Button>
           </div>
 

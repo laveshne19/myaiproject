@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { fadeUp } from "@/lib/motion";
+import { site } from "@/lib/site";
 
 export function FinalCTA() {
   return (
@@ -21,12 +22,12 @@ export function FinalCTA() {
                 Start being present.
               </h2>
               <p className="max-w-xl text-balance text-lg text-ink-muted">
-                Recolx Tap ships worldwide with a 60-day trial. If it doesn&apos;t change
-                how you work, send it back.
+                Recolx Tap — GPT-5.2 transcription, summaries, and Ask Recolx AI in one
+                ₹{site.price.display} purchase. No subscription.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button href="#pricing" className="h-14 px-8 text-base">
-                  Buy Recolx Tap — $249
+                <Button href={site.amazonUrl} className="h-14 px-8 text-base">
+                  Buy on Amazon — ₹{site.price.display}
                 </Button>
                 <Button href="#demo" variant="secondary" className="h-14 px-8 text-base">
                   Watch the demo
