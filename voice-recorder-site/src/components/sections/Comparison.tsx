@@ -11,11 +11,13 @@ const markRows: { feature: string; recolx: Cell; plaud: Cell; phone: Cell }[] = 
   { feature: "AI summaries (conclusion, to-do, suggestions)", recolx: true, plaud: true, phone: false },
   { feature: "Ask AI — chat with your own recordings", recolx: true, plaud: true, phone: false },
   { feature: "112-language transcription", recolx: true, plaud: true, phone: false },
-  { feature: "One-time price, no recurring subscription", recolx: true, plaud: false, phone: true },
+  { feature: "Free tier included with device", recolx: true, plaud: true, phone: true },
 ];
 
 const textRows: { feature: string; recolx: string; plaud: string }[] = [
-  { feature: "Entry price", recolx: "₹12,999 one-time (incl. GST)", plaud: "Device + Free / Pro / Unlimited plans" },
+  { feature: "Device price", recolx: "₹12,999 one-time (incl. GST)", plaud: "—" },
+  { feature: "Pro plan", recolx: "₹1,399/mo (₹6,899/yr billed annually)", plaud: "₹1,999/mo (₹9,900/yr billed annually)" },
+  { feature: "Unlimited plan", recolx: "₹2,099/mo (₹17,399/yr billed annually)", plaud: "₹2,999/mo (₹24,900/yr billed annually)" },
   { feature: "Built-in summary templates", recolx: "71", plaud: "10,000+" },
 ];
 
@@ -51,8 +53,8 @@ export function Comparison() {
       <Container className="flex flex-col gap-14">
         <SectionHeading
           eyebrow="Recolx Tap vs Plaud NotePin"
-          title="Not another recorder that needs a subscription to be useful."
-          description="Plaud gates most of its AI processing behind monthly or annual plans. Recolx Tap pairs with the Recolx app too — but transcription, summaries, and Ask Recolx AI are included in one ₹12,999 purchase, not metered behind a recurring plan."
+          title="Same plans. About 30% less."
+          description="Recolx Tap and Plaud NotePin both pair with a companion app and offer Free, Pro, and Unlimited plans for higher usage. Recolx Tap's Pro and Unlimited plans are priced roughly 30% below Plaud's equivalent tiers."
         />
 
         <Reveal variants={fadeUp}>

@@ -22,8 +22,8 @@ export function FinalCTA() {
                 Start being present.
               </h2>
               <p className="max-w-xl text-balance text-lg text-ink-muted">
-                Recolx Tap — GPT-5.2 transcription, summaries, and Ask Recolx AI in one
-                ₹{site.price.display} purchase. No subscription.
+                Recolx Tap — GPT-5.2 transcription, summaries, and Ask Recolx AI included
+                free with the ₹{site.price.display} device. Upgrade to Pro or Unlimited only if you need more.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Button href={site.amazonUrl} className="h-14 px-8 text-base">

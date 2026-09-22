@@ -9,7 +9,7 @@ const reasons = [
   {
     title: "One price, not a subscription",
     detail:
-      "GPT-5.2 transcription, summaries, and Ask Recolx AI are included in a single ₹12,999 purchase — no monthly plan required.",
+      "GPT-5.2 transcription, summaries, and Ask Recolx AI are included free with the ₹12,999 device — upgrade to Pro or Unlimited only if you need more.",
   },
   {
     title: "Structured summaries, not a wall of text",

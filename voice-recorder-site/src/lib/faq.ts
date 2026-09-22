@@ -31,12 +31,12 @@ export const faqs = [
   {
     question: "How is Recolx Tap different from Plaud NotePin?",
     answer:
-      "Both pair with a companion app for AI processing. The difference is pricing: Recolx Tap is a single ₹12,999 purchase with GPT-5.2 transcription, summaries, and Ask Recolx AI included — Plaud's higher-usage AI features sit behind monthly or annual subscription plans.",
+      "Both pair with a companion app and offer Free, Pro, and Unlimited plans for higher usage. The difference is price: Recolx Tap's Pro (₹1,399/mo) and Unlimited (₹2,099/mo) plans run roughly 30% below Plaud's equivalent tiers, and core GPT-5.2 transcription is included free with the ₹12,999 device.",
   },
   {
     question: "Is Recolx Tap a good Plaud alternative?",
     answer:
-      "If you'd rather pay once than subscribe, yes — Recolx Tap includes GPT-5.2 transcription, 71 Pro Templates, and Ask Recolx AI in one ₹12,999 purchase, no recurring plan required.",
+      "Yes — GPT-5.2 transcription, 71 Pro Templates, and Ask Recolx AI are included free with the ₹12,999 device, and if you need higher usage, Pro and Unlimited plans cost about 30% less than Plaud's equivalent tiers.",
   },
   {
     question: "Can I return Recolx Tap if it's not right for me?",
