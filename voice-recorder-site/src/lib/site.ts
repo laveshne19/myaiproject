@@ -6,7 +6,7 @@ export const site = {
     "Recolx Tap is the AI voice recorder for people who can't afford to miss a word — meetings, lectures, and interviews, transcribed and structured into a conclusion, to-do list, and suggestions via the Recolx app, powered by GPT-5.2.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://shivaaionline.in",
   basePath: "/voice-recorder",
-  ogImage: "/og-cover.svg",
+  ogImage: "/recolx-tap-device.webp",
   twitter: "@recolxai",
   amazonUrl: "https://www.amazon.in/dp/B0DYNFTBGS",
   price: {
