@@ -1,0 +1,122 @@
+import { site } from "@/lib/site";
+import { faqs } from "@/lib/faq";
+
+const organization = {
+  "@type": "Organization",
+  "@id": `${site.url}/#organization`,
+  name: "Recolx",
+  url: site.url,
+  logo: `${site.url}${site.basePath}/icon.svg`,
+  email: site.contactEmail,
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email: site.contactEmail,
+    areaServed: "IN",
+    availableLanguage: ["en", "hi"],
+  },
+  sameAs: [
+    "https://twitter.com/recolxai",
+    "https://www.instagram.com/recolxai",
+    site.amazonUrl,
+  ],
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  url: `${site.url}${site.basePath}`,
+  name: site.fullName,
+  publisher: { "@id": `${site.url}/#organization` },
+  inLanguage: "en-IN",
+};
+
+const product = {
+  "@type": "Product",
+  "@id": `${site.url}/#product`,
+  name: site.fullName,
+  description: site.description,
+  brand: { "@type": "Brand", name: "RECOLX" },
+  mpn: "JYDH-100",
+  sku: "JYDH-100",
+  category: "Electronics > Audio > Voice Recorders",
+  image: `${site.url}${site.basePath}${site.ogImage}`,
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Recolx.co.in",
+      priceCurrency: site.price.currency,
+      price: site.price.amount,
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      url: `${site.url}${site.basePath}#pricing`,
+      seller: { "@id": `${site.url}/#organization` },
+      areaServed: "IN",
+    },
+    {
+      "@type": "Offer",
+      name: "Amazon.in",
+      priceCurrency: "INR",
+      price: "9999",
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      url: site.amazonUrl,
+      areaServed: "IN",
+    },
+  ],
+};
+
+const faq = {
+  "@type": "FAQPage",
+  mainEntity: faqs.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
+const breadcrumb = {
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: site.url,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: site.fullName,
+      item: `${site.url}${site.basePath}`,
+    },
+  ],
+};
+
+const speakable = {
+  "@type": "WebPage",
+  "@id": `${site.url}${site.basePath}#webpage`,
+  url: `${site.url}${site.basePath}`,
+  name: site.fullName,
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["[data-speakable-title]", "[data-speakable-summary]"],
+  },
+};
+
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [organization, website, product, faq, breadcrumb, speakable],
+};
+
+export function StructuredData() {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+    />
+  );
+}
