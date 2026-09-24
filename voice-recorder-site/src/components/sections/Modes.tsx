@@ -17,48 +17,48 @@ import { fadeUp } from "@/lib/motion";
 const modes = [
   {
     icon: Users,
-    name: "Meeting",
-    detail: "Speaker-tagged notes, decisions, and owners — before you've left the room.",
+    name: "Meetings",
+    detail: "Walk out with a conclusion, to-do list, and suggestions — not an hour of raw audio.",
   },
   {
     icon: GraduationCap,
-    name: "Lecture",
-    detail: "Slides, definitions, and timestamps synced to every key concept.",
+    name: "Lectures",
+    detail: "A semester of classes becomes a searchable, summarized archive.",
   },
   {
     icon: Stethoscope,
-    name: "Medical",
-    detail: "Clinical vocabulary tuned for rounds, referrals, and chart-ready notes.",
+    name: "Doctors",
+    detail: "Dictate between patients; review structured notes in the app later.",
   },
   {
     icon: Scale,
-    name: "Lawyer",
-    detail: "Chain-of-custody timestamps and verbatim accuracy for depositions.",
+    name: "Lawyers",
+    detail: "Client consultations captured verbatim, summarized into action points.",
   },
   {
     icon: Newspaper,
-    name: "Journalist",
-    detail: "Interview-grade isolation with instant, quotable transcripts.",
+    name: "Journalists",
+    detail: "Interviews transcribed in any of 112 languages, ready to quote.",
   },
   {
     icon: BookOpen,
-    name: "Student",
-    detail: "Class recordings become searchable, summarized study guides.",
+    name: "Students",
+    detail: "Record the class, ask Recolx AI the questions you forgot to.",
   },
   {
     icon: Briefcase,
-    name: "Business",
-    detail: "Client calls turned into CRM-ready notes and follow-ups.",
+    name: "Sales & Business",
+    detail: "Client calls turned into follow-ups and next steps automatically.",
   },
   {
     icon: Building2,
-    name: "Corporate",
-    detail: "All-hands and reviews distilled into leadership-ready briefs.",
+    name: "Corporate Teams",
+    detail: "All-hands and reviews distilled into briefs everyone actually reads.",
   },
   {
     icon: Video,
-    name: "Content Creator",
-    detail: "Voice memos and interviews become clip-ready scripts, fast.",
+    name: "Content Creators",
+    detail: "Voice memos and interviews become drafts and scripts, fast.",
   },
 ];
 
@@ -67,9 +67,9 @@ export function Modes() {
     <section id="modes" className="relative py-28 lg:py-36">
       <Container className="flex flex-col gap-14">
         <SectionHeading
-          eyebrow="Nine minds, one recorder"
-          title="Recolx Tap adapts to what you do."
-          description="Every profession hears a room differently. Recolx Tap ships with dedicated modes that retune the AI's vocabulary, formatting, and priorities for the work you actually do."
+          eyebrow="Built for how you work"
+          title="One recorder. Every kind of workday."
+          description="With 71 built-in Pro Templates in the Recolx app, your notes come out structured for the work you actually do — whoever you are and whatever the room sounds like."
         />
       </Container>
 

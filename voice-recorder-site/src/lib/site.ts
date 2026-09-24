@@ -9,6 +9,7 @@ export const site = {
   ogImage: "/recolx-tap-device.webp",
   twitter: "@recolxai",
   amazonUrl: "https://www.amazon.in/dp/B0DYNFTBGS",
+  contactEmail: "laveshne19@gmail.com",
   price: {
     currency: "INR",
     amount: "12999",
@@ -39,8 +40,8 @@ export type NavLink = { label: string; href: string };
 export const navLinks: NavLink[] = [
   { label: "Product", href: "#product" },
   { label: "Intelligence", href: "#demo" },
-  { label: "Modes", href: "#modes" },
   { label: "Compare", href: "#compare" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Order", href: "#order" },
   { label: "FAQ", href: "#faq" },
 ];

@@ -9,6 +9,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { Comparison } from "@/components/sections/Comparison";
 import { TechDiagram } from "@/components/sections/TechDiagram";
 import { Pricing } from "@/components/sections/Pricing";
+import { OrderInquiry } from "@/components/sections/OrderInquiry";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
@@ -31,6 +32,7 @@ export default function Home() {
         <Testimonials />
         <Comparison />
         <Pricing />
+        <OrderInquiry />
         <FAQ />
         <FinalCTA />
       </main>

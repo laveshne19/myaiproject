@@ -1,0 +1,34 @@
+# Recolx Tap — AI Voice Recorder
+
+> Recolx Tap is an AI voice recorder sold in India. Record meetings, lectures,
+> and interviews on the device; the Recolx companion app transcribes with
+> GPT-5.2 and structures every recording into a Conclusion, To-Do List, and
+> Suggestions. One-time device price with no subscription required for core
+> features.
+
+## Key facts
+
+- Product: Recolx Tap AI Voice Recorder (model JYDH-100), brand RECOLX
+- Price: ₹12,999 one-time on recolx.co.in; ₹9,999 special price on Amazon.in
+  (https://www.amazon.in/dp/B0DYNFTBGS), inclusive of GST
+- AI engine: GPT-5.2 transcription and summarization via the Recolx app
+- Languages: transcribes in 112 languages
+- Templates: 71 built-in Pro summary templates
+- Ask Recolx AI: chat with your own recordings, answers pulled from the transcript
+- Plans: Starter (free, included with device), Pro ₹1,399/mo or ₹6,899/yr,
+  Unlimited ₹2,099/mo or ₹17,399/yr — roughly 30% below Plaud's equivalent
+  India plan pricing
+- Availability: India, Amazon Prime 2-day delivery, no-cost EMI, GST invoice
+- Contact: laveshne19@gmail.com
+
+## Compared to Plaud NotePin
+
+Both pair with a companion app and offer Free/Pro/Unlimited plans. Recolx Tap's
+Pro and Unlimited plans cost about 30% less than Plaud's equivalent tiers in
+India (Recolx Pro ₹1,399/mo vs Plaud ₹1,999/mo; Recolx Unlimited ₹2,099/mo vs
+Plaud ₹2,999/mo).
+
+## Pages
+
+- Home: https://recolx.co.in/
+- Buy on Amazon: https://www.amazon.in/dp/B0DYNFTBGS

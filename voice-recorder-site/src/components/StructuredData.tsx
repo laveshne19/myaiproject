@@ -4,13 +4,31 @@ import { faqs } from "@/lib/faq";
 const organization = {
   "@type": "Organization",
   "@id": `${site.url}/#organization`,
-  name: site.fullName,
+  name: "Recolx",
   url: site.url,
   logo: `${site.url}${site.basePath}/icon.svg`,
+  email: site.contactEmail,
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email: site.contactEmail,
+    areaServed: "IN",
+    availableLanguage: ["en", "hi"],
+  },
   sameAs: [
     "https://twitter.com/recolxai",
     "https://www.instagram.com/recolxai",
+    site.amazonUrl,
   ],
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  url: `${site.url}${site.basePath}`,
+  name: site.fullName,
+  publisher: { "@id": `${site.url}/#organization` },
+  inLanguage: "en-IN",
 };
 
 const product = {
@@ -18,15 +36,34 @@ const product = {
   "@id": `${site.url}/#product`,
   name: site.fullName,
   description: site.description,
-  brand: { "@type": "Brand", name: site.name },
+  brand: { "@type": "Brand", name: "RECOLX" },
+  mpn: "JYDH-100",
+  sku: "JYDH-100",
+  category: "Electronics > Audio > Voice Recorders",
   image: `${site.url}${site.basePath}${site.ogImage}`,
-  offers: {
-    "@type": "Offer",
-    priceCurrency: site.price.currency,
-    price: site.price.amount,
-    availability: "https://schema.org/InStock",
-    url: `${site.url}${site.basePath}#pricing`,
-  },
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Recolx.co.in",
+      priceCurrency: site.price.currency,
+      price: site.price.amount,
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      url: `${site.url}${site.basePath}#pricing`,
+      seller: { "@id": `${site.url}/#organization` },
+      areaServed: "IN",
+    },
+    {
+      "@type": "Offer",
+      name: "Amazon.in",
+      priceCurrency: "INR",
+      price: "9999",
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      url: site.amazonUrl,
+      areaServed: "IN",
+    },
+  ],
 };
 
 const faq = {
@@ -72,7 +109,7 @@ const speakable = {
 
 const graph = {
   "@context": "https://schema.org",
-  "@graph": [organization, product, faq, breadcrumb, speakable],
+  "@graph": [organization, website, product, faq, breadcrumb, speakable],
 };
 
 export function StructuredData() {

@@ -39,10 +39,9 @@ const columns = [
     heading: "Support",
     links: [
       { label: "FAQ", href: "#faq" },
-      { label: "Warranty", href: "#" },
-      { label: "Privacy policy", href: "#" },
-      { label: "Terms of service", href: "#" },
-      { label: "Security", href: "#" },
+      { label: "Order & enquiries", href: "#order" },
+      { label: "Email: laveshne19@gmail.com", href: "mailto:laveshne19@gmail.com" },
+      { label: "Buy on Amazon.in", href: "https://www.amazon.in/dp/B0DYNFTBGS" },
     ],
   },
 ];

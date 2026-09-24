@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     siteName: site.fullName,
     title: `${site.fullName} — ${site.tagline}`,
     description: site.description,
-    locale: "en_US",
+    locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
@@ -55,7 +55,19 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  category: "Electronics",
+  other: {
+    "geo.region": "IN",
+    "geo.placename": "India",
+    "product:price:amount": site.price.amount,
+    "product:price:currency": site.price.currency,
   },
 };
 
