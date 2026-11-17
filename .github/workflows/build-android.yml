@@ -31,12 +31,48 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android build tools
+      - name: Accept SDK licenses and install build tools
         run: |
-          sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools"
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager "build-tools;34.0.0" "platforms;android-34" "platform-tools" 2>&1 || \
+          sdkmanager "build-tools;33.0.2" "platforms;android-33" "platform-tools" 2>&1
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
 
-      - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android.keystore
+      - name: Configure bubblewrap
+        run: |
+          mkdir -p $HOME/.bubblewrap
+          cat > $HOME/.bubblewrap/config.json << EOF
+          {
+            "jdkPath": "$JAVA_HOME",
+            "androidSdkPath": "$ANDROID_HOME"
+          }
+          EOF
+          echo "Bubblewrap config written:"
+          cat $HOME/.bubblewrap/config.json
+
+      - name: Decode or generate keystore
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "Using provided keystore from secret"
+            echo "$KEYSTORE_B64" | base64 --decode > android.keystore
+          else
+            echo "KEYSTORE_BASE64 not set — generating temporary keystore for this build"
+            keytool -genkeypair \
+              -alias my-key-alias \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -keystore android.keystore \
+              -storepass fa6Lwd5ensEV \
+              -keypass fa6Lwd5ensEV \
+              -dname "CN=Shiv AI, OU=App, O=ShivaaionlineIn, L=India, ST=India, C=IN" \
+              -noprompt
+            echo "Temporary keystore created"
+          fi
+          keytool -list -v -keystore android.keystore -storepass fa6Lwd5ensEV 2>&1 | grep -E "Alias|SHA|Valid"
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
 
       - name: Create twa-manifest.json
         run: |
@@ -100,12 +136,13 @@ jobs:
         run: |
           bubblewrap build \
             --skipPwaValidation \
-            --keystorePassword "${{ secrets.KEYSTORE_PASSWORD }}" \
-            --keyPassword "${{ secrets.KEY_PASSWORD }}"
+            --keystorePassword "fa6Lwd5ensEV" \
+            --keyPassword "fa6Lwd5ensEV"
 
-      - name: Find AAB file
+      - name: Find and list AAB files
         run: |
-          find . -name "*.aab" -o -name "app-release-bundle.aab" 2>/dev/null | head -5
+          find . -name "*.aab" 2>/dev/null | head -10
+          find . -name "*.apk" 2>/dev/null | head -10
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
@@ -114,5 +151,6 @@ jobs:
           path: |
             app-release-bundle.aab
             **/*.aab
+            **/*.apk
           if-no-files-found: warn
           retention-days: 30
