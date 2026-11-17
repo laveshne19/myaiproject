@@ -28,25 +28,44 @@ jobs:
       - name: Install bubblewrap CLI
         run: npm install -g @bubblewrap/cli
 
-      - name: Accept Android SDK licenses and install build tools
+      - name: Inspect Android SDK structure
+        run: |
+          echo "=== ANDROID_HOME ==="
+          echo "${ANDROID_HOME}"
+          echo "=== SDK root contents ==="
+          ls -la /usr/local/lib/android/sdk/ 2>/dev/null || echo "Not found at /usr/local/lib/android/sdk"
+          echo "=== build-tools ==="
+          ls /usr/local/lib/android/sdk/build-tools/ 2>/dev/null || echo "No build-tools dir"
+          echo "=== platforms ==="
+          ls /usr/local/lib/android/sdk/platforms/ 2>/dev/null || echo "No platforms dir"
+          echo "=== cmdline-tools ==="
+          ls /usr/local/lib/android/sdk/cmdline-tools/ 2>/dev/null || echo "No cmdline-tools dir"
+          echo "=== JAVA_HOME ==="
+          echo "${JAVA_HOME}"
+          java -version
+
+      - name: Install Android build tools via sdkmanager
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || \
-          yes | $ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager --licenses > /dev/null 2>&1 || true
-          SDKMANAGER=$(ls $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager 2>/dev/null | tail -1)
-          $SDKMANAGER "build-tools;34.0.0" "platforms;android-34" "platform-tools" 2>&1 || \
-          $SDKMANAGER "build-tools;33.0.2" "platforms;android-33" "platform-tools" 2>&1 || true
+          SDKMANAGER=$(find $ANDROID_HOME/cmdline-tools -name sdkmanager -type f 2>/dev/null | head -1)
+          echo "Using sdkmanager: $SDKMANAGER"
+          yes | $SDKMANAGER --licenses
+          $SDKMANAGER "build-tools;34.0.0" "platforms;android-34" "platform-tools"
+          echo "=== After install: build-tools ==="
+          ls $ANDROID_HOME/build-tools/
+          echo "=== After install: platforms ==="
+          ls $ANDROID_HOME/platforms/
 
       - name: Configure bubblewrap
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
           mkdir -p $HOME/.bubblewrap
-          cat > $HOME/.bubblewrap/config.json << EOF
-          {"jdkPath": "$JAVA_HOME", "androidSdkPath": "$ANDROID_HOME"}
-          EOF
+          echo "{\"jdkPath\": \"$JAVA_HOME\", \"androidSdkPath\": \"$ANDROID_HOME\"}" > $HOME/.bubblewrap/config.json
+          echo "=== bubblewrap config ==="
+          cat $HOME/.bubblewrap/config.json
 
       - name: Decode or generate keystore
         run: |
@@ -62,7 +81,7 @@ jobs:
 
       - name: Create twa-manifest.json
         run: |
-          cat > twa-manifest.json << 'EOF'
+          cat > twa-manifest.json << 'TWAMAN'
           {
             "packageId": "in.shivaaionline.twa",
             "host": "shivaaionline.in",
@@ -113,7 +132,9 @@ jobs:
             "displayOverride": [],
             "appVersion": "1.0.0"
           }
-          EOF
+          TWAMAN
+          echo "=== twa-manifest.json ==="
+          cat twa-manifest.json
 
       - name: Build TWA project
         env:
@@ -127,7 +148,7 @@ jobs:
             --keyPassword "fa6Lwd5ensEV"
 
       - name: Find AAB file
-        run: find . -name "*.aab" 2>/dev/null | head -5 || echo "No AAB found yet"
+        run: find . -name "*.aab" 2>/dev/null | head -5 || echo "No AAB found"
 
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
