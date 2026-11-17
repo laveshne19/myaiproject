@@ -622,6 +622,45 @@ body {
 .firstrun-skip { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px; }
 .firstrun-skip:hover { color: var(--text2); }
 
+/* ── AUTH MODAL ─────────────────────────────────────────────────────────── */
+#authModal {
+  position: fixed; inset: 0; background: rgba(5,0,15,0.95); z-index: 400;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  backdrop-filter: blur(20px);
+}
+#authModal.hidden { display: none; }
+.auth-box { width: 100%; max-width: 360px; animation: firstRunIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.auth-tab {
+  flex: 1; padding: 10px; border-radius: 12px; background: var(--surface2);
+  border: 1px solid var(--border); color: var(--text2); font-size: 14px;
+  font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.auth-tab.active { background: var(--fire); color: #fff; border-color: var(--fire); }
+.auth-title { font-size: 24px; font-weight: 900; text-align: center; margin-bottom: 6px;
+  background: linear-gradient(90deg, var(--gold), var(--fire));
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.auth-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 20px; }
+.auth-input {
+  width: 100%; background: rgba(37,21,69,0.8); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 13px 16px; color: var(--text); font-size: 15px;
+  outline: none; margin-bottom: 10px; transition: border-color 0.2s;
+}
+.auth-input:focus { border-color: rgba(255,107,53,0.5); }
+.auth-input::placeholder { color: var(--text3); }
+.auth-err { color: #ff6b6b; font-size: 13px; text-align: center; min-height: 20px; margin-bottom: 8px; }
+.auth-btn {
+  width: 100%; padding: 14px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--fire), var(--fire2));
+  border: none; color: #fff; font-size: 15px; font-weight: 800;
+  cursor: pointer; margin-bottom: 12px; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255,107,53,0.35);
+}
+.auth-btn:disabled { opacity: 0.6; cursor: default; }
+.auth-guest { font-size: 12px; color: var(--text3); text-align: center; cursor: pointer; padding: 4px; }
+.auth-guest:hover { color: var(--text2); }
+
 /* ── CONFIRM / TOAST ───────────────────────────────────────────────────── */
 .confirm-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300;
@@ -900,6 +939,14 @@ body {
           </div>
           <span class="profile-row-right">›</span>
         </div>
+        <div class="profile-row" id="authStatusRow" onclick="handleAuthRowTap()">
+          <span class="profile-row-icon">🔐</span>
+          <div class="profile-row-info">
+            <div class="profile-row-label" id="authStatusLabel">Sign in / Create Account</div>
+            <div class="profile-row-sub" id="authStatusSub">Sync your prayers across devices</div>
+          </div>
+          <span class="profile-row-right">›</span>
+        </div>
         <div class="profile-row" onclick="showVersion()">
           <span class="profile-row-icon">ℹ️</span>
           <div class="profile-row-info">
@@ -950,6 +997,24 @@ body {
     <input class="name-input" id="firstRunName" placeholder="Enter your name, dear devotee..." maxlength="30" />
     <button class="firstrun-btn" onclick="completeFirstRun()">Begin My Divine Journey 🙏</button>
     <div class="firstrun-skip" onclick="completeFirstRun()">Skip → Continue as guest</div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="hidden">
+  <div class="auth-box">
+    <div class="auth-title">🕉️ Shiv AI Account</div>
+    <div class="auth-sub">Sign in to sync your prayers across all devices</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</div>
+      <div class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">Create Account</div>
+    </div>
+    <input class="auth-input" id="authName" type="text" placeholder="Your name..." maxlength="30" style="display:none" autocomplete="name"/>
+    <input class="auth-input" id="authEmail" type="email" placeholder="Email address..." autocomplete="email"/>
+    <input class="auth-input" id="authPassword" type="password" placeholder="Password (min 6 chars)..." autocomplete="current-password"/>
+    <div class="auth-err" id="authErr"></div>
+    <button class="auth-btn" id="authSubmitBtn" onclick="authSubmit()">Sign In 🙏</button>
+    <div class="auth-guest" onclick="closeAuthModal()">Continue without account →</div>
   </div>
 </div>
 
@@ -1052,6 +1117,161 @@ body {
   init();
   draw();
 })();
+
+// ── AUTH (Netlify Blobs + JWT) ───────────────────────────────────────────────
+let authToken = null;
+let sbUser = null;
+let authMode = 'signin';
+try { authToken = localStorage.getItem('shiv_jwt'); } catch {}
+
+async function initAuth() {
+  if (!authToken) { updateAuthStatusRow(); return; }
+  try {
+    const res = await fetch('/.netlify/functions/auth', {
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      sbUser = data.user;
+      updateAuthStatusRow();
+      await fetchUserChat();
+    } else {
+      authToken = null;
+      try { localStorage.removeItem('shiv_jwt'); } catch {}
+      updateAuthStatusRow();
+    }
+  } catch { updateAuthStatusRow(); }
+}
+
+function switchAuthTab(mode) {
+  authMode = mode;
+  const nameEl = document.getElementById('authName');
+  const tabSignIn = document.getElementById('tabSignIn');
+  const tabSignUp = document.getElementById('tabSignUp');
+  const btn = document.getElementById('authSubmitBtn');
+  if (mode === 'signup') {
+    if (nameEl) nameEl.style.display = '';
+    if (tabSignIn) tabSignIn.classList.remove('active');
+    if (tabSignUp) tabSignUp.classList.add('active');
+    if (btn) btn.textContent = 'Create Account 🕉️';
+  } else {
+    if (nameEl) nameEl.style.display = 'none';
+    if (tabSignIn) tabSignIn.classList.add('active');
+    if (tabSignUp) tabSignUp.classList.remove('active');
+    if (btn) btn.textContent = 'Sign In 🙏';
+  }
+  const errEl = document.getElementById('authErr');
+  if (errEl) errEl.textContent = '';
+}
+
+function openAuthModal() {
+  if (sbUser) {
+    if (confirm('Sign out of Shiv AI?')) logOut();
+    return;
+  }
+  const modal = document.getElementById('authModal');
+  if (modal) modal.classList.remove('hidden');
+  const emailEl = document.getElementById('authEmail');
+  if (emailEl) emailEl.focus();
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function authSubmit() {
+  const emailEl = document.getElementById('authEmail');
+  const passEl = document.getElementById('authPassword');
+  const nameEl = document.getElementById('authName');
+  const errEl = document.getElementById('authErr');
+  const btn = document.getElementById('authSubmitBtn');
+  const email = emailEl ? emailEl.value.trim() : '';
+  const password = passEl ? passEl.value : '';
+  const name = nameEl ? nameEl.value.trim() : '';
+  if (!email || !password) { if (errEl) errEl.textContent = 'Email and password required'; return; }
+  if (btn) btn.disabled = true;
+  if (errEl) errEl.textContent = '';
+  try {
+    const body = { action: authMode, email, password };
+    if (authMode === 'signup' && name) body.name = name;
+    const res = await fetch('/.netlify/functions/auth', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) { if (errEl) errEl.textContent = data.error || 'Something went wrong'; return; }
+    authToken = data.token;
+    sbUser = data.user;
+    try { localStorage.setItem('shiv_jwt', authToken); } catch {}
+    if (authMode === 'signup') {
+      profile.name = sbUser.name || profile.name;
+      profile.joinDate = sbUser.joinDate || profile.joinDate;
+      saveProfile();
+      updateProfileDisplay();
+    }
+    updateAuthStatusRow();
+    closeAuthModal();
+    await fetchUserChat();
+  } catch (e) {
+    if (errEl) errEl.textContent = 'Network error. Please try again.';
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function fetchUserChat() {
+  if (!authToken) return;
+  try {
+    const res = await fetch('/.netlify/functions/history', {
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.messages && data.messages.length > 0 && chatHistory.length === 0) {
+      chatHistory = data.messages.map(m => ({ role: m.role, content: m.content }));
+      restoreMessages();
+      saveState();
+    }
+  } catch {}
+}
+
+async function syncChatMsg(role, content) {
+  if (!authToken) return;
+  try {
+    await fetch('/.netlify/functions/history', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+      body: JSON.stringify({ role, content })
+    });
+  } catch {}
+}
+
+async function logOut() {
+  authToken = null;
+  sbUser = null;
+  try { localStorage.removeItem('shiv_jwt'); } catch {}
+  updateAuthStatusRow();
+}
+
+function handleAuthRowTap() {
+  openAuthModal();
+}
+
+function updateAuthStatusRow() {
+  const label = document.getElementById('authStatusLabel');
+  const sub = document.getElementById('authStatusSub');
+  const row = document.getElementById('authStatusRow');
+  if (sbUser) {
+    if (label) label.textContent = sbUser.name || sbUser.email || 'Signed In';
+    if (sub) sub.textContent = 'Tap to sign out';
+    if (row) row.querySelector('.profile-row-icon').textContent = '✅';
+  } else {
+    if (label) label.textContent = 'Sign in / Create Account';
+    if (sub) sub.textContent = 'Sync your prayers across devices';
+    if (row) row.querySelector('.profile-row-icon').textContent = '🔐';
+  }
+}
+// ── END AUTH ─────────────────────────────────────────────────────────────────
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'shivai_v5';
@@ -1364,6 +1584,7 @@ async function sendMessage(overrideText) {
   stopSpeech();
   appendMsgDOM('user', text);
   chatHistory.push({ role: 'user', content: text });
+  syncChatMsg('user', text);
   profile.totalMessages++;
   saveProfile();
   isLoading = true;
@@ -1392,6 +1613,7 @@ async function sendMessage(overrideText) {
       const reply = data.reply || '🔱 The divine signal wavered. Please try again.';
       const msgEl = appendMsgDOM('ai', reply);
       chatHistory.push({ role: 'assistant', content: reply });
+      syncChatMsg('assistant', reply);
       saveState();
       if (settings.autoSpeak) {
         setTimeout(() => {
@@ -1572,6 +1794,8 @@ async function callLoop() {
 
       chatHistory.push({ role: 'user', content: userSpeech });
       chatHistory.push({ role: 'assistant', content: reply });
+      syncChatMsg('user', userSpeech);
+      syncChatMsg('assistant', reply);
       profile.totalMessages++;
       saveProfile();
 
@@ -1812,14 +2036,17 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 document.getElementById('clearBtn').style.display = chatHistory.length > 0 ? '' : 'none';
 
-// First run check
-if (profile.firstRun) {
-  document.getElementById('firstRunModal').classList.remove('hidden');
-} else {
-  document.getElementById('firstRunModal').classList.add('hidden');
-  updateProfileDisplay();
-  loadVoices();
-}
+// First run check + auth init
+(async () => {
+  if (profile.firstRun) {
+    document.getElementById('firstRunModal').classList.remove('hidden');
+  } else {
+    document.getElementById('firstRunModal').classList.add('hidden');
+    updateProfileDisplay();
+    loadVoices();
+  }
+  await initAuth();
+})();
 
 // Service Worker
 if ('serviceWorker' in navigator) {
