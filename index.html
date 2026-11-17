@@ -13,7 +13,6 @@
 <title>Shiv AI — Talk to Mahadev</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <style>
 :root {
   --bg: #05000f;
@@ -1104,23 +1103,19 @@ body {
   draw();
 })();
 
-// ── SUPABASE AUTH ──────────────────────────────────────────────────────────
-let sbClient = null;
+// ── AUTH (Netlify Blobs + JWT) ───────────────────────────────────────────────
+let authToken = null;
 let sbUser = null;
 let authMode = 'signin';
+try { authToken = localStorage.getItem('shiv_jwt'); } catch {}
 
-async function initSupabase() {
+async function initAuth() {
+  if (!authToken) { updateAuthStatusRow(); return; }
   try {
-    const res = await fetch('/.netlify/functions/config');
-    const cfg = await res.json();
-    if (cfg.supabaseUrl && cfg.supabaseKey && window.supabase) {
-      sbClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
-      const { data: { session } } = await sbClient.auth.getSession();
-      if (session) { sbUser = session.user; return true; }
-      return false; // need to log in
-    }
-  } catch {}
-  return null; // Supabase not configured — guest mode
+    const res = await fetch('/.netlify/functions/auth', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (res.ok) { const d = await res.json(); sbUser = d.user; updateAuthStatusRow(); await fetchUserChat(); }
+    else { authToken = null; try { localStorage.removeItem('shiv_jwt'); } catch {} updateAuthStatusRow(); }
+  } catch { updateAuthStatusRow(); }
 }
 
 function switchAuthTab(mode) {
@@ -1134,7 +1129,6 @@ function switchAuthTab(mode) {
 }
 
 async function authSubmit() {
-  if (!sbClient) { continueAsGuest(); return; }
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
   const errEl = document.getElementById('authErr');
@@ -1143,68 +1137,47 @@ async function authSubmit() {
   if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
   const btn = document.getElementById('authSubmitBtn');
   btn.disabled = true; btn.textContent = 'Please wait...';
+  const action = authMode;
+  const name = authMode === 'signup' ? (document.getElementById('authName')?.value.trim() || 'Devotee') : undefined;
   try {
-    if (authMode === 'signup') {
-      const name = (document.getElementById('authName').value.trim()) || 'Devotee';
-      const { data, error } = await sbClient.auth.signUp({ email, password });
-      if (error) { errEl.textContent = error.message; btn.disabled = false; btn.textContent = 'Create Account 🙏'; return; }
-      sbUser = data.user;
-      profile.name = name; profile.firstRun = false;
-      if (!profile.joinDate) profile.joinDate = new Date().toISOString().slice(0, 10);
-      await sbClient.from('profiles').upsert({ id: sbUser.id, name, avatar: profile.avatar || '🙏', join_date: profile.joinDate });
-    } else {
-      const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
-      if (error) { errEl.textContent = error.message; btn.disabled = false; btn.textContent = 'Sign In 🙏'; return; }
-      sbUser = data.user;
-      await fetchSupabaseProfile();
-      await fetchSupabaseChat();
-    }
+    const res = await fetch('/.netlify/functions/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, email, password, name }) });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Something went wrong.'; btn.disabled = false; btn.textContent = action === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏'; return; }
+    authToken = data.token; sbUser = data.user;
+    try { localStorage.setItem('shiv_jwt', authToken); } catch {}
+    if (data.user.name) { profile.name = data.user.name; }
+    profile.firstRun = false;
+    if (!profile.joinDate) profile.joinDate = data.user.joinDate || new Date().toISOString().slice(0, 10);
     document.getElementById('authModal').classList.add('hidden');
-    saveProfile();
-    updateProfileDisplay();
-    updateAuthStatusRow();
-    loadVoices();
+    saveProfile(); updateProfileDisplay(); updateAuthStatusRow(); loadVoices();
+    await fetchUserChat();
     showToast(`🙏 Welcome${profile.name ? ', ' + profile.name : ''}! Har Har Mahadev!`);
-  } catch (e) {
-    errEl.textContent = 'Something went wrong. Please try again.';
-    btn.disabled = false;
-    btn.textContent = authMode === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏';
-  }
+  } catch { errEl.textContent = 'Connection error. Please try again.'; btn.disabled = false; btn.textContent = action === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏'; }
 }
 
-async function fetchSupabaseProfile() {
-  if (!sbClient || !sbUser) return;
+async function fetchUserChat() {
+  if (!authToken) return;
   try {
-    const { data } = await sbClient.from('profiles').select('*').eq('id', sbUser.id).single();
-    if (data) { profile.name = data.name || profile.name; profile.avatar = data.avatar || profile.avatar; profile.joinDate = data.join_date || profile.joinDate; profile.firstRun = false; }
-  } catch {}
-}
-
-async function fetchSupabaseChat() {
-  if (!sbClient || !sbUser) return;
-  try {
-    const { data } = await sbClient.from('chats').select('role,content').eq('user_id', sbUser.id).order('created_at', { ascending: true }).limit(30);
-    if (data && data.length > 0) { chatHistory = data; restoreMessages(); }
+    const res = await fetch('/.netlify/functions/history', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (res.ok) { const d = await res.json(); if (d.messages && d.messages.length > 0 && chatHistory.length === 0) { chatHistory = d.messages.map(m => ({ role: m.role, content: m.content })); restoreMessages(); } }
   } catch {}
 }
 
 async function syncChatMsg(role, content) {
-  if (!sbClient || !sbUser) return;
-  try { await sbClient.from('chats').insert({ user_id: sbUser.id, role, content }); } catch {}
+  if (!authToken) return;
+  try { fetch('/.netlify/functions/history', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, body: JSON.stringify({ role, content }) }); } catch {}
 }
 
 function continueAsGuest() {
   document.getElementById('authModal').classList.add('hidden');
   if (!profile.name) { profile.name = 'Devotee'; profile.firstRun = false; profile.joinDate = new Date().toISOString().slice(0, 10); saveProfile(); }
-  updateProfileDisplay();
-  updateAuthStatusRow();
-  loadVoices();
+  updateProfileDisplay(); updateAuthStatusRow(); loadVoices();
   showToast('🙏 Welcome, devotee! Har Har Mahadev!');
 }
 
 async function logOut() {
-  if (sbClient) await sbClient.auth.signOut();
-  sbUser = null;
+  authToken = null; sbUser = null;
+  try { localStorage.removeItem('shiv_jwt'); } catch {}
   profile = { name: '', avatar: '🙏', joinDate: null, userId: null, totalMessages: 0, teachingsRead: 0, firstRun: true };
   chatHistory = [];
   try { localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(STORAGE_KEY); } catch {}
@@ -1212,8 +1185,7 @@ async function logOut() {
   const wm = document.getElementById('welcomeMsg'); if (wm) wm.style.display = '';
   document.getElementById('clearBtn').style.display = 'none';
   document.getElementById('authModal').classList.remove('hidden');
-  switchAuthTab('signin');
-  updateAuthStatusRow();
+  switchAuthTab('signin'); updateAuthStatusRow();
   showToast('Signed out. 🙏');
 }
 
@@ -1991,32 +1963,16 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 });
 document.getElementById('clearBtn').style.display = chatHistory.length > 0 ? '' : 'none';
 
-// Supabase-aware startup
 (async () => {
-  const sbResult = await initSupabase();
-  if (sbResult === true) {
-    // Already logged in via Supabase session
-    await fetchSupabaseProfile();
-    await fetchSupabaseChat();
+  if (profile.firstRun) {
+    document.getElementById('authModal').classList.remove('hidden');
+  } else {
     document.getElementById('authModal').classList.add('hidden');
     updateProfileDisplay();
     updateAuthStatusRow();
     loadVoices();
-  } else if (sbResult === false) {
-    // Supabase configured but no session — show auth
-    document.getElementById('authModal').classList.remove('hidden');
-    updateAuthStatusRow();
-  } else {
-    // Supabase not configured — use localStorage / guest mode
-    if (profile.firstRun) {
-      document.getElementById('authModal').classList.remove('hidden');
-    } else {
-      document.getElementById('authModal').classList.add('hidden');
-      updateProfileDisplay();
-      updateAuthStatusRow();
-      loadVoices();
-    }
   }
+  await initAuth();
 })();
 
 if ('serviceWorker' in navigator) {
