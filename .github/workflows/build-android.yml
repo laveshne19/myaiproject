@@ -26,6 +26,9 @@ jobs:
         with:
           gradle-version: '8.9'
 
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
       - name: Generate launcher icons
         run: |
           for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
