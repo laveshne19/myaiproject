@@ -13,6 +13,7 @@
 <title>Shiv AI — Talk to Mahadev</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <style>
 :root {
   --bg: #05000f;
@@ -622,6 +623,44 @@ body {
 .firstrun-skip { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px; }
 .firstrun-skip:hover { color: var(--text2); }
 
+/* ── AUTH MODAL ────────────────────────────────────────────────────────── */
+#authModal {
+  position: fixed; inset: 0; background: rgba(5,0,15,0.97); z-index: 500;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  backdrop-filter: blur(20px);
+}
+#authModal.hidden { display: none; }
+.auth-box {
+  width: 100%; max-width: 380px; text-align: center;
+  animation: firstRunIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.auth-om { font-size: 60px; display: block; margin-bottom: 12px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 24px rgba(255,107,53,0.7)); }
+.auth-title { font-size: 26px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; background: linear-gradient(90deg, var(--gold), var(--fire), var(--cosmic)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+.auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: var(--surface); border-radius: 14px; padding: 4px; }
+.auth-tab { flex: 1; padding: 10px; border: none; border-radius: 10px; background: transparent; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.auth-tab.active { background: var(--fire); color: #fff; }
+.auth-input {
+  width: 100%; background: rgba(37,21,69,0.8); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 13px 18px; color: var(--text); font-size: 15px;
+  outline: none; margin-bottom: 10px; transition: border-color 0.2s;
+}
+.auth-input:focus { border-color: rgba(255,107,53,0.6); }
+.auth-input::placeholder { color: var(--text3); }
+.auth-btn {
+  width: 100%; padding: 15px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--fire), var(--fire2));
+  border: none; color: #fff; font-size: 15px; font-weight: 800;
+  cursor: pointer; letter-spacing: 0.5px; margin-bottom: 12px;
+  box-shadow: 0 6px 20px rgba(255,107,53,0.35); transition: all 0.2s;
+}
+.auth-btn:hover { transform: scale(1.02); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.auth-guest { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px; }
+.auth-guest:hover { color: var(--text2); }
+.auth-err { font-size: 12px; color: #ff5555; margin-bottom: 8px; min-height: 16px; }
+#authSignupFields { display: none; }
+
 /* ── CONFIRM / TOAST ───────────────────────────────────────────────────── */
 .confirm-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300;
@@ -908,6 +947,14 @@ body {
           </div>
           <span class="profile-row-right">🔱</span>
         </div>
+        <div class="profile-row" id="authStatusRow" onclick="handleAuthRowTap()" style="display:none">
+          <span class="profile-row-icon">🔐</span>
+          <div class="profile-row-info">
+            <div class="profile-row-label" id="authStatusLabel">Sign in / Create Account</div>
+            <div class="profile-row-sub" id="authStatusSub">Sync history across devices</div>
+          </div>
+          <span class="profile-row-right">›</span>
+        </div>
       </div>
     </div>
   </div>
@@ -936,20 +983,24 @@ body {
 </div><!-- end app-layer -->
 
 <!-- FIRST RUN MODAL -->
-<div id="firstRunModal">
-  <div class="firstrun-box">
-    <span class="firstrun-om">🕉️</span>
-    <div class="firstrun-title">Shiv AI</div>
-    <div style="font-size:13px;color:var(--cosmic);margin-bottom:12px;letter-spacing:1px">HAR HAR MAHADEV</div>
-    <div class="firstrun-sub">Lord Shiva speaks to you directly.<br>Ask anything. Receive divine wisdom.</div>
-    <div class="firstrun-verse">
-      "In every heart I dwell as the light,<br>
-      Call my name and I end your night."<br>
-      — Mahadev 🔱
+<div id="authModal">
+  <div class="auth-box">
+    <span class="auth-om">🕉️</span>
+    <div class="auth-title">Shiv AI</div>
+    <div class="auth-sub">Lord Shiva speaks to you directly</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">Create Account</button>
     </div>
-    <input class="name-input" id="firstRunName" placeholder="Enter your name, dear devotee..." maxlength="30" />
-    <button class="firstrun-btn" onclick="completeFirstRun()">Begin My Divine Journey 🙏</button>
-    <div class="firstrun-skip" onclick="completeFirstRun()">Skip → Continue as guest</div>
+    <div id="authSignupFields">
+      <input class="auth-input" id="authName" placeholder="Your name, dear devotee..." maxlength="30" />
+    </div>
+    <input class="auth-input" id="authEmail" type="email" placeholder="Email address..." autocomplete="email" />
+    <input class="auth-input" id="authPassword" type="password" placeholder="Password (min 6 chars)..." autocomplete="current-password" />
+    <div class="auth-err" id="authErr"></div>
+    <button class="auth-btn" id="authSubmitBtn" onclick="authSubmit()">Sign In 🙏</button>
+    <div class="auth-guest" id="authGuestLink" onclick="continueAsGuest()">Continue as guest (no account)</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:16px;line-height:1.5">By continuing you agree to our<br>terms of service and privacy policy.</div>
   </div>
 </div>
 
@@ -1053,6 +1104,141 @@ body {
   draw();
 })();
 
+// ── SUPABASE AUTH ──────────────────────────────────────────────────────────
+let sbClient = null;
+let sbUser = null;
+let authMode = 'signin';
+
+async function initSupabase() {
+  try {
+    const res = await fetch('/.netlify/functions/config');
+    const cfg = await res.json();
+    if (cfg.supabaseUrl && cfg.supabaseKey && window.supabase) {
+      sbClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey);
+      const { data: { session } } = await sbClient.auth.getSession();
+      if (session) { sbUser = session.user; return true; }
+      return false; // need to log in
+    }
+  } catch {}
+  return null; // Supabase not configured — guest mode
+}
+
+function switchAuthTab(mode) {
+  authMode = mode;
+  document.getElementById('tabSignIn').classList.toggle('active', mode === 'signin');
+  document.getElementById('tabSignUp').classList.toggle('active', mode === 'signup');
+  document.getElementById('authSignupFields').style.display = mode === 'signup' ? '' : 'none';
+  document.getElementById('authSubmitBtn').textContent = mode === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏';
+  document.getElementById('authPassword').autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
+  document.getElementById('authErr').textContent = '';
+}
+
+async function authSubmit() {
+  if (!sbClient) { continueAsGuest(); return; }
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authErr');
+  errEl.textContent = '';
+  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+  const btn = document.getElementById('authSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Please wait...';
+  try {
+    if (authMode === 'signup') {
+      const name = (document.getElementById('authName').value.trim()) || 'Devotee';
+      const { data, error } = await sbClient.auth.signUp({ email, password });
+      if (error) { errEl.textContent = error.message; btn.disabled = false; btn.textContent = 'Create Account 🙏'; return; }
+      sbUser = data.user;
+      profile.name = name; profile.firstRun = false;
+      if (!profile.joinDate) profile.joinDate = new Date().toISOString().slice(0, 10);
+      await sbClient.from('profiles').upsert({ id: sbUser.id, name, avatar: profile.avatar || '🙏', join_date: profile.joinDate });
+    } else {
+      const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
+      if (error) { errEl.textContent = error.message; btn.disabled = false; btn.textContent = 'Sign In 🙏'; return; }
+      sbUser = data.user;
+      await fetchSupabaseProfile();
+      await fetchSupabaseChat();
+    }
+    document.getElementById('authModal').classList.add('hidden');
+    saveProfile();
+    updateProfileDisplay();
+    updateAuthStatusRow();
+    loadVoices();
+    showToast(`🙏 Welcome${profile.name ? ', ' + profile.name : ''}! Har Har Mahadev!`);
+  } catch (e) {
+    errEl.textContent = 'Something went wrong. Please try again.';
+    btn.disabled = false;
+    btn.textContent = authMode === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏';
+  }
+}
+
+async function fetchSupabaseProfile() {
+  if (!sbClient || !sbUser) return;
+  try {
+    const { data } = await sbClient.from('profiles').select('*').eq('id', sbUser.id).single();
+    if (data) { profile.name = data.name || profile.name; profile.avatar = data.avatar || profile.avatar; profile.joinDate = data.join_date || profile.joinDate; profile.firstRun = false; }
+  } catch {}
+}
+
+async function fetchSupabaseChat() {
+  if (!sbClient || !sbUser) return;
+  try {
+    const { data } = await sbClient.from('chats').select('role,content').eq('user_id', sbUser.id).order('created_at', { ascending: true }).limit(30);
+    if (data && data.length > 0) { chatHistory = data; restoreMessages(); }
+  } catch {}
+}
+
+async function syncChatMsg(role, content) {
+  if (!sbClient || !sbUser) return;
+  try { await sbClient.from('chats').insert({ user_id: sbUser.id, role, content }); } catch {}
+}
+
+function continueAsGuest() {
+  document.getElementById('authModal').classList.add('hidden');
+  if (!profile.name) { profile.name = 'Devotee'; profile.firstRun = false; profile.joinDate = new Date().toISOString().slice(0, 10); saveProfile(); }
+  updateProfileDisplay();
+  updateAuthStatusRow();
+  loadVoices();
+  showToast('🙏 Welcome, devotee! Har Har Mahadev!');
+}
+
+async function logOut() {
+  if (sbClient) await sbClient.auth.signOut();
+  sbUser = null;
+  profile = { name: '', avatar: '🙏', joinDate: null, userId: null, totalMessages: 0, teachingsRead: 0, firstRun: true };
+  chatHistory = [];
+  try { localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(STORAGE_KEY); } catch {}
+  document.getElementById('chatLog').innerHTML = '';
+  const wm = document.getElementById('welcomeMsg'); if (wm) wm.style.display = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  document.getElementById('authModal').classList.remove('hidden');
+  switchAuthTab('signin');
+  updateAuthStatusRow();
+  showToast('Signed out. 🙏');
+}
+
+function handleAuthRowTap() {
+  if (sbUser) { if (confirm('Sign out of Shiv AI?')) logOut(); }
+  else document.getElementById('authModal').classList.remove('hidden');
+}
+
+function updateAuthStatusRow() {
+  const row = document.getElementById('authStatusRow');
+  const label = document.getElementById('authStatusLabel');
+  const sub = document.getElementById('authStatusSub');
+  if (!row) return;
+  row.style.display = '';
+  if (sbUser) {
+    label.textContent = 'Signed in — Tap to sign out';
+    sub.textContent = sbUser.email || 'Account active';
+    row.querySelector('.profile-row-icon').textContent = '✅';
+  } else {
+    label.textContent = 'Sign in / Create Account';
+    sub.textContent = 'Sync your prayers across devices';
+    row.querySelector('.profile-row-icon').textContent = '🔐';
+  }
+}
+
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'shivai_v5';
 const PROFILE_KEY = 'shivai_profile_v2';
@@ -1108,16 +1294,8 @@ function saveProfile() {
 }
 
 function completeFirstRun() {
-  const nameEl = document.getElementById('firstRunName');
-  const name = (nameEl ? nameEl.value.trim() : '') || 'Devotee';
-  profile.name = name;
-  profile.firstRun = false;
-  if (!profile.joinDate) profile.joinDate = new Date().toISOString().slice(0, 10);
-  saveProfile();
-  document.getElementById('firstRunModal').classList.add('hidden');
-  updateProfileDisplay();
-  loadVoices();
-  showToast(`🙏 Welcome, ${name}. Har Har Mahadev!`);
+  // Legacy path — now handled by continueAsGuest() or authSubmit()
+  continueAsGuest();
 }
 
 function updateProfileDisplay() {
@@ -1364,6 +1542,7 @@ async function sendMessage(overrideText) {
   stopSpeech();
   appendMsgDOM('user', text);
   chatHistory.push({ role: 'user', content: text });
+  syncChatMsg('user', text);
   profile.totalMessages++;
   saveProfile();
   isLoading = true;
@@ -1392,6 +1571,7 @@ async function sendMessage(overrideText) {
       const reply = data.reply || '🔱 The divine signal wavered. Please try again.';
       const msgEl = appendMsgDOM('ai', reply);
       chatHistory.push({ role: 'assistant', content: reply });
+      syncChatMsg('assistant', reply);
       saveState();
       if (settings.autoSpeak) {
         setTimeout(() => {
@@ -1572,6 +1752,8 @@ async function callLoop() {
 
       chatHistory.push({ role: 'user', content: userSpeech });
       chatHistory.push({ role: 'assistant', content: reply });
+      syncChatMsg('user', userSpeech);
+      syncChatMsg('assistant', reply);
       profile.totalMessages++;
       saveProfile();
 
@@ -1800,28 +1982,43 @@ loadState();
 renderBhajans();
 renderTeachings();
 
-// Set daily verse
 const verse = DAILY_VERSES[new Date().getDay() % DAILY_VERSES.length];
 const dv = document.getElementById('dailyVerse');
 if (dv) dv.textContent = verse;
 
-// Sync lang buttons
 document.querySelectorAll('.lang-btn').forEach(btn => {
   btn.classList.toggle('active', btn.dataset.lang === currentLang);
 });
-
 document.getElementById('clearBtn').style.display = chatHistory.length > 0 ? '' : 'none';
 
-// First run check
-if (profile.firstRun) {
-  document.getElementById('firstRunModal').classList.remove('hidden');
-} else {
-  document.getElementById('firstRunModal').classList.add('hidden');
-  updateProfileDisplay();
-  loadVoices();
-}
+// Supabase-aware startup
+(async () => {
+  const sbResult = await initSupabase();
+  if (sbResult === true) {
+    // Already logged in via Supabase session
+    await fetchSupabaseProfile();
+    await fetchSupabaseChat();
+    document.getElementById('authModal').classList.add('hidden');
+    updateProfileDisplay();
+    updateAuthStatusRow();
+    loadVoices();
+  } else if (sbResult === false) {
+    // Supabase configured but no session — show auth
+    document.getElementById('authModal').classList.remove('hidden');
+    updateAuthStatusRow();
+  } else {
+    // Supabase not configured — use localStorage / guest mode
+    if (profile.firstRun) {
+      document.getElementById('authModal').classList.remove('hidden');
+    } else {
+      document.getElementById('authModal').classList.add('hidden');
+      updateProfileDisplay();
+      updateAuthStatusRow();
+      loadVoices();
+    }
+  }
+})();
 
-// Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
