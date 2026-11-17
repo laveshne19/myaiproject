@@ -24,7 +24,7 @@ The `keystore_b64.txt` file was sent to you as a download by Claude. If you no l
 
 After adding all 3 secrets:
 
-Go to: **https://github.com/laveshne19/myaiproject/actions/workflows/build-android.yml**  
+Go to: **https://github.com/laveshne19/myaiproject/actions/workflows/build-android.yml**
 Click **"Run workflow"** → **"Run workflow"**
 
 The AAB file will appear as a downloadable artifact (build takes ~5–8 minutes).
