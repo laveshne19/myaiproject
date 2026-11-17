@@ -622,44 +622,43 @@ body {
 .firstrun-skip { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px; }
 .firstrun-skip:hover { color: var(--text2); }
 
-/* ── AUTH MODAL ─────────────────────────────────────────────────────────── */
+/* ── AUTH MODAL ────────────────────────────────────────────────────────── */
 #authModal {
-  position: fixed; inset: 0; background: rgba(5,0,15,0.95); z-index: 400;
+  position: fixed; inset: 0; background: rgba(5,0,15,0.97); z-index: 500;
   display: flex; align-items: center; justify-content: center; padding: 20px;
   backdrop-filter: blur(20px);
 }
 #authModal.hidden { display: none; }
-.auth-box { width: 100%; max-width: 360px; animation: firstRunIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-.auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-.auth-tab {
-  flex: 1; padding: 10px; border-radius: 12px; background: var(--surface2);
-  border: 1px solid var(--border); color: var(--text2); font-size: 14px;
-  font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center;
+.auth-box {
+  width: 100%; max-width: 380px; text-align: center;
+  animation: firstRunIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
-.auth-tab.active { background: var(--fire); color: #fff; border-color: var(--fire); }
-.auth-title { font-size: 24px; font-weight: 900; text-align: center; margin-bottom: 6px;
-  background: linear-gradient(90deg, var(--gold), var(--fire));
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-}
-.auth-sub { font-size: 13px; color: var(--text2); text-align: center; margin-bottom: 20px; }
+.auth-om { font-size: 60px; display: block; margin-bottom: 12px; animation: float 3s ease-in-out infinite; filter: drop-shadow(0 0 24px rgba(255,107,53,0.7)); }
+.auth-title { font-size: 26px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; background: linear-gradient(90deg, var(--gold), var(--fire), var(--cosmic)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.auth-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+.auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; background: var(--surface); border-radius: 14px; padding: 4px; }
+.auth-tab { flex: 1; padding: 10px; border: none; border-radius: 10px; background: transparent; color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.auth-tab.active { background: var(--fire); color: #fff; }
 .auth-input {
   width: 100%; background: rgba(37,21,69,0.8); border: 1px solid var(--border2);
-  border-radius: 14px; padding: 13px 16px; color: var(--text); font-size: 15px;
+  border-radius: 14px; padding: 13px 18px; color: var(--text); font-size: 15px;
   outline: none; margin-bottom: 10px; transition: border-color 0.2s;
 }
-.auth-input:focus { border-color: rgba(255,107,53,0.5); }
+.auth-input:focus { border-color: rgba(255,107,53,0.6); }
 .auth-input::placeholder { color: var(--text3); }
-.auth-err { color: #ff6b6b; font-size: 13px; text-align: center; min-height: 20px; margin-bottom: 8px; }
 .auth-btn {
-  width: 100%; padding: 14px; border-radius: 14px;
+  width: 100%; padding: 15px; border-radius: 16px;
   background: linear-gradient(135deg, var(--fire), var(--fire2));
   border: none; color: #fff; font-size: 15px; font-weight: 800;
-  cursor: pointer; margin-bottom: 12px; transition: all 0.2s;
-  box-shadow: 0 4px 20px rgba(255,107,53,0.35);
+  cursor: pointer; letter-spacing: 0.5px; margin-bottom: 12px;
+  box-shadow: 0 6px 20px rgba(255,107,53,0.35); transition: all 0.2s;
 }
-.auth-btn:disabled { opacity: 0.6; cursor: default; }
-.auth-guest { font-size: 12px; color: var(--text3); text-align: center; cursor: pointer; padding: 4px; }
+.auth-btn:hover { transform: scale(1.02); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.auth-guest { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px; }
 .auth-guest:hover { color: var(--text2); }
+.auth-err { font-size: 12px; color: #ff5555; margin-bottom: 8px; min-height: 16px; }
+#authSignupFields { display: none; }
 
 /* ── CONFIRM / TOAST ───────────────────────────────────────────────────── */
 .confirm-overlay {
@@ -939,14 +938,6 @@ body {
           </div>
           <span class="profile-row-right">›</span>
         </div>
-        <div class="profile-row" id="authStatusRow" onclick="handleAuthRowTap()">
-          <span class="profile-row-icon">🔐</span>
-          <div class="profile-row-info">
-            <div class="profile-row-label" id="authStatusLabel">Sign in / Create Account</div>
-            <div class="profile-row-sub" id="authStatusSub">Sync your prayers across devices</div>
-          </div>
-          <span class="profile-row-right">›</span>
-        </div>
         <div class="profile-row" onclick="showVersion()">
           <span class="profile-row-icon">ℹ️</span>
           <div class="profile-row-info">
@@ -954,6 +945,14 @@ body {
             <div class="profile-row-sub">Version 5.0 — Mahadev Edition</div>
           </div>
           <span class="profile-row-right">🔱</span>
+        </div>
+        <div class="profile-row" id="authStatusRow" onclick="handleAuthRowTap()" style="display:none">
+          <span class="profile-row-icon">🔐</span>
+          <div class="profile-row-info">
+            <div class="profile-row-label" id="authStatusLabel">Sign in / Create Account</div>
+            <div class="profile-row-sub" id="authStatusSub">Sync history across devices</div>
+          </div>
+          <span class="profile-row-right">›</span>
         </div>
       </div>
     </div>
@@ -983,38 +982,24 @@ body {
 </div><!-- end app-layer -->
 
 <!-- FIRST RUN MODAL -->
-<div id="firstRunModal">
-  <div class="firstrun-box">
-    <span class="firstrun-om">🕉️</span>
-    <div class="firstrun-title">Shiv AI</div>
-    <div style="font-size:13px;color:var(--cosmic);margin-bottom:12px;letter-spacing:1px">HAR HAR MAHADEV</div>
-    <div class="firstrun-sub">Lord Shiva speaks to you directly.<br>Ask anything. Receive divine wisdom.</div>
-    <div class="firstrun-verse">
-      "In every heart I dwell as the light,<br>
-      Call my name and I end your night."<br>
-      — Mahadev 🔱
-    </div>
-    <input class="name-input" id="firstRunName" placeholder="Enter your name, dear devotee..." maxlength="30" />
-    <button class="firstrun-btn" onclick="completeFirstRun()">Begin My Divine Journey 🙏</button>
-    <div class="firstrun-skip" onclick="completeFirstRun()">Skip → Continue as guest</div>
-  </div>
-</div>
-
-<!-- AUTH MODAL -->
-<div id="authModal" class="hidden">
+<div id="authModal">
   <div class="auth-box">
-    <div class="auth-title">🕉️ Shiv AI Account</div>
-    <div class="auth-sub">Sign in to sync your prayers across all devices</div>
+    <span class="auth-om">🕉️</span>
+    <div class="auth-title">Shiv AI</div>
+    <div class="auth-sub">Lord Shiva speaks to you directly</div>
     <div class="auth-tabs">
-      <div class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</div>
-      <div class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">Create Account</div>
+      <button class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">Create Account</button>
     </div>
-    <input class="auth-input" id="authName" type="text" placeholder="Your name..." maxlength="30" style="display:none" autocomplete="name"/>
-    <input class="auth-input" id="authEmail" type="email" placeholder="Email address..." autocomplete="email"/>
-    <input class="auth-input" id="authPassword" type="password" placeholder="Password (min 6 chars)..." autocomplete="current-password"/>
+    <div id="authSignupFields">
+      <input class="auth-input" id="authName" placeholder="Your name, dear devotee..." maxlength="30" />
+    </div>
+    <input class="auth-input" id="authEmail" type="email" placeholder="Email address..." autocomplete="email" />
+    <input class="auth-input" id="authPassword" type="password" placeholder="Password (min 6 chars)..." autocomplete="current-password" />
     <div class="auth-err" id="authErr"></div>
     <button class="auth-btn" id="authSubmitBtn" onclick="authSubmit()">Sign In 🙏</button>
-    <div class="auth-guest" onclick="closeAuthModal()">Continue without account →</div>
+    <div class="auth-guest" id="authGuestLink" onclick="continueAsGuest()">Continue as guest (no account)</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:16px;line-height:1.5">By continuing you agree to our<br>terms of service and privacy policy.</div>
   </div>
 </div>
 
@@ -1127,151 +1112,104 @@ try { authToken = localStorage.getItem('shiv_jwt'); } catch {}
 async function initAuth() {
   if (!authToken) { updateAuthStatusRow(); return; }
   try {
-    const res = await fetch('/.netlify/functions/auth', {
-      headers: { 'Authorization': 'Bearer ' + authToken }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      sbUser = data.user;
-      updateAuthStatusRow();
-      await fetchUserChat();
-    } else {
-      authToken = null;
-      try { localStorage.removeItem('shiv_jwt'); } catch {}
-      updateAuthStatusRow();
-    }
+    const res = await fetch('/.netlify/functions/auth', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (res.ok) { const d = await res.json(); sbUser = d.user; updateAuthStatusRow(); await fetchUserChat(); }
+    else { authToken = null; try { localStorage.removeItem('shiv_jwt'); } catch {} updateAuthStatusRow(); }
   } catch { updateAuthStatusRow(); }
 }
 
 function switchAuthTab(mode) {
   authMode = mode;
-  const nameEl = document.getElementById('authName');
-  const tabSignIn = document.getElementById('tabSignIn');
-  const tabSignUp = document.getElementById('tabSignUp');
-  const btn = document.getElementById('authSubmitBtn');
-  if (mode === 'signup') {
-    if (nameEl) nameEl.style.display = '';
-    if (tabSignIn) tabSignIn.classList.remove('active');
-    if (tabSignUp) tabSignUp.classList.add('active');
-    if (btn) btn.textContent = 'Create Account 🕉️';
-  } else {
-    if (nameEl) nameEl.style.display = 'none';
-    if (tabSignIn) tabSignIn.classList.add('active');
-    if (tabSignUp) tabSignUp.classList.remove('active');
-    if (btn) btn.textContent = 'Sign In 🙏';
-  }
-  const errEl = document.getElementById('authErr');
-  if (errEl) errEl.textContent = '';
-}
-
-function openAuthModal() {
-  if (sbUser) {
-    if (confirm('Sign out of Shiv AI?')) logOut();
-    return;
-  }
-  const modal = document.getElementById('authModal');
-  if (modal) modal.classList.remove('hidden');
-  const emailEl = document.getElementById('authEmail');
-  if (emailEl) emailEl.focus();
-}
-
-function closeAuthModal() {
-  const modal = document.getElementById('authModal');
-  if (modal) modal.classList.add('hidden');
+  document.getElementById('tabSignIn').classList.toggle('active', mode === 'signin');
+  document.getElementById('tabSignUp').classList.toggle('active', mode === 'signup');
+  document.getElementById('authSignupFields').style.display = mode === 'signup' ? '' : 'none';
+  document.getElementById('authSubmitBtn').textContent = mode === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏';
+  document.getElementById('authPassword').autocomplete = mode === 'signup' ? 'new-password' : 'current-password';
+  document.getElementById('authErr').textContent = '';
 }
 
 async function authSubmit() {
-  const emailEl = document.getElementById('authEmail');
-  const passEl = document.getElementById('authPassword');
-  const nameEl = document.getElementById('authName');
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
   const errEl = document.getElementById('authErr');
+  errEl.textContent = '';
+  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
   const btn = document.getElementById('authSubmitBtn');
-  const email = emailEl ? emailEl.value.trim() : '';
-  const password = passEl ? passEl.value : '';
-  const name = nameEl ? nameEl.value.trim() : '';
-  if (!email || !password) { if (errEl) errEl.textContent = 'Email and password required'; return; }
-  if (btn) btn.disabled = true;
-  if (errEl) errEl.textContent = '';
+  btn.disabled = true; btn.textContent = 'Please wait...';
+  const action = authMode;
+  const name = authMode === 'signup' ? (document.getElementById('authName')?.value.trim() || 'Devotee') : undefined;
   try {
-    const body = { action: authMode, email, password };
-    if (authMode === 'signup' && name) body.name = name;
-    const res = await fetch('/.netlify/functions/auth', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+    const res = await fetch('/.netlify/functions/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, email, password, name }) });
     const data = await res.json();
-    if (!res.ok) { if (errEl) errEl.textContent = data.error || 'Something went wrong'; return; }
-    authToken = data.token;
-    sbUser = data.user;
+    if (!res.ok) { errEl.textContent = data.error || 'Something went wrong.'; btn.disabled = false; btn.textContent = action === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏'; return; }
+    authToken = data.token; sbUser = data.user;
     try { localStorage.setItem('shiv_jwt', authToken); } catch {}
-    if (authMode === 'signup') {
-      profile.name = sbUser.name || profile.name;
-      profile.joinDate = sbUser.joinDate || profile.joinDate;
-      saveProfile();
-      updateProfileDisplay();
-    }
-    updateAuthStatusRow();
-    closeAuthModal();
+    if (data.user.name) { profile.name = data.user.name; }
+    profile.firstRun = false;
+    if (!profile.joinDate) profile.joinDate = data.user.joinDate || new Date().toISOString().slice(0, 10);
+    document.getElementById('authModal').classList.add('hidden');
+    saveProfile(); updateProfileDisplay(); updateAuthStatusRow(); loadVoices();
     await fetchUserChat();
-  } catch (e) {
-    if (errEl) errEl.textContent = 'Network error. Please try again.';
-  } finally {
-    if (btn) btn.disabled = false;
-  }
+    showToast(`🙏 Welcome${profile.name ? ', ' + profile.name : ''}! Har Har Mahadev!`);
+  } catch { errEl.textContent = 'Connection error. Please try again.'; btn.disabled = false; btn.textContent = action === 'signup' ? 'Create Account 🙏' : 'Sign In 🙏'; }
 }
 
 async function fetchUserChat() {
   if (!authToken) return;
   try {
-    const res = await fetch('/.netlify/functions/history', {
-      headers: { 'Authorization': 'Bearer ' + authToken }
-    });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (data.messages && data.messages.length > 0 && chatHistory.length === 0) {
-      chatHistory = data.messages.map(m => ({ role: m.role, content: m.content }));
-      restoreMessages();
-      saveState();
-    }
+    const res = await fetch('/.netlify/functions/history', { headers: { 'Authorization': 'Bearer ' + authToken } });
+    if (res.ok) { const d = await res.json(); if (d.messages && d.messages.length > 0 && chatHistory.length === 0) { chatHistory = d.messages.map(m => ({ role: m.role, content: m.content })); restoreMessages(); } }
   } catch {}
 }
 
 async function syncChatMsg(role, content) {
   if (!authToken) return;
-  try {
-    await fetch('/.netlify/functions/history', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-      body: JSON.stringify({ role, content })
-    });
-  } catch {}
+  try { fetch('/.netlify/functions/history', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, body: JSON.stringify({ role, content }) }); } catch {}
+}
+
+function continueAsGuest() {
+  document.getElementById('authModal').classList.add('hidden');
+  if (!profile.name) { profile.name = 'Devotee'; profile.firstRun = false; profile.joinDate = new Date().toISOString().slice(0, 10); saveProfile(); }
+  updateProfileDisplay(); updateAuthStatusRow(); loadVoices();
+  showToast('🙏 Welcome, devotee! Har Har Mahadev!');
 }
 
 async function logOut() {
-  authToken = null;
-  sbUser = null;
+  authToken = null; sbUser = null;
   try { localStorage.removeItem('shiv_jwt'); } catch {}
-  updateAuthStatusRow();
+  profile = { name: '', avatar: '🙏', joinDate: null, userId: null, totalMessages: 0, teachingsRead: 0, firstRun: true };
+  chatHistory = [];
+  try { localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(STORAGE_KEY); } catch {}
+  document.getElementById('chatLog').innerHTML = '';
+  const wm = document.getElementById('welcomeMsg'); if (wm) wm.style.display = '';
+  document.getElementById('clearBtn').style.display = 'none';
+  document.getElementById('authModal').classList.remove('hidden');
+  switchAuthTab('signin'); updateAuthStatusRow();
+  showToast('Signed out. 🙏');
 }
 
 function handleAuthRowTap() {
-  openAuthModal();
+  if (sbUser) { if (confirm('Sign out of Shiv AI?')) logOut(); }
+  else document.getElementById('authModal').classList.remove('hidden');
 }
 
 function updateAuthStatusRow() {
+  const row = document.getElementById('authStatusRow');
   const label = document.getElementById('authStatusLabel');
   const sub = document.getElementById('authStatusSub');
-  const row = document.getElementById('authStatusRow');
+  if (!row) return;
+  row.style.display = '';
   if (sbUser) {
-    if (label) label.textContent = sbUser.name || sbUser.email || 'Signed In';
-    if (sub) sub.textContent = 'Tap to sign out';
-    if (row) row.querySelector('.profile-row-icon').textContent = '✅';
+    label.textContent = 'Signed in — Tap to sign out';
+    sub.textContent = sbUser.email || 'Account active';
+    row.querySelector('.profile-row-icon').textContent = '✅';
   } else {
-    if (label) label.textContent = 'Sign in / Create Account';
-    if (sub) sub.textContent = 'Sync your prayers across devices';
-    if (row) row.querySelector('.profile-row-icon').textContent = '🔐';
+    label.textContent = 'Sign in / Create Account';
+    sub.textContent = 'Sync your prayers across devices';
+    row.querySelector('.profile-row-icon').textContent = '🔐';
   }
 }
-// ── END AUTH ─────────────────────────────────────────────────────────────────
 
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'shivai_v5';
@@ -1328,16 +1266,8 @@ function saveProfile() {
 }
 
 function completeFirstRun() {
-  const nameEl = document.getElementById('firstRunName');
-  const name = (nameEl ? nameEl.value.trim() : '') || 'Devotee';
-  profile.name = name;
-  profile.firstRun = false;
-  if (!profile.joinDate) profile.joinDate = new Date().toISOString().slice(0, 10);
-  saveProfile();
-  document.getElementById('firstRunModal').classList.add('hidden');
-  updateProfileDisplay();
-  loadVoices();
-  showToast(`🙏 Welcome, ${name}. Har Har Mahadev!`);
+  // Legacy path — now handled by continueAsGuest() or authSubmit()
+  continueAsGuest();
 }
 
 function updateProfileDisplay() {
@@ -2024,31 +1954,27 @@ loadState();
 renderBhajans();
 renderTeachings();
 
-// Set daily verse
 const verse = DAILY_VERSES[new Date().getDay() % DAILY_VERSES.length];
 const dv = document.getElementById('dailyVerse');
 if (dv) dv.textContent = verse;
 
-// Sync lang buttons
 document.querySelectorAll('.lang-btn').forEach(btn => {
   btn.classList.toggle('active', btn.dataset.lang === currentLang);
 });
-
 document.getElementById('clearBtn').style.display = chatHistory.length > 0 ? '' : 'none';
 
-// First run check + auth init
 (async () => {
   if (profile.firstRun) {
-    document.getElementById('firstRunModal').classList.remove('hidden');
+    document.getElementById('authModal').classList.remove('hidden');
   } else {
-    document.getElementById('firstRunModal').classList.add('hidden');
+    document.getElementById('authModal').classList.add('hidden');
     updateProfileDisplay();
+    updateAuthStatusRow();
     loadVoices();
   }
   await initAuth();
 })();
 
-// Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }

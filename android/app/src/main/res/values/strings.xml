@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shiv AI - Divine Wisdom</string>
+    <string name="asset_statements">
+        [{
+          \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+          \"target\": {
+            \"namespace\": \"android_app\",
+            \"package_name\": \"in.shivaaionline.twa\",
+            \"sha256_cert_fingerprints\": [
+              \"2E:49:95:E3:CC:00:53:D0:4F:8F:30:38:EB:E0:D4:ED:EC:59:60:ED:0C:1B:3D:A9:42:2E:B4:B1:06:9F:7B:F2\"
+            ]
+          }
+        }]
+    </string>
+</resources>

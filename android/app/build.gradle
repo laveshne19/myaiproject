@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'in.shivaaionline.twa'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'in.shivaaionline.twa'
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    def keystorePath = System.getenv('KEYSTORE_PATH') ?: file('../../android.keystore').absolutePath
+    def keystorePass = System.getenv('KEYSTORE_PASSWORD') ?: 'fa6Lwd5ensEV'
+    def keyPass = System.getenv('KEY_PASSWORD') ?: 'fa6Lwd5ensEV'
+
+    signingConfigs {
+        release {
+            storeFile new File(keystorePath)
+            storePassword keystorePass
+            keyAlias 'my-key-alias'
+            keyPassword keyPass
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+}

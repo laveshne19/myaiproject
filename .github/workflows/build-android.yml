@@ -1,0 +1,75 @@
+name: Build Android AAB
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/build-android.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.9'
+
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
+      - name: Generate launcher icons
+        run: |
+          for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+            case $DENSITY in
+              mdpi)    SIZE=48  ;;
+              hdpi)    SIZE=72  ;;
+              xhdpi)   SIZE=96  ;;
+              xxhdpi)  SIZE=144 ;;
+              xxxhdpi) SIZE=192 ;;
+            esac
+            DIR="android/app/src/main/res/mipmap-$DENSITY"
+            mkdir -p "$DIR"
+            convert -size "${SIZE}x${SIZE}" xc:'#0A0A1A' \
+              -fill '#FF6B35' -draw "circle $((SIZE/2)),$((SIZE/2)) $((SIZE/2)),$((SIZE/5))" \
+              "$DIR/ic_launcher.png"
+            cp "$DIR/ic_launcher.png" "$DIR/ic_launcher_round.png"
+          done
+
+      - name: Create keystore
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 --decode > android/android.keystore
+          else
+            keytool -genkeypair -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 \
+              -keystore android/android.keystore -storepass fa6Lwd5ensEV -keypass fa6Lwd5ensEV \
+              -dname "CN=Shiv AI, OU=App, O=ShivaaionlineIn, L=India, ST=India, C=IN" -noprompt
+          fi
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Build AAB
+        working-directory: android
+        run: gradle bundleRelease
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/android/android.keystore
+          KEYSTORE_PASSWORD: fa6Lwd5ensEV
+          KEY_PASSWORD: fa6Lwd5ensEV
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: shiv-ai-android-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30
