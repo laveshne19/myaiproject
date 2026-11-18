@@ -1151,6 +1151,14 @@ body {
           </div>
           <span class="profile-row-right">›</span>
         </div>
+        <div class="profile-row" onclick="window.location.href='/download.html'">
+          <span class="profile-row-icon">📱</span>
+          <div class="profile-row-info">
+            <div class="profile-row-label">Get the Android App</div>
+            <div class="profile-row-sub">Download APK · Free · 2.4 MB</div>
+          </div>
+          <span class="profile-row-right">⬇️</span>
+        </div>
         <div class="profile-row" onclick="shareApp()">
           <span class="profile-row-icon">📤</span>
           <div class="profile-row-info">
@@ -2437,7 +2445,7 @@ if ('serviceWorker' in navigator) {
     setTimeout(() => {
       const b = document.getElementById('androidBanner');
       if (b) b.style.display = 'flex';
-    }, 8000);
+    }, 3000);
   }
 })();
 </script>
