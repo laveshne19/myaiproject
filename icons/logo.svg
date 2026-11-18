@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1e0d45"/>
+      <stop offset="100%" stop-color="#05000f"/>
+    </radialGradient>
+    <radialGradient id="glowCenter" cx="50%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#ff6b35" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ff6b35" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowGold" cx="50%" cy="20%" r="30%">
+      <stop offset="0%" stop-color="#f4c430" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#f4c430" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="strongGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="moonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- App icon background with rounded corners -->
+  <rect width="512" height="512" rx="88" fill="url(#bgGrad)"/>
+
+  <!-- Cosmic glow layers -->
+  <circle cx="256" cy="280" r="230" fill="url(#glowCenter)"/>
+  <circle cx="256" cy="120" r="140" fill="url(#glowGold)"/>
+
+  <!-- Sacred circle ring (geometric backdrop) -->
+  <circle cx="256" cy="275" r="155" fill="none" stroke="#b08fff" stroke-width="1" opacity="0.15"/>
+  <circle cx="256" cy="275" r="175" fill="none" stroke="#b08fff" stroke-width="0.5" opacity="0.1"/>
+
+  <!-- Star dots (cosmic background) -->
+  <circle cx="72" cy="78" r="1.8" fill="white" opacity="0.55"/>
+  <circle cx="440" cy="88" r="1.4" fill="white" opacity="0.4"/>
+  <circle cx="58" cy="390" r="1.6" fill="white" opacity="0.45"/>
+  <circle cx="455" cy="430" r="1.8" fill="white" opacity="0.3"/>
+  <circle cx="400" cy="52" r="1.2" fill="white" opacity="0.6"/>
+  <circle cx="130" cy="460" r="1.4" fill="white" opacity="0.4"/>
+  <circle cx="460" cy="210" r="1" fill="white" opacity="0.5"/>
+  <circle cx="50" cy="240" r="1.2" fill="white" opacity="0.4"/>
+  <circle cx="380" cy="470" r="1" fill="white" opacity="0.35"/>
+  <circle cx="110" cy="150" r="1" fill="white" opacity="0.3"/>
+
+  <!-- Crescent Moon (top) -->
+  <path d="M256 52
+    C213 52 180 80 180 115
+    C180 150 213 170 244 161
+    C222 151 209 134 214 113
+    C219 92 240 80 256 81
+    C272 80 293 92 298 113
+    C303 134 290 151 268 161
+    C299 170 332 150 332 115
+    C332 80 299 52 256 52 Z"
+    fill="#f4c430" filter="url(#moonGlow)"/>
+
+  <!-- Third eye glow above Om -->
+  <ellipse cx="256" cy="195" rx="8" ry="5" fill="#f4c430" opacity="0.9" filter="url(#softGlow)"/>
+  <ellipse cx="256" cy="195" rx="5" ry="3" fill="white" opacity="0.95"/>
+
+  <!-- Trishul (Trident) — stylized, integrated -->
+  <!-- Main shaft -->
+  <rect x="252" y="200" width="8" height="130" rx="4" fill="#ff6b35"/>
+
+  <!-- Center prong -->
+  <path d="M256 142
+    C260 155 262 168 262 185
+    L256 205
+    L250 185
+    C250 168 252 155 256 142 Z"
+    fill="#ff6b35" filter="url(#softGlow)"/>
+
+  <!-- Left prong -->
+  <path d="M250 185
+    C245 178 231 178 227 165
+    C223 150 232 138 242 143
+    C247 146 250 165 250 185 Z"
+    fill="#ff6b35"/>
+
+  <!-- Right prong -->
+  <path d="M262 185
+    C267 178 281 178 285 165
+    C289 150 280 138 270 143
+    C265 146 262 165 262 185 Z"
+    fill="#ff6b35"/>
+
+  <!-- Trishul base cross-bar -->
+  <rect x="232" y="328" width="48" height="6" rx="3" fill="#f4c430"/>
+  <circle cx="232" cy="331" r="5" fill="#f4c430"/>
+  <circle cx="280" cy="331" r="5" fill="#f4c430"/>
+
+  <!-- Om Symbol ॐ (central, large) -->
+  <text x="256" y="318"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-size="130"
+    fill="#ff6b35"
+    filter="url(#strongGlow)"
+    opacity="0.95"
+    font-family="'Noto Serif Devanagari', 'Mangal', serif">ॐ</text>
+
+  <!-- Subtle AI circuit nodes at bottom -->
+  <circle cx="185" cy="438" r="4" fill="#b08fff" opacity="0.65"/>
+  <circle cx="220" cy="454" r="3" fill="#b08fff" opacity="0.55"/>
+  <circle cx="256" cy="460" r="5" fill="#b08fff" opacity="0.7"/>
+  <circle cx="292" cy="454" r="3" fill="#b08fff" opacity="0.55"/>
+  <circle cx="327" cy="438" r="4" fill="#b08fff" opacity="0.65"/>
+  <line x1="189" y1="438" x2="217" y2="454" stroke="#b08fff" stroke-width="1.5" opacity="0.35"/>
+  <line x1="223" y1="454" x2="251" y2="460" stroke="#b08fff" stroke-width="1.5" opacity="0.35"/>
+  <line x1="261" y1="460" x2="289" y2="454" stroke="#b08fff" stroke-width="1.5" opacity="0.35"/>
+  <line x1="295" y1="454" x2="323" y2="438" stroke="#b08fff" stroke-width="1.5" opacity="0.35"/>
+</svg>
