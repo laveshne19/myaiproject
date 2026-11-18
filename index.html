@@ -454,6 +454,85 @@ body {
 .teachings-list::-webkit-scrollbar { width: 2px; }
 .teachings-list::-webkit-scrollbar-thumb { background: var(--border2); }
 
+/* ── SCRIPTURE / GITA TAB ────────────────────────────────────────────────── */
+.scr-tabs-bar {
+  display: flex; gap: 0; border-bottom: 1px solid var(--border2); flex-shrink: 0;
+  background: rgba(20,10,42,0.9); backdrop-filter: blur(10px);
+}
+.scr-tab-btn {
+  flex: 1; padding: 10px 4px; border: none; background: none;
+  color: var(--text2); font-size: 13px; font-weight: 700; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.scr-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.gita-lang-bar {
+  display: flex; gap: 6px; padding: 8px 12px; flex-shrink: 0;
+  background: rgba(20,10,42,0.6); border-bottom: 1px solid rgba(176,143,255,0.08);
+}
+.gita-lang-btn {
+  flex: 1; padding: 6px 4px; border-radius: 16px; border: 1px solid var(--border2);
+  background: none; color: var(--text2); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.gita-lang-btn.active {
+  background: linear-gradient(135deg, rgba(244,196,48,0.25), rgba(255,107,53,0.2));
+  border-color: var(--gold); color: var(--gold);
+}
+.gita-chapters-list {
+  flex: 1; overflow-y: auto; padding: 8px 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.gita-chapters-list::-webkit-scrollbar { width: 2px; }
+.gita-chapters-list::-webkit-scrollbar-thumb { background: var(--border2); }
+.gita-ch-card {
+  background: rgba(20,10,42,0.7); border: 1px solid var(--border2);
+  border-radius: 12px; overflow: hidden; transition: border-color 0.2s;
+}
+.gita-ch-card:hover { border-color: rgba(244,196,48,0.3); }
+.gita-ch-header {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer;
+}
+.gita-ch-num {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--gold), var(--fire));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff;
+}
+.gita-ch-info { flex: 1; }
+.gita-ch-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.gita-ch-name-en { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.gita-ch-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.gita-ch-toggle { font-size: 16px; color: var(--text3); transition: transform 0.25s; }
+.gita-verses { display: none; padding: 0 10px 10px; flex-direction: column; gap: 10px; }
+.gita-verse {
+  background: rgba(10,5,28,0.6); border: 1px solid rgba(176,143,255,0.1);
+  border-radius: 10px; padding: 12px 14px;
+}
+.gita-verse-num { font-size: 11px; font-weight: 800; color: var(--gold); margin-bottom: 6px; letter-spacing: 0.5px; }
+.gita-verse-sa { font-family: 'Noto Serif Devanagari', Georgia, serif; font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+.gita-verse-tr { font-size: 11px; color: var(--text3); font-style: italic; margin-bottom: 6px; line-height: 1.5; }
+.gita-verse-en, .gita-verse-hi { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.gita-verse-actions { display: flex; gap: 8px; align-items: center; }
+.gita-audio-btn {
+  padding: 5px 12px; border-radius: 14px; border: 1px solid rgba(176,143,255,0.3);
+  background: rgba(176,143,255,0.08); color: var(--text2); font-size: 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.gita-audio-btn:hover { border-color: var(--gold); color: var(--gold); }
+.gita-bk-btn {
+  padding: 5px 10px; border-radius: 14px; border: 1px solid var(--border2);
+  background: none; color: var(--text3); font-size: 12px; cursor: pointer; transition: all 0.2s;
+}
+.gita-bk-btn.saved { background: rgba(244,196,48,0.25); border-color: var(--gold); }
+.gita-mini-player {
+  margin: 8px 10px; border-radius: 12px; overflow: hidden;
+  background: rgba(10,5,28,0.9); border: 1px solid rgba(176,143,255,0.2); padding: 10px;
+}
+.gita-mini-title { font-size: 12px; color: var(--text2); margin-bottom: 8px; text-align: center; }
+.bhajan-sa { font-family: 'Noto Serif Devanagari', Georgia, serif; font-size: 12px; color: var(--text3); margin-top: 3px; }
+.bhajan-meaning { font-size: 12px; color: var(--text2); padding: 8px 14px 10px; line-height: 1.5; border-top: 1px solid var(--border2); }
+
 .teaching-card {
   background: rgba(28,16,56,0.8); border: 1px solid var(--border2); border-radius: 16px;
   padding: 14px 16px; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(10px);
@@ -1099,7 +1178,30 @@ body {
 
   <!-- TEACHINGS TAB -->
   <div class="tab-panel hidden" id="tab-teachings">
-    <div class="teachings-list" id="teachingsList"></div>
+    <div class="scr-tabs-bar">
+      <button class="scr-tab-btn active" id="scrTab-teachings" onclick="showScr('teachings',this)">🕉️ Shiva</button>
+      <button class="scr-tab-btn" id="scrTab-gita" onclick="showScr('gita',this)">📿 Gita</button>
+    </div>
+    <div id="scrPane-teachings" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;">
+      <div class="teachings-list" id="teachingsList"></div>
+    </div>
+    <div id="scrPane-gita" style="flex:1;overflow:hidden;display:none;flex-direction:column;">
+      <div class="gita-lang-bar" id="gitaLangBar">
+        <button class="gita-lang-btn active" onclick="setGitaLang('en',this)">English</button>
+        <button class="gita-lang-btn" onclick="setGitaLang('hi',this)">हिंदी</button>
+        <button class="gita-lang-btn" onclick="setGitaLang('sa',this)">संस्कृत</button>
+      </div>
+      <div class="gita-chapters-list" id="gitaChaptersList"></div>
+      <div class="gita-mini-player" id="gitaMiniPlayer" style="display:none;">
+        <div class="gita-mini-title" id="gitaMiniTitle">—</div>
+        <div id="gitaYtWrap" style="width:100%;background:#000;border-radius:8px;overflow:hidden;">
+          <iframe id="gitaYtFrame" width="100%" height="180" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen style="display:block;"></iframe>
+        </div>
+        <button class="player-btn" onclick="closeGitaPlayer()" style="margin:8px auto;display:block;">✕ Close</button>
+      </div>
+    </div>
   </div>
 
   <!-- PROFILE TAB -->
@@ -1209,7 +1311,7 @@ body {
     <span class="nav-icon">🎵</span>Music
   </button>
   <button class="nav-btn" id="nav-teachings" onclick="switchTab('teachings')">
-    <span class="nav-icon">📖</span>Learn
+    <span class="nav-icon">📿</span>Gita
   </button>
   <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
     <span class="nav-icon">👤</span>Me
@@ -1484,13 +1586,13 @@ const STORAGE_KEY = 'shivai_v5';
 const PROFILE_KEY = 'shivai_profile_v2';
 
 const DAILY_VERSES = [
-  '"When the storm of doubt clouds your vision clear,\nKnow that I, Mahadev, am always near."',
-  '"From the ashes of your sorrow, lotus flowers grow,\nWithin your deepest darkness, is my golden glow."',
-  '"The pain you carry is the fire that purifies,\nBow to your struggle — in it, liberation lies."',
-  '"You are not the wound, nor are you the scar,\nYou are the light I placed in every star."',
-  '"When the world turns cold and silence is your only friend,\nRemember — I began where your surrender ends."',
-  '"The river flows not by forcing, but by being,\nSo move through life — not running, simply being."',
-  '"Every tear you shed falls into the Ganga sacred,\nI hold your grief — no sorrow goes wasted."'
+  '"You have a right to perform your duties, but never to the fruits thereof." — Gita 2.47',
+  '"The soul is never born nor dies at any time. It is unborn, eternal, ever-existing." — Gita 2.20',
+  '"Elevate yourself through the power of your mind, not degrade yourself, for the mind is the best friend and also the greatest enemy." — Gita 6.5',
+  '"Whatever happened, happened for the good. Whatever is happening, is happening for the good. Whatever will happen, will also happen for the good." — Shiva\'s teaching',
+  '"One must neither disturb the world nor be disturbed by it — free from joy, anger, fear and anxiety." — Gita 12.15',
+  '"I am seated in everyone\'s heart. From Me come remembrance, knowledge and forgetfulness." — Gita 15.15',
+  '"Abandon all varieties of dharma and simply surrender unto Me. I shall deliver you from all sinful reactions. Do not fear." — Gita 18.66',
 ];
 
 // ── STATE ──────────────────────────────────────────────────────────────────
@@ -2042,16 +2144,16 @@ function endDivineCall() {
 
 // ── BHAJANS ────────────────────────────────────────────────────────────────
 const BHAJANS = [
-  { name: 'Om Namah Shivaya', icon: '🕉️', reps: '108 repetitions', text: 'Om Namah Shivaya. I bow to Shiva, the auspicious one. Om Namah Shivaya. The five sacred syllables Na Ma Shi Va Ya represent the five elements — earth, water, fire, air, and ether. I am one with all creation. Om Namah Shivaya. Namah Shivaya. Shivaya Namah. Om Namah Shivaya. Har Har Mahadev.' },
-  { name: 'Mahamrityunjaya Mantra', icon: '🔱', reps: '21 repetitions', text: 'Om Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed Shiva, the fragrant nourisher of all beings. As the cucumber freed from its vine, may He liberate us from death for immortality. Om Tryambakam yajamahe. Healing. Liberation. Peace.' },
-  { name: 'Shiv Tandav Stotra', icon: '💃', reps: 'Full stotra', text: 'Jatatavi galaj jala pravaha pavitasthale. Galeavalambya lambitam bhujangatunga malikam. Damad damad damad dama ninnadavadamarvayam. May Shiva, with the Ganga flowing through his matted locks, wearing the serpent garland, dancing the Tandava with cosmic thunder, grant us eternal auspiciousness.' },
-  { name: 'Shambho Mahadeva', icon: '🌙', reps: '21 repetitions', text: 'Shambho Mahadeva Shambo. Shankara Mahadeva Shankara. Har Har Har Har Mahadeva. Jaya Shambho Mahadeva. Oh Shambhu, giver of joy and bliss. Oh Shankara, bestower of peace. Victory to the great destroyer and recreator. Victory to Shiva, the ever-auspicious one.' },
-  { name: 'Har Har Mahadev', icon: '🌺', reps: '21 repetitions', text: 'Har Har Mahadev. Bom Bom Bhole. Jai Jai Shiva Shankara. Har Har Mahadev. Remove all obstacles. Bless with liberation, wisdom, courage. Har Har Mahadev. Om Namah Shivaya. Bom Bhole Nath. Jai Shambhu. Har Har Mahadev.' },
-  { name: 'Shiva Gayatri', icon: '✨', reps: '9 repetitions', text: 'Om Tatpurushaya vidmahe mahadevaya dhimahi. Tanno Rudrah prachodayat. We know Tatpurusha, the Supreme Being. We meditate on Mahadeva. May Rudra, the fierce compassionate one, illuminate our minds toward wisdom and liberation.' },
-  { name: 'Lingashtakam', icon: '🔥', reps: 'Full stotra', text: 'Brahma muraari suraarchita lingam. Nirmala bhashita shobhita lingam. Janmaja dukha vinashaka lingam. Tat pranamami sadashiva lingam. I bow to the eternal Shiva Linga — worshipped by Brahma and Vishnu, pure as the full moon, destroyer of sorrow of birth and rebirth.' },
-  { name: 'Om Shanti Mantra', icon: '🕊️', reps: '11 repetitions', text: 'Om Shanti Shanti Shantih. Peace in the heavens. Peace on the earth. Peace in the space between. May peace fill every atom, every wave, every heartbeat. Om Shanti. Let all beings be free from suffering. Om Shanti Shanti Shantih.' },
-  { name: 'Bilvashtakam', icon: '🌿', reps: 'Full stotra', text: 'Tridalam trigunakaraṃ trinetraṃ cha triyayudham. Trijanma papa samharam eka bilvaṃ Shivarpanaṃ. Three leaves — tamas, rajas, sattva. Three eyes — past, present, future. I offer one bilva leaf to Shiva, the destroyer of three lifetimes of karma.' },
-  { name: 'Tryambakam Yajamahe', icon: '⚡', reps: '21 repetitions', text: 'Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed one. May He liberate us from death and not from immortality. Liberation from all bondage. Freedom. Peace. Liberation.' },
+  { name: 'Om Namah Shivaya', icon: '🕉️', reps: '108 repetitions', sa: 'ॐ नमः शिवाय', tr: 'om namaḥ śivāya', meaning: 'I bow to Lord Shiva — the auspicious one who is the Self in all.', text: 'Om Namah Shivaya. I bow to Shiva, the auspicious one. Om Namah Shivaya. The five sacred syllables Na Ma Shi Va Ya represent the five elements — earth, water, fire, air, and ether. I am one with all creation. Om Namah Shivaya. Namah Shivaya. Shivaya Namah. Om Namah Shivaya. Har Har Mahadev.' },
+  { name: 'Mahamrityunjaya Mantra', icon: '🔱', reps: '21 repetitions', sa: 'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्', tr: 'oṃ tryambakaṃ yajāmahe sugandhiṃ puṣṭi-vardhanam', meaning: 'We worship the three-eyed Shiva, nourisher of all. May He liberate us from death toward immortality.', text: 'Om Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed Shiva, the fragrant nourisher of all beings. As the cucumber freed from its vine, may He liberate us from death for immortality. Om Tryambakam yajamahe. Healing. Liberation. Peace.' },
+  { name: 'Shiv Tandav Stotra', icon: '💃', reps: 'Full stotra', sa: 'जटाटवीगलज्जलप्रवाहपावितस्थले', tr: 'jaṭāṭavīgalajjala-pravāhapāvitasthale', meaning: 'From his matted locks flows the Ganga — purifying the world. Shiva dances the cosmic Tandava.', text: 'Jatatavi galaj jala pravaha pavitasthale. Galeavalambya lambitam bhujangatunga malikam. Damad damad damad dama ninnadavadamarvayam. May Shiva, with the Ganga flowing through his matted locks, wearing the serpent garland, dancing the Tandava with cosmic thunder, grant us eternal auspiciousness.' },
+  { name: 'Shambho Mahadeva', icon: '🌙', reps: '21 repetitions', sa: 'शम्भो महादेव शम्भो', tr: 'śambho mahādeva śambho', meaning: 'O Shambhu, giver of bliss! O Mahadeva, the great god!', text: 'Shambho Mahadeva Shambo. Shankara Mahadeva Shankara. Har Har Har Har Mahadeva. Jaya Shambho Mahadeva. Oh Shambhu, giver of joy and bliss. Oh Shankara, bestower of peace. Victory to the great destroyer and recreator. Victory to Shiva, the ever-auspicious one.' },
+  { name: 'Har Har Mahadev', icon: '🌺', reps: '21 repetitions', sa: 'हर हर महादेव', tr: 'hara hara mahādeva', meaning: 'Remove all obstacles, O Great God! Victory to the destroyer and bestower of liberation.', text: 'Har Har Mahadev. Bom Bom Bhole. Jai Jai Shiva Shankara. Har Har Mahadev. Remove all obstacles. Bless with liberation, wisdom, courage. Har Har Mahadev. Om Namah Shivaya. Bom Bhole Nath. Jai Shambhu. Har Har Mahadev.' },
+  { name: 'Shiva Gayatri', icon: '✨', reps: '9 repetitions', sa: 'ॐ तत्पुरुषाय विद्महे महादेवाय धीमहि', tr: 'oṃ tatpuruṣāya vidmahe mahādevāya dhīmahi', meaning: 'We meditate on the Supreme Person, Mahadeva. May Rudra illuminate our minds.', text: 'Om Tatpurushaya vidmahe mahadevaya dhimahi. Tanno Rudrah prachodayat. We know Tatpurusha, the Supreme Being. We meditate on Mahadeva. May Rudra, the fierce compassionate one, illuminate our minds toward wisdom and liberation.' },
+  { name: 'Lingashtakam', icon: '🔥', reps: 'Full stotra', sa: 'ब्रह्ममुरारिसुरार्चित लिङ्गम्', tr: 'brahma-murāri-surārcita liṅgam', meaning: 'The Linga worshipped by Brahma, Vishnu and all gods — destroyer of karma from past lives.', text: 'Brahma muraari suraarchita lingam. Nirmala bhashita shobhita lingam. Janmaja dukha vinashaka lingam. Tat pranamami sadashiva lingam. I bow to the eternal Shiva Linga — worshipped by Brahma and Vishnu, pure as the full moon, destroyer of sorrow of birth and rebirth.' },
+  { name: 'Om Shanti Mantra', icon: '🕊️', reps: '11 repetitions', sa: 'ॐ शान्तिः शान्तिः शान्तिः', tr: 'oṃ śāntiḥ śāntiḥ śāntiḥ', meaning: 'Peace in body, mind and soul. Peace in the three worlds.', text: 'Om Shanti Shanti Shantih. Peace in the heavens. Peace on the earth. Peace in the space between. May peace fill every atom, every wave, every heartbeat. Om Shanti. Let all beings be free from suffering. Om Shanti Shanti Shantih.' },
+  { name: 'Bilvashtakam', icon: '🌿', reps: 'Full stotra', sa: 'त्रिदलं त्रिगुणाकारं त्रिनेत्रं च त्रियायुधम्', tr: 'tridalaṃ triguṇākāraṃ trinetraṃ ca triyāyudham', meaning: 'The three-lobed bilva leaf represents the three gunas, three eyes and three weapons of Shiva.', text: 'Tridalam trigunakaraṃ trinetraṃ cha triyayudham. Trijanma papa samharam eka bilvaṃ Shivarpanaṃ. Three leaves — tamas, rajas, sattva. Three eyes — past, present, future. I offer one bilva leaf to Shiva, the destroyer of three lifetimes of karma.' },
+  { name: 'Tryambakam Yajamahe', icon: '⚡', reps: '21 repetitions', sa: 'ॐ त्र्यम्बकं यजामहे', tr: 'oṃ tryambakaṃ yajāmahe', meaning: 'We worship the three-eyed one — the Mahamrityunjaya, conqueror of death.', text: 'Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed one. May He liberate us from death and not from immortality. Liberation from all bondage. Freedom. Peace. Liberation.' },
 ];
 
 let currentBhajanIdx = -1, bhajanPlaying = false, bhajanUtterance = null;
@@ -2064,13 +2166,15 @@ function renderBhajans() {
       <div class="bhajan-info">
         <div class="bhajan-name">${b.name}</div>
         <div class="bhajan-meta">${b.reps}</div>
+        ${b.sa ? `<div class="bhajan-sa">${b.sa.split('\n')[0]}</div>` : ''}
       </div>
       <div class="bhajan-actions">
         <div class="eq-bars"><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div><div class="eq-b"></div></div>
         <button class="yt-pill" onclick="openYT('${b.name.replace(/'/g,"\\'")} mantra')">▶ YT</button>
         <button class="play-pill-small" id="bp-${i}" onclick="selectBhajan(${i})">▶</button>
       </div>
-    </div>`).join('');
+    </div>
+    ${b.meaning ? `<div class="bhajan-meaning" id="bm-${i}" style="display:none">${b.meaning}</div>` : ''}`).join('');
 }
 
 function selectBhajan(idx) {
@@ -2216,6 +2320,9 @@ function playBhajan() {
   bhajanUtterance.onerror = () => {};
   window.speechSynthesis.speak(bhajanUtterance);
   startProgressTimer();
+  document.querySelectorAll('[id^="bm-"]').forEach(el => el.style.display = 'none');
+  const bm = document.getElementById(`bm-${currentBhajanIdx}`);
+  if (bm) bm.style.display = '';
 }
 
 function startProgressTimer() {
@@ -2258,6 +2365,7 @@ function stopBhajan() {
   document.querySelectorAll('.bhajan-card').forEach((c,i) => { c.classList.remove('playing'); const bp = document.getElementById(`bp-${i}`); if (bp) bp.textContent = '▶'; });
   document.getElementById('progressFill').style.width = '0%';
   document.getElementById('progressTime').textContent = '0:00';
+  document.querySelectorAll('[id^="bm-"]').forEach(el => el.style.display = 'none');
 }
 function togglePlay() { if (bhajanPlaying) pauseBhajan(); else if (currentBhajanIdx >= 0) resumeBhajan(); }
 function nextBhajan() { stopBhajan(); currentBhajanIdx = (currentBhajanIdx + 1) % BHAJANS.length; playBhajan(); }
@@ -2289,6 +2397,180 @@ function showMusicSection(section, btn) {
       frame.src = 'https://www.youtube.com/embed?listType=search&list=shiv+bhajans+om+namah+shivaya&autoplay=0&rel=0';
     }
   }
+}
+
+// ── BHAGAVAD GITA ──────────────────────────────────────────────────────────
+let gitaLang = 'en';
+let gitaBookmarks = {};
+try { gitaBookmarks = JSON.parse(localStorage.getItem('gita_bk') || '{}'); } catch(e) {}
+function saveGitaBookmarks() { try { localStorage.setItem('gita_bk', JSON.stringify(gitaBookmarks)); } catch(e) {} }
+
+const GITA = [
+  { num:1, name:'Arjuna Vishada Yoga', name_hi:'अर्जुन विषाद योग', name_sa:'अर्जुनविषादयोगः', verses: [
+    { id:'1.1', num:'1.1', sa:'धृतराष्ट्र उवाच |\nधर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः ।', tr:'dhṛtarāṣṭra uvāca | dharmakṣetre kurukṣetre samavetā yuyutsavaḥ', en:'Dhritarashtra said: O Sanjaya, what did my sons and the sons of Pandu do when they gathered on the holy field of Kurukshetra, eager for battle?', hi:'धृतराष्ट्र ने कहा: हे संजय! धर्मभूमि कुरुक्षेत्र में एकत्र हुए युद्धकांक्षी मेरे और पांडु के पुत्रों ने क्या किया?', ytq:'bhagavad gita chapter 1 verse 1 audio' },
+    { id:'1.47', num:'1.47', sa:'एवमुक्त्वार्जुनः संख्ये रथोपस्थ उपाविशत् । विसृज्य सशरं चापं शोकसंविग्नमानसः ॥', tr:'evam uktvārjunaḥ saṅkhye rathopastha upāviśat | visṛjya saśaraṃ cāpaṃ śokasaṃvignamānasaḥ', en:'Having spoken thus on the battlefield, Arjuna cast aside his bow and arrows and sat down on the chariot, his mind overwhelmed with grief.', hi:'इस प्रकार कहकर युद्धभूमि में अर्जुन अपना धनुष-बाण छोड़कर रथ पर बैठ गए, उनका मन शोक से आविष्ट हो गया।', ytq:'bhagavad gita chapter 1 verse 47 arjuna grief' }
+  ]},
+  { num:2, name:'Sankhya Yoga', name_hi:'सांख्य योग', name_sa:'सांख्ययोगः', verses: [
+    { id:'2.19', num:'2.19', sa:'य एनं वेत्ति हन्तारं यश्चैनं मन्यते हतम् । उभौ तौ न विजानीतो नायं हन्ति न हन्यते ॥', tr:'ya enaṃ vetti hantāraṃ yaś cainaṃ manyate hatam | ubhau tau na vijānīto nāyaṃ hanti na hanyate', en:'He who thinks that this soul can kill, and he who thinks that this soul can be killed — both of them are ignorant. The soul neither kills nor is it killed.', hi:'जो इस आत्मा को मारने वाला और जो इसे मरा हुआ समझता है, वे दोनों ही नहीं जानते। यह आत्मा न मारती है, न मारी जाती है।', ytq:'bhagavad gita 2.19 soul cannot be killed' },
+    { id:'2.20', num:'2.20', sa:'न जायते म्रियते वा कदाचित् नायं भूत्वा भविता वा न भूयः । अजो नित्यः शाश्वतोऽयं पुराणो न हन्यते हन्यमाने शरीरे ॥', tr:'na jāyate mriyate vā kadācin nāyaṃ bhūtvā bhavitā vā na bhūyaḥ | ajo nityaḥ śāśvato\'yaṃ purāṇo na hanyate hanyamāne śarīre', en:'The soul is never born, nor does it ever die; nor having once existed, does it ever cease to be. The soul is unborn, eternal, ever-existing, and primeval. It is not slain when the body is slain.', hi:'यह आत्मा किसी काल में भी न जन्म लेती है, न मरती है। यह अजन्मा, नित्य, शाश्वत और पुरातन है। शरीर के मारे जाने पर भी यह नहीं मारी जाती।', ytq:'bhagavad gita 2.20 soul eternal unborn' },
+    { id:'2.47', num:'2.47', sa:'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन । मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥', tr:'karmaṇy evādhikāras te mā phaleṣu kadācana | mā karmaphalaheturbhūr mā te saṅgo\'stv akarmaṇi', en:'You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself the cause of the results of your activities, and never be attached to not doing your duty.', hi:'तुम्हें केवल कर्म करने का अधिकार है, उसके फल का नहीं। तुम कर्म के फल की कामना मत करो और न ही कर्म न करने में आसक्ति रखो।', ytq:'bhagavad gita 2.47 karma yoga duty without attachment' },
+    { id:'2.48', num:'2.48', sa:'योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय । सिद्ध्यसिद्ध्योः समो भूत्वा समत्वं योग उच्यते ॥', tr:'yogasthaḥ kuru karmāṇi saṅgaṃ tyaktvā dhanañjaya | siddhyasiddhyoḥ samo bhūtvā samatvaṃ yoga ucyate', en:'Perform your duties as yoga, O Dhananjaya, abandoning attachment, being equal in success and failure. This equanimity is called yoga.', hi:'हे धनंजय! योग में स्थित होकर, आसक्ति त्यागकर सिद्धि और असिद्धि में समान रहते हुए कर्म करो। यह समभाव ही योग कहलाता है।', ytq:'bhagavad gita 2.48 samatvam yoga equanimity' },
+    { id:'2.62', num:'2.62', sa:'ध्यायतो विषयान् पुंसः सङ्गस्तेषूपजायते । सङ्गात् सञ्जायते कामः कामात् क्रोधोऽभिजायते ॥', tr:'dhyāyato viṣayān puṃsaḥ saṅgas teṣūpajāyate | saṅgāt sañjāyate kāmaḥ kāmāt krodho\'bhijāyate', en:'While contemplating objects of the senses, a person develops attachment for them, and from such attachment lust develops, and from lust anger arises.', hi:'विषयों का चिंतन करने वाले पुरुष को उनमें आसक्ति हो जाती है, आसक्ति से काम और काम से क्रोध उत्पन्न होता है।', ytq:'bhagavad gita 2.62 chain of contemplation desire anger' }
+  ]},
+  { num:3, name:'Karma Yoga', name_hi:'कर्म योग', name_sa:'कर्मयोगः', verses: [
+    { id:'3.5', num:'3.5', sa:'न हि कश्चित् क्षणमपि जातु तिष्ठत्यकर्मकृत् । कार्यते ह्यवशः कर्म सर्वः प्रकृतिजैर्गुणैः ॥', tr:'na hi kaścit kṣaṇam api jātu tiṣṭhaty akarma-kṛt | kāryate hy avaśaḥ karma sarvaḥ prakṛtijair guṇaiḥ', en:'No one can remain without doing something even for a moment. Everyone is helplessly made to act by the modes of nature.', hi:'कोई भी प्राणी किसी भी क्षण बिना कर्म के नहीं रह सकता। सभी प्रकृति से उत्पन्न गुणों द्वारा विवश होकर कर्म कराए जाते हैं।', ytq:'bhagavad gita 3.5 no one can remain without action' },
+    { id:'3.19', num:'3.19', sa:'तस्मादसक्तः सततं कार्यं कर्म समाचर । असक्तो ह्याचरन् कर्म परमाप्नोति पूरुषः ॥', tr:'tasmād asaktaḥ satataṃ kāryaṃ karma samācara | asakto hy ācaran karma param āpnoti pūruṣaḥ', en:'Therefore, always perform your duty without attachment, for by acting without attachment one attains the Supreme.', hi:'इसलिए सदा आसक्तिरहित होकर कर्तव्य कर्म करते रहो, क्योंकि आसक्तिरहित होकर कर्म करने वाला मनुष्य परमात्मा को प्राप्त होता है।', ytq:'bhagavad gita 3.19 nishkama karma without attachment' },
+    { id:'3.21', num:'3.21', sa:'यद्यदाचरति श्रेष्ठस्तत्तदेवेतरो जनः । स यत् प्रमाणं कुरुते लोकस्तदनुवर्तते ॥', tr:'yad yad ācarati śreṣṭhas tat tad evetaro janaḥ | sa yat pramāṇaṃ kurute lokas tad anuvartate', en:'Whatever a great person does, common people follow. Whatever standards they set, the world pursues.', hi:'श्रेष्ठ व्यक्ति जो-जो आचरण करता है, साधारण जन भी वही करते हैं। वह जो प्रमाण स्थापित करता है, लोग उसी का अनुसरण करते हैं।', ytq:'bhagavad gita 3.21 lead by example great person' }
+  ]},
+  { num:4, name:'Jnana Karma Sanyasa Yoga', name_hi:'ज्ञान कर्म संन्यास योग', name_sa:'ज्ञानकर्मसंन्यासयोगः', verses: [
+    { id:'4.7', num:'4.7', sa:'यदा यदा हि धर्मस्य ग्लानिर्भवति भारत । अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥', tr:'yadā yadā hi dharmasya glānir bhavati bhārata | abhyutthānam adharmasya tadātmānaṃ sṛjāmy aham', en:'Whenever there is a decline in righteousness and a rise in unrighteousness, O Bharata, at that time I manifest Myself.', hi:'हे भारत! जब-जब धर्म की हानि और अधर्म की वृद्धि होती है, तब-तब मैं अपने को प्रकट करता हूं।', ytq:'bhagavad gita 4.7 yada yada hi dharmasya' },
+    { id:'4.8', num:'4.8', sa:'परित्राणाय साधूनां विनाशाय च दुष्कृताम् । धर्मसंस्थापनार्थाय सम्भवामि युगे युगे ॥', tr:'paritrāṇāya sādhūnāṃ vināśāya ca duṣkṛtām | dharmasaṃsthāpanārthāya sambhavāmi yuge yuge', en:'For the protection of the righteous, for the destruction of the wicked, and for the establishment of righteousness, I appear in every age.', hi:'साधुओं की रक्षा, दुष्टों के विनाश और धर्म की स्थापना के लिए मैं युग-युग में अवतार लेता हूं।', ytq:'bhagavad gita 4.8 sambhavami yuge yuge avatar' }
+  ]},
+  { num:5, name:'Karma Sanyasa Yoga', name_hi:'कर्म संन्यास योग', name_sa:'कर्मसंन्यासयोगः', verses: [
+    { id:'5.18', num:'5.18', sa:'विद्याविनयसम्पन्ने ब्राह्मणे गवि हस्तिनि । शुनि चैव श्वपाके च पण्डिताः समदर्शिनः ॥', tr:'vidyāvinayasampanne brāhmaṇe gavi hastini | śuni caiva śvapāke ca paṇḍitāḥ samadarśinaḥ', en:'The humble sages, by virtue of true knowledge, see with equal vision a learned Brahmin, a cow, an elephant, a dog, and an outcaste.', hi:'ज्ञान और विनय से संपन्न ब्राह्मण में, गाय में, हाथी में, कुत्ते में और चांडाल में — ज्ञानी समान दृष्टि रखते हैं।', ytq:'bhagavad gita 5.18 sama darshana equal vision' }
+  ]},
+  { num:6, name:'Dhyana Yoga', name_hi:'ध्यान योग', name_sa:'ध्यानयोगः', verses: [
+    { id:'6.5', num:'6.5', sa:'उद्धरेदात्मनात्मानं नात्मानमवसादयेत् । आत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः ॥', tr:'uddhared ātmanātmānaṃ nātmānam avasādayet | ātmaiva hy ātmano bandhur ātmaiva ripur ātmanaḥ', en:'Elevate yourself through the power of your mind, and do not degrade yourself, for the mind can be the friend and also the greatest enemy of the self.', hi:'अपने द्वारा अपना उद्धार करो, अपना पतन मत करो। आत्मा ही अपना मित्र है और आत्मा ही अपना शत्रु है।', ytq:'bhagavad gita 6.5 elevate yourself mind friend enemy' },
+    { id:'6.35', num:'6.35', sa:'असंशयं महाबाहो मनो दुर्निग्रहं चलं । अभ्यासेन तु कौन्तेय वैराग्येण च गृह्यते ॥', tr:'asaṃśayaṃ mahābāho mano durnigrahaṃ calam | abhyāsena tu kaunteya vairāgyeṇa ca gṛhyate', en:'Undoubtedly, O mighty-armed Arjuna, the mind is restless and difficult to restrain. But by practice and detachment, it can be controlled.', hi:'हे महाबाहो! निःसंदेह मन चंचल और कठिनता से वश में आने वाला है। परंतु अभ्यास और वैराग्य से यह वश में हो जाता है।', ytq:'bhagavad gita 6.35 mind restless practice vairagya' }
+  ]},
+  { num:7, name:'Jnana Vijnana Yoga', name_hi:'ज्ञान विज्ञान योग', name_sa:'ज्ञानविज्ञानयोगः', verses: [
+    { id:'7.7', num:'7.7', sa:'मत्तः परतरं नान्यत् किञ्चिदस्ति धनञ्जय । मयि सर्वमिदं प्रोतं सूत्रे मणिगणा इव ॥', tr:'mattaḥ parataraṃ nānyat kiñcid asti dhanañjaya | mayi sarvam idaṃ protaṃ sūtre maṇigaṇā iva', en:'O Dhananjaya, there is nothing superior to Me. Everything rests in Me, as beads are strung on a thread.', hi:'हे धनंजय! मुझसे परे कुछ भी नहीं है। यह सब कुछ मुझमें ऐसे पिरोया हुआ है जैसे मणियां धागे में।', ytq:'bhagavad gita 7.7 mattah parataram all rests in me' }
+  ]},
+  { num:8, name:'Aksara Brahma Yoga', name_hi:'अक्षर ब्रह्म योग', name_sa:'अक्षरब्रह्मयोगः', verses: [
+    { id:'8.7', num:'8.7', sa:'तस्मात् सर्वेषु कालेषु मामनुस्मर युध्य च । मय्यर्पितमनोबुद्धिर्मामेवैष्यस्यसंशयम् ॥', tr:'tasmāt sarveṣu kāleṣu mām anusmara yudhya ca | mayy arpita-mano-buddhir mām evaiṣyasy asaṃśayam', en:'Therefore, Arjuna, always think of Me and at the same time carry out your duty of fighting. With your activities dedicated to Me, your mind and intelligence fixed on Me, you will attain Me without doubt.', hi:'इसलिए हे अर्जुन! सब समय मेरा स्मरण करते हुए युद्ध करो। मुझमें मन और बुद्धि अर्पित करने से निःसंदेह मुझे ही प्राप्त करोगे।', ytq:'bhagavad gita 8.7 always remember me fight' }
+  ]},
+  { num:9, name:'Raja Vidya Raja Guhya Yoga', name_hi:'राज विद्या राज गुह्य योग', name_sa:'राजविद्याराजगुह्ययोगः', verses: [
+    { id:'9.22', num:'9.22', sa:'अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते । तेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम् ॥', tr:'ananyāś cintayanto māṃ ye janāḥ paryupāsate | teṣāṃ nityābhiyuktānāṃ yogakṣemaṃ vahāmy aham', en:'For those who worship Me with devotion, meditating on My transcendental form, I carry what they lack and preserve what they have.', hi:'जो भक्त अनन्य भाव से मेरा चिंतन करते हुए उपासना करते हैं, उन नित्य-युक्त भक्तों का योगक्षेम मैं स्वयं वहन करता हूं।', ytq:'bhagavad gita 9.22 yoga kshema vahamy aham' },
+    { id:'9.26', num:'9.26', sa:'पत्रं पुष्पं फलं तोयं यो मे भक्त्या प्रयच्छति । तदहं भक्त्युपहृतमश्नामि प्रयतात्मनः ॥', tr:'patraṃ puṣpaṃ phalaṃ toyaṃ yo me bhaktyā prayacchati | tad ahaṃ bhakty-upahṛtam aśnāmi prayatātmanaḥ', en:'If one offers Me with love and devotion a leaf, a flower, a fruit, or water — I will accept it.', hi:'जो भक्त मुझे प्रेम भाव से पत्र, फूल, फल या जल अर्पित करता है — मैं उसे स्वीकार करता हूं।', ytq:'bhagavad gita 9.26 leaf flower fruit water devotion' }
+  ]},
+  { num:10, name:'Vibhuti Yoga', name_hi:'विभूति योग', name_sa:'विभूतियोगः', verses: [
+    { id:'10.8', num:'10.8', sa:'अहं सर्वस्य प्रभवो मत्तः सर्वं प्रवर्तते । इति मत्वा भजन्ते मां बुधा भावसमन्विताः ॥', tr:'ahaṃ sarvasya prabhavo mattaḥ sarvaṃ pravartate | iti matvā bhajante māṃ budhā bhāvasamanvitāḥ', en:'I am the source of all creation, and everything proceeds from Me. The wise who know this worship Me with all their hearts.', hi:'मैं ही सब का उद्गम हूं, मुझसे ही सब कुछ प्रवृत्त होता है। यह जानकर बुद्धिमान भक्त भावपूर्वक मेरी उपासना करते हैं।', ytq:'bhagavad gita 10.8 source of all creation' }
+  ]},
+  { num:11, name:'Vishvarupa Darshana Yoga', name_hi:'विश्वरूप दर्शन योग', name_sa:'विश्वरूपदर्शनयोगः', verses: [
+    { id:'11.33', num:'11.33', sa:'तस्मात्त्वमुत्तिष्ठ यशो लभस्व जित्वा शत्रून् भुङ्क्ष्व राज्यं समृद्धम् ।', tr:'tasmāt tvam uttiṣṭha yaśo labhasva jitvā śatrūn bhuṅkṣva rājyaṃ samṛddham', en:'Therefore, arise and win glory! Conquer your enemies and enjoy a flourishing kingdom. They are already put to death by My arrangement, and you can be but an instrument.', hi:'इसलिए तुम उठो और यश प्राप्त करो। शत्रुओं को जीतकर समृद्ध राज्य भोगो। ये पहले से ही मेरे द्वारा मारे जा चुके हैं — तुम केवल निमित्त बनो।', ytq:'bhagavad gita 11.33 nimitta matram instrument of god' }
+  ]},
+  { num:12, name:'Bhakti Yoga', name_hi:'भक्ति योग', name_sa:'भक्तियोगः', verses: [
+    { id:'12.6', num:'12.6', sa:'ये तु सर्वाणि कर्माणि मयि संन्यस्य मत्पराः ।', tr:'ye tu sarvāṇi karmāṇi mayi sannyasya mat-parāḥ', en:'But those who worship Me, surrendering all their actions to Me, regarding Me as the supreme goal, meditating on Me with single-pointed devotion — I swiftly rescue them from the ocean of birth and death.', hi:'जो भक्त सब कर्म मुझे अर्पित करके, अनन्य योग से मेरा ध्यान करते और उपासना करते हैं — मैं उन्हें शीघ्र ही जन्म-मृत्यु के सागर से उद्धार करता हूं।', ytq:'bhagavad gita 12.6 surrender all actions bhakti' },
+    { id:'12.15', num:'12.15', sa:'यस्मान्नोद्विजते लोको लोकान्नोद्विजते च यः । हर्षामर्षभयोद्वेगैर्मुक्तो यः स च मे प्रियः ॥', tr:'yasmān nodvijate loko lokān nodvijate ca yaḥ | harṣāmarṣabhayodvegair mukto yaḥ sa ca me priyaḥ', en:'One who does not disturb the world, and is not disturbed by the world, who is free from exultation, envy, fear, and anxiety — such a person is very dear to Me.', hi:'जिससे संसार उद्विग्न नहीं होता और जो संसार से उद्विग्न नहीं होता, जो हर्ष, अमर्ष, भय और उद्वेग से मुक्त है — वह मुझे प्रिय है।', ytq:'bhagavad gita 12.15 equanimity dear to god' }
+  ]},
+  { num:13, name:'Kshetra Kshetrajnya Vibhaga Yoga', name_hi:'क्षेत्र क्षेत्रज्ञ विभाग योग', name_sa:'क्षेत्रक्षेत्रज्ञविभागयोगः', verses: [
+    { id:'13.28', num:'13.28', sa:'समं सर्वेषु भूतेषु तिष्ठन्तं परमेश्वरम् । विनश्यत्स्वविनश्यन्तं यः पश्यति स पश्यति ॥', tr:'samaṃ sarveṣu bhūteṣu tiṣṭhantaṃ parameśvaram | vinaśyatsv avinaśyantaṃ yaḥ paśyati sa paśyati', en:'One who sees the Supreme Lord equally present in all beings, the imperishable within the perishable — that person truly sees.', hi:'जो सब नाशवान प्राणियों में समान रूप से स्थित अविनाशी परमेश्वर को देखता है — वही वास्तव में देखता है।', ytq:'bhagavad gita 13.28 same god in all beings true seeing' }
+  ]},
+  { num:14, name:'Gunatraya Vibhaga Yoga', name_hi:'गुणत्रय विभाग योग', name_sa:'गुणत्रयविभागयोगः', verses: [
+    { id:'14.26', num:'14.26', sa:'मां च योऽव्यभिचारेण भक्तियोगेन सेवते । स गुणान् समतीत्यैतान् ब्रह्मभूयाय कल्पते ॥', tr:'māṃ ca yo\'vyabhicāreṇa bhaktiyogena sevate | sa guṇān samatītyaitān brahmabhūyāya kalpate', en:'One who serves Me with unswerving devotional service transcends all the three modes and becomes fit to attain Brahman.', hi:'जो मुझे अव्यभिचारी भक्तियोग से सेवा करता है — वह इन तीनों गुणों को पार करके ब्रह्मभाव प्राप्त करने का पात्र बन जाता है।', ytq:'bhagavad gita 14.26 beyond three gunas bhakti' }
+  ]},
+  { num:15, name:'Purushottama Yoga', name_hi:'पुरुषोत्तम योग', name_sa:'पुरुषोत्तमयोगः', verses: [
+    { id:'15.15', num:'15.15', sa:'सर्वस्य चाहं हृदि सन्निविष्टो मत्तः स्मृतिर्ज्ञानमपोहनं च ।', tr:'sarvasya cāhaṃ hṛdi sanniviṣṭo mattaḥ smṛtir jñānam apohanaṃ ca', en:'I am seated in everyone\'s heart, and from Me come remembrance, knowledge and forgetfulness. By all the Vedas, I am to be known. Indeed, I am the compiler of Vedanta and the knower of the Vedas.', hi:'मैं सभी प्राणियों के हृदय में स्थित हूं। मुझसे ही स्मृति, ज्ञान और विस्मृति होती है। सभी वेदों द्वारा मैं ही जानने योग्य हूं।', ytq:'bhagavad gita 15.15 seated in every heart memory knowledge' }
+  ]},
+  { num:16, name:'Daivasura Sampad Vibhaga Yoga', name_hi:'दैवासुर सम्पद विभाग योग', name_sa:'दैवासुरसम्पद्विभागयोगः', verses: [
+    { id:'16.3', num:'16.3', sa:'तेजः क्षमा धृतिः शौचमद्रोहो नातिमानिता ।', tr:'tejaḥ kṣamā dhṛtiḥ śaucam adroho nātimānitā', en:'Vigor, forgiveness, fortitude, purity, freedom from malice, and freedom from pride — these are the qualities of one born with divine nature, O Bharata.', hi:'तेज, क्षमा, धृति, शुचिता, द्रोहरहितता और अभिमान का न होना — ये दैवी संपदा के लक्षण हैं।', ytq:'bhagavad gita 16.3 divine qualities daivi sampada' }
+  ]},
+  { num:17, name:'Sraddhatraya Vibhaga Yoga', name_hi:'श्रद्धात्रय विभाग योग', name_sa:'श्रद्धात्रयविभागयोगः', verses: [
+    { id:'17.3', num:'17.3', sa:'सत्त्वानुरूपा सर्वस्य श्रद्धा भवति भारत ।', tr:'sattvānurūpā sarvasya śraddhā bhavati bhārata', en:'O Bharata, the faith of each is in accordance with one\'s own nature. A person is made of faith — whatever faith one has, that is what one is.', hi:'हे भारत! प्रत्येक की श्रद्धा उसके स्वभाव के अनुसार होती है। यह पुरुष श्रद्धामय है — जैसी जिसकी श्रद्धा है, वह वैसा ही है।', ytq:'bhagavad gita 17.3 faith nature sraddha person' }
+  ]},
+  { num:18, name:'Moksha Sanyasa Yoga', name_hi:'मोक्ष संन्यास योग', name_sa:'मोक्षसंन्यासयोगः', verses: [
+    { id:'18.63', num:'18.63', sa:'इति ते ज्ञानमाख्यातं गुह्याद् गुह्यतरं मया ।', tr:'iti te jñānam ākhyātaṃ guhyād guhyataraṃ mayā', en:'Thus I have explained to you the most confidential of all knowledge. Deliberate on this fully, and then do what you wish to do.', hi:'इस प्रकार मैंने तुम्हें गुह्य से भी अधिक गुह्य ज्ञान सुनाया। इसे पूरी तरह विचार कर, जैसी चाहो वैसा करो।', ytq:'bhagavad gita 18.63 most confidential knowledge deliberate' },
+    { id:'18.65', num:'18.65', sa:'मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु ।', tr:'man-manā bhava mad-bhakto mad-yājī māṃ namaskuru', en:'Always think of Me, become My devotee, worship Me and bow to Me. I promise you that you shall come to Me, for you are dear to Me.', hi:'मुझमें मन लगाओ, मेरे भक्त बनो, मेरी पूजा करो, मुझे नमस्कार करो। मैं तुमसे सच वादा करता हूं — तुम मुझे ही प्राप्त करोगे, क्योंकि तुम मुझे प्रिय हो।', ytq:'bhagavad gita 18.65 think of me dear to me promise' },
+    { id:'18.66', num:'18.66', sa:'सर्वधर्मान् परित्यज्य मामेकं शरणं व्रज । अहं त्वां सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः ॥', tr:'sarva-dharmān parityajya mām ekaṃ śaraṇaṃ vraja | ahaṃ tvāṃ sarva-pāpebhyo mokṣayiṣyāmi mā śucaḥ', en:'Abandon all varieties of dharma and simply surrender unto Me. I shall deliver you from all sinful reactions. Do not fear.', hi:'सब धर्मों को छोड़कर मेरी एकमात्र शरण में आओ। मैं तुम्हें सब पापों से मुक्त कर दूंगा। शोक मत करो।', ytq:'bhagavad gita 18.66 surrender to god final message' }
+  ]}
+];
+
+function setGitaLang(lang, btn) {
+  gitaLang = lang;
+  document.querySelectorAll('.gita-lang-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderGita();
+}
+
+function showScr(tab, btn) {
+  ['teachings','gita'].forEach(t => {
+    const pane = document.getElementById('scrPane-' + t);
+    const tbtn = document.getElementById('scrTab-' + t);
+    if (pane) pane.style.display = t === tab ? 'flex' : 'none';
+    if (tbtn) tbtn.classList.toggle('active', t === tab);
+  });
+}
+
+function renderGita() {
+  const el = document.getElementById('gitaChaptersList');
+  if (!el) return;
+  el.innerHTML = GITA.map(ch => `
+    <div class="gita-ch-card" id="gch-${ch.num}">
+      <div class="gita-ch-header" onclick="toggleGitaCh(${ch.num})">
+        <div class="gita-ch-num">${ch.num}</div>
+        <div class="gita-ch-info">
+          <div class="gita-ch-name">
+            <span class="gita-ch-name-en">${ch.name}</span>
+          </div>
+          <div class="gita-ch-meta">${ch.name_hi} · ${ch.verses.length} verses</div>
+        </div>
+        <button class="gita-audio-btn" onclick="event.stopPropagation();playGitaChapter(${ch.num})" title="Play chapter">▶</button>
+        <span class="gita-ch-toggle">▼</span>
+      </div>
+      <div class="gita-verses" id="gv-${ch.num}" style="display:none;">
+        ${ch.verses.map(v => renderVerse(v, ch.num)).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function renderVerse(v, chNum) {
+  const bk = gitaBookmarks[v.id] ? 'saved' : '';
+  return `<div class="gita-verse" id="gverse-${v.id.replace('.','_')}">
+    <div class="gita-verse-num">${v.num}</div>
+    <div class="gita-verse-sa">${v.sa}</div>
+    ${gitaLang !== 'sa' ? `<div class="gita-verse-tr">${v.tr}</div>` : ''}
+    ${gitaLang === 'en' ? `<div class="gita-verse-en">${v.en}</div>` : ''}
+    ${gitaLang === 'hi' ? `<div class="gita-verse-hi">${v.hi}</div>` : ''}
+    <div class="gita-verse-actions">
+      <button class="gita-audio-btn" onclick="playGitaVerse('${v.id}','${v.ytq}')">▶ Audio</button>
+      <button class="gita-bk-btn ${bk}" onclick="toggleGitaBk('${v.id}',this)" title="Bookmark">🔖</button>
+    </div>
+  </div>`;
+}
+
+function toggleGitaCh(chNum) {
+  const vd = document.getElementById('gv-' + chNum);
+  const hd = document.getElementById('gch-' + chNum);
+  if (!vd) return;
+  const open = vd.style.display !== 'none';
+  vd.style.display = open ? 'none' : 'flex';
+  const tog = hd ? hd.querySelector('.gita-ch-toggle') : null;
+  if (tog) tog.textContent = open ? '▼' : '▲';
+}
+
+function playGitaVerse(verseId, ytq) {
+  const mp = document.getElementById('gitaMiniPlayer');
+  const title = document.getElementById('gitaMiniTitle');
+  const frame = document.getElementById('gitaYtFrame');
+  if (!mp || !frame) return;
+  mp.style.display = '';
+  if (title) title.textContent = 'Gita ' + verseId;
+  frame.src = 'https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(ytq) + '&autoplay=1&rel=0';
+  mp.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function playGitaChapter(chNum) {
+  const ch = GITA.find(c => c.num === chNum);
+  if (!ch || !ch.verses.length) return;
+  playGitaVerse('Ch.' + chNum, 'bhagavad gita chapter ' + chNum + ' full audio recitation');
+}
+
+function closeGitaPlayer() {
+  const mp = document.getElementById('gitaMiniPlayer');
+  const frame = document.getElementById('gitaYtFrame');
+  if (frame) frame.src = '';
+  if (mp) mp.style.display = 'none';
+}
+
+function toggleGitaBk(verseId, btn) {
+  if (gitaBookmarks[verseId]) {
+    delete gitaBookmarks[verseId];
+    if (btn) btn.classList.remove('saved');
+  } else {
+    gitaBookmarks[verseId] = true;
+    if (btn) btn.classList.add('saved');
+  }
+  saveGitaBookmarks();
 }
 
 // ── TEACHINGS ──────────────────────────────────────────────────────────────
@@ -2356,6 +2638,7 @@ loadProfile();
 loadState();
 renderBhajans();
 renderTeachings();
+renderGita();
 
 const verse = DAILY_VERSES[new Date().getDay() % DAILY_VERSES.length];
 const dv = document.getElementById('dailyVerse');
