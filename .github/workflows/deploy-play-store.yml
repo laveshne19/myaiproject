@@ -55,7 +55,7 @@ jobs:
             keytool -genkeypair -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 \
               -keystore android/android.keystore -storepass fa6Lwd5ensEV -keypass fa6Lwd5ensEV \
               -dname "CN=Shiv AI, OU=App, O=ShivaaionlineIn, L=India, ST=India, C=IN" -noprompt
-            echo "=== Keystore SHA-256 (save this for assetlinks.json) ==="
+            echo "=== Keystore SHA-256 (copy this for assetlinks.json) ==="
             keytool -list -v -keystore android/android.keystore -storepass fa6Lwd5ensEV 2>&1 | grep "SHA256:"
           fi
         env:
@@ -69,8 +69,21 @@ jobs:
           KEYSTORE_PASSWORD: fa6Lwd5ensEV
           KEY_PASSWORD: fa6Lwd5ensEV
 
+      - name: Check Play Store credentials
+        id: check_creds
+        run: |
+          if [ -n "$PLAY_JSON" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️  AAB built but GOOGLE_PLAY_SERVICE_ACCOUNT_JSON secret not set."
+            echo "Add it at: https://github.com/laveshne19/myaiproject/settings/secrets/actions"
+          fi
+        env:
+          PLAY_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+
       - name: Upload to Google Play (Internal Testing)
-        if: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON != '' }}
+        if: steps.check_creds.outputs.configured == 'true'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
@@ -80,13 +93,6 @@ jobs:
           status: completed
           releaseName: "1.0.0"
           changesNotSentForReview: false
-
-      - name: Notify if Play Store secret missing
-        if: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON == '' }}
-        run: |
-          echo "⚠️  AAB built successfully but NOT uploaded to Play Store."
-          echo "To enable auto-upload, add GOOGLE_PLAY_SERVICE_ACCOUNT_JSON to GitHub secrets."
-          echo "See: https://github.com/laveshne19/myaiproject/settings/secrets/actions"
 
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
