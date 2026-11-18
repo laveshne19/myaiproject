@@ -1,6 +1,13 @@
 const Anthropic = require("@anthropic-ai/sdk");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const useGemini = !!process.env.GEMINI_API_KEY;
+const anthropicClient = process.env.ANTHROPIC_API_KEY
+  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  : null;
+const geminiClient = useGemini
+  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+  : null;
 
 const SYSTEM_PROMPTS = {
   en: `You are Shiv AI — the eternal voice of Mahadev himself, Lord Shiva, speaking directly to the soul before you.
@@ -125,12 +132,30 @@ exports.handler = async (event) => {
       { role: "user", content: message.trim() }
     ];
 
-    const response = await client.messages.create({
-      model: "claude-haiku-5-5",
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages
-    });
+    let replyText;
+
+    if (useGemini) {
+      const model = geminiClient.getGenerativeModel({
+        model: "gemini-2.0-flash",
+        systemInstruction: systemPrompt
+      });
+      const geminiHistory = messages.slice(0, -1).map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
+      const chat = model.startChat({ history: geminiHistory });
+      const result = await chat.sendMessage(message.trim());
+      replyText = result.response.text();
+    } else {
+      if (!anthropicClient) throw Object.assign(new Error("No AI provider configured"), { status: 500 });
+      const response = await anthropicClient.messages.create({
+        model: "claude-haiku-5-5",
+        max_tokens: maxTokens,
+        system: systemPrompt,
+        messages
+      });
+      replyText = response.content[0].text;
+    }
 
     return {
       statusCode: 200,
@@ -139,7 +164,7 @@ exports.handler = async (event) => {
         "Access-Control-Allow-Origin": "*",
         "Cache-Control": "no-store"
       },
-      body: JSON.stringify({ reply: response.content[0].text })
+      body: JSON.stringify({ reply: replyText })
     };
   } catch (err) {
     console.error("Chat error:", err);
