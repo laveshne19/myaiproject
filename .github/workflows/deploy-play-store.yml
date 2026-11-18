@@ -47,9 +47,19 @@ jobs:
             cp "$DIR/ic_launcher.png" "$DIR/ic_launcher_round.png"
           done
 
-      - name: Decode keystore
+      - name: Setup keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/android.keystore
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 --decode > android/android.keystore
+          else
+            keytool -genkeypair -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000 \
+              -keystore android/android.keystore -storepass fa6Lwd5ensEV -keypass fa6Lwd5ensEV \
+              -dname "CN=Shiv AI, OU=App, O=ShivaaionlineIn, L=India, ST=India, C=IN" -noprompt
+            echo "=== Keystore SHA-256 (save this for assetlinks.json) ==="
+            keytool -list -v -keystore android/android.keystore -storepass fa6Lwd5ensEV 2>&1 | grep "SHA256:"
+          fi
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
 
       - name: Build AAB
         working-directory: android
@@ -60,6 +70,7 @@ jobs:
           KEY_PASSWORD: fa6Lwd5ensEV
 
       - name: Upload to Google Play (Internal Testing)
+        if: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON != '' }}
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
@@ -69,6 +80,13 @@ jobs:
           status: completed
           releaseName: "1.0.0"
           changesNotSentForReview: false
+
+      - name: Notify if Play Store secret missing
+        if: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON == '' }}
+        run: |
+          echo "⚠️  AAB built successfully but NOT uploaded to Play Store."
+          echo "To enable auto-upload, add GOOGLE_PLAY_SERVICE_ACCOUNT_JSON to GitHub secrets."
+          echo "See: https://github.com/laveshne19/myaiproject/settings/secrets/actions"
 
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
