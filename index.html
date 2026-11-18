@@ -1028,14 +1028,15 @@ body {
               <div class="mp-eq-b"></div><div class="mp-eq-b"></div><div class="mp-eq-b"></div>
             </div>
           </div>
+          <div id="bhajanYtWrap" style="width:100%;background:#000;display:none;border-radius:8px;overflow:hidden;">
+            <iframe id="bhajanYtFrame" width="100%" height="200" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen style="display:block;"></iframe>
+          </div>
           <div class="player-controls">
-            <button class="player-btn" onclick="prevBhajan()">⏮</button>
-            <button class="player-btn primary" id="mainPlayBtn" onclick="togglePlay()">⏸</button>
-            <button class="player-btn" onclick="nextBhajan()">⏭</button>
-            <div class="progress-bar" onclick="seekProgress(event)" id="progressBar">
-              <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <span class="progress-time" id="progressTime">0:00</span>
+            <button class="player-btn" onclick="prevBhajan()">⏮ Prev</button>
+            <button class="player-btn" onclick="stopBhajan()">⏹ Stop</button>
+            <button class="player-btn" onclick="nextBhajan()">Next ⏭</button>
           </div>
         </div>
       </div>
@@ -2042,20 +2043,19 @@ function endDivineCall() {
 
 // ── BHAJANS ────────────────────────────────────────────────────────────────
 const BHAJANS = [
-  { name: 'Om Namah Shivaya', icon: '🕉️', reps: '108 repetitions', text: 'Om Namah Shivaya. I bow to Shiva, the auspicious one. Om Namah Shivaya. The five sacred syllables Na Ma Shi Va Ya represent the five elements — earth, water, fire, air, and ether. I am one with all creation. Om Namah Shivaya. Namah Shivaya. Shivaya Namah. Om Namah Shivaya. Har Har Mahadev.' },
-  { name: 'Mahamrityunjaya Mantra', icon: '🔱', reps: '21 repetitions', text: 'Om Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed Shiva, the fragrant nourisher of all beings. As the cucumber freed from its vine, may He liberate us from death for immortality. Om Tryambakam yajamahe. Healing. Liberation. Peace.' },
-  { name: 'Shiv Tandav Stotra', icon: '💃', reps: 'Full stotra', text: 'Jatatavi galaj jala pravaha pavitasthale. Galeavalambya lambitam bhujangatunga malikam. Damad damad damad dama ninnadavadamarvayam. May Shiva, with the Ganga flowing through his matted locks, wearing the serpent garland, dancing the Tandava with cosmic thunder, grant us eternal auspiciousness.' },
-  { name: 'Shambho Mahadeva', icon: '🌙', reps: '21 repetitions', text: 'Shambho Mahadeva Shambo. Shankara Mahadeva Shankara. Har Har Har Har Mahadeva. Jaya Shambho Mahadeva. Oh Shambhu, giver of joy and bliss. Oh Shankara, bestower of peace. Victory to the great destroyer and recreator. Victory to Shiva, the ever-auspicious one.' },
-  { name: 'Har Har Mahadev', icon: '🌺', reps: '21 repetitions', text: 'Har Har Mahadev. Bom Bom Bhole. Jai Jai Shiva Shankara. Har Har Mahadev. Remove all obstacles. Bless with liberation, wisdom, courage. Har Har Mahadev. Om Namah Shivaya. Bom Bhole Nath. Jai Shambhu. Har Har Mahadev.' },
-  { name: 'Shiva Gayatri', icon: '✨', reps: '9 repetitions', text: 'Om Tatpurushaya vidmahe mahadevaya dhimahi. Tanno Rudrah prachodayat. We know Tatpurusha, the Supreme Being. We meditate on Mahadeva. May Rudra, the fierce compassionate one, illuminate our minds toward wisdom and liberation.' },
-  { name: 'Lingashtakam', icon: '🔥', reps: 'Full stotra', text: 'Brahma muraari suraarchita lingam. Nirmala bhashita shobhita lingam. Janmaja dukha vinashaka lingam. Tat pranamami sadashiva lingam. I bow to the eternal Shiva Linga — worshipped by Brahma and Vishnu, pure as the full moon, destroyer of sorrow of birth and rebirth.' },
-  { name: 'Om Shanti Mantra', icon: '🕊️', reps: '11 repetitions', text: 'Om Shanti Shanti Shantih. Peace in the heavens. Peace on the earth. Peace in the space between. May peace fill every atom, every wave, every heartbeat. Om Shanti. Let all beings be free from suffering. Om Shanti Shanti Shantih.' },
-  { name: 'Bilvashtakam', icon: '🌿', reps: 'Full stotra', text: 'Tridalam trigunakaraṃ trinetraṃ cha triyayudham. Trijanma papa samharam eka bilvaṃ Shivarpanaṃ. Three leaves — tamas, rajas, sattva. Three eyes — past, present, future. I offer one bilva leaf to Shiva, the destroyer of three lifetimes of karma.' },
-  { name: 'Tryambakam Yajamahe', icon: '⚡', reps: '21 repetitions', text: 'Tryambakam yajamahe sugandhim pushti vardhanam. Urvarukamiva bandhanan mrityor mukshiya mamritat. We worship the three-eyed one. May He liberate us from death and not from immortality. Liberation from all bondage. Freedom. Peace. Liberation.' },
+  { name: 'Om Namah Shivaya', icon: '🕉️', reps: '108 repetitions', ytQuery: 'om namah shivaya 108 times chanting mantra' },
+  { name: 'Mahamrityunjaya Mantra', icon: '🔱', reps: '21 repetitions', ytQuery: 'mahamrityunjaya mantra 108 times chanting' },
+  { name: 'Shiv Tandav Stotra', icon: '💃', reps: 'Full stotra', ytQuery: 'shiv tandav stotram full original' },
+  { name: 'Shambho Mahadeva', icon: '🌙', reps: '21 repetitions', ytQuery: 'shambho mahadeva devotional song bhajan' },
+  { name: 'Har Har Mahadev', icon: '🌺', reps: '21 repetitions', ytQuery: 'har har mahadev shiv bhajan song' },
+  { name: 'Shiva Gayatri', icon: '✨', reps: '9 repetitions', ytQuery: 'shiva gayatri mantra chanting' },
+  { name: 'Lingashtakam', icon: '🔥', reps: 'Full stotra', ytQuery: 'lingashtakam shiv bhajan full' },
+  { name: 'Om Shanti Mantra', icon: '🕊️', reps: '11 repetitions', ytQuery: 'om shanti shanti shantih meditation mantra' },
+  { name: 'Bilvashtakam', icon: '🌿', reps: 'Full stotra', ytQuery: 'bilvashtakam shiv bhajan full' },
+  { name: 'Tryambakam Yajamahe', icon: '⚡', reps: '21 repetitions', ytQuery: 'tryambakam yajamahe mahamrityunjaya mantra' },
 ];
 
-let currentBhajanIdx = -1, bhajanPlaying = false, bhajanUtterance = null;
-let bhajanTimer = null, bhajanStart = 0, bhajanDuration = 60, bhajanElapsed = 0;
+let currentBhajanIdx = -1, bhajanPlaying = false;
 
 function renderBhajans() {
   document.getElementById('bhajansList').innerHTML = BHAJANS.map((b, i) => `
@@ -2181,7 +2181,6 @@ function playBhajan() {
   const b = BHAJANS[currentBhajanIdx];
   document.getElementById('miniPlayer').classList.add('visible');
   document.getElementById('miniPlayerTitle').textContent = b.name;
-  document.getElementById('mainPlayBtn').textContent = '⏸';
   const mpEq = document.getElementById('mpEq');
   if (mpEq) mpEq.classList.remove('paused');
   document.querySelectorAll('.bhajan-card').forEach((c,i) => {
@@ -2190,79 +2189,27 @@ function playBhajan() {
     if (bp) bp.textContent = i === currentBhajanIdx ? '⏸' : '▶';
   });
   bhajanPlaying = true;
-  startDroneAudio();
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  bhajanUtterance = new SpeechSynthesisUtterance(b.text);
-  // Melodic chanting: slower pace, slight pitch drop for depth
-  bhajanUtterance.rate = 0.68;
-  bhajanUtterance.pitch = 0.78;
-  // Prefer a melodic voice — female or Hindi voices sound more devotional
-  if (window.speechSynthesis) {
-    const voices = window.speechSynthesis.getVoices();
-    const bhajan_prefs = ['Lekha','Rishi','Veena','Moira','Google Hindi','Heera','Google UK English Female','Samantha','Karen','Victoria'];
-    let bv = null;
-    for (const pref of bhajan_prefs) {
-      bv = voices.find(v => v.name.includes(pref));
-      if (bv) break;
-    }
-    bhajanUtterance.voice = bv || divineVoice;
-  } else if (divineVoice) {
-    bhajanUtterance.voice = divineVoice;
+  const ytWrap = document.getElementById('bhajanYtWrap');
+  const ytFrame = document.getElementById('bhajanYtFrame');
+  if (ytFrame && ytWrap) {
+    const q = encodeURIComponent(b.ytQuery || (b.name + ' bhajan'));
+    ytFrame.src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=1&rel=0`;
+    ytWrap.style.display = 'block';
   }
-  bhajanDuration = Math.max(b.text.split(' ').length * 0.75, 30);
-  bhajanElapsed = 0; bhajanStart = Date.now();
-  bhajanUtterance.onend = () => { if (bhajanPlaying) setTimeout(() => nextBhajan(), 1800); };
-  bhajanUtterance.onerror = () => {};
-  window.speechSynthesis.speak(bhajanUtterance);
-  startProgressTimer();
 }
 
-function startProgressTimer() {
-  clearInterval(bhajanTimer);
-  bhajanTimer = setInterval(() => {
-    if (!bhajanPlaying) return;
-    bhajanElapsed = (Date.now() - bhajanStart) / 1000;
-    const pct = Math.min(bhajanElapsed / bhajanDuration * 100, 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    const s = Math.floor(bhajanElapsed);
-    document.getElementById('progressTime').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-  }, 500);
-}
-
-function pauseBhajan() {
-  bhajanPlaying = false;
-  window.speechSynthesis && window.speechSynthesis.pause();
-  pauseDroneAudio();
-  document.getElementById('mainPlayBtn').textContent = '▶';
-  const mpEq = document.getElementById('mpEq');
-  if (mpEq) mpEq.classList.add('paused');
-  clearInterval(bhajanTimer);
-}
-function resumeBhajan() {
-  bhajanPlaying = true;
-  window.speechSynthesis && window.speechSynthesis.resume();
-  resumeDroneAudio();
-  document.getElementById('mainPlayBtn').textContent = '⏸';
-  const mpEq = document.getElementById('mpEq');
-  if (mpEq) mpEq.classList.remove('paused');
-  bhajanStart = Date.now() - bhajanElapsed * 1000;
-  startProgressTimer();
-}
 function stopBhajan() {
-  bhajanPlaying = false; clearInterval(bhajanTimer);
-  window.speechSynthesis && window.speechSynthesis.cancel(); bhajanUtterance = null;
-  stopDroneAudio();
+  bhajanPlaying = false;
+  const ytWrap = document.getElementById('bhajanYtWrap');
+  const ytFrame = document.getElementById('bhajanYtFrame');
+  if (ytFrame) ytFrame.src = '';
+  if (ytWrap) ytWrap.style.display = 'none';
   const mpEq = document.getElementById('mpEq');
   if (mpEq) mpEq.classList.add('paused');
   document.querySelectorAll('.bhajan-card').forEach((c,i) => { c.classList.remove('playing'); const bp = document.getElementById(`bp-${i}`); if (bp) bp.textContent = '▶'; });
-  document.getElementById('progressFill').style.width = '0%';
-  document.getElementById('progressTime').textContent = '0:00';
 }
-function togglePlay() { if (bhajanPlaying) pauseBhajan(); else if (currentBhajanIdx >= 0) resumeBhajan(); }
 function nextBhajan() { stopBhajan(); currentBhajanIdx = (currentBhajanIdx + 1) % BHAJANS.length; playBhajan(); }
 function prevBhajan() { stopBhajan(); currentBhajanIdx = (currentBhajanIdx - 1 + BHAJANS.length) % BHAJANS.length; playBhajan(); }
-function seekProgress(e) { const bar = document.getElementById('progressBar'); const pct = e.offsetX / bar.offsetWidth; bhajanElapsed = pct * bhajanDuration; bhajanStart = Date.now() - bhajanElapsed * 1000; }
 
 // ── YOUTUBE ────────────────────────────────────────────────────────────────
 function openYT(query) {
