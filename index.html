@@ -12,6 +12,8 @@
 <meta property="og:image" content="/icons/icon-512.png">
 <title>Shiv AI — Talk to Mahadev</title>
 <link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/icons/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
 <style>
 :root {
@@ -919,6 +921,17 @@ body {
   </div>
   <button class="ib-install" onclick="doInstall()">Install</button>
   <button class="ib-dismiss" onclick="dismissInstall()">✕</button>
+</div>
+
+<!-- ANDROID DOWNLOAD BANNER -->
+<div id="androidBanner" class="install-banner" style="bottom:calc(var(--nav-h) + var(--safe-b) + 76px);display:none;">
+  <div class="ib-icon">🤖</div>
+  <div class="ib-info">
+    <div class="ib-title">Download Android App</div>
+    <div class="ib-desc">Direct APK · No Play Store needed</div>
+  </div>
+  <a class="ib-install" href="https://github.com/laveshne19/myaiproject/releases/latest/download/app-release.apk" target="_blank" style="text-decoration:none;">Download</a>
+  <button class="ib-dismiss" onclick="document.getElementById('androidBanner').style.display='none';localStorage.setItem('apk_dismissed','1')">✕</button>
 </div>
 
 <!-- TAB CONTENT -->
@@ -2414,6 +2427,19 @@ window.addEventListener('appinstalled', () => {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+
+// ── ANDROID APK DOWNLOAD BANNER ──────────────────────────────────────────────
+(function() {
+  try { if (localStorage.getItem('apk_dismissed')) return; } catch {}
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (isAndroid && !isStandalone) {
+    setTimeout(() => {
+      const b = document.getElementById('androidBanner');
+      if (b) b.style.display = 'flex';
+    }, 8000);
+  }
+})();
 </script>
 </body>
 </html>

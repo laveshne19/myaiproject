@@ -26,11 +26,12 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Install ImageMagick
-        run: sudo apt-get install -y imagemagick
+      - name: Install tools
+        run: sudo apt-get install -y imagemagick librsvg2-bin
 
-      - name: Generate launcher icons
+      - name: Generate launcher icons from SVG logo
         run: |
+          SVG="icons/logo.svg"
           for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
             case $DENSITY in
               mdpi)    SIZE=48  ;;
@@ -41,9 +42,14 @@ jobs:
             esac
             DIR="android/app/src/main/res/mipmap-$DENSITY"
             mkdir -p "$DIR"
-            convert -size "${SIZE}x${SIZE}" xc:'#0A0A1A' \
-              -fill '#FF6B35' -draw "circle $((SIZE/2)),$((SIZE/2)) $((SIZE/2)),$((SIZE/5))" \
-              "$DIR/ic_launcher.png"
+            if [ -f "$SVG" ]; then
+              rsvg-convert -w $SIZE -h $SIZE "$SVG" -o "$DIR/ic_launcher.png" 2>/dev/null || \
+              convert -background none -resize "${SIZE}x${SIZE}" "$SVG" "$DIR/ic_launcher.png"
+            else
+              convert -size "${SIZE}x${SIZE}" xc:'#0A0520' \
+                -fill '#FF6B35' -draw "circle $((SIZE/2)),$((SIZE/2)) $((SIZE/2)),$((SIZE/5))" \
+                "$DIR/ic_launcher.png"
+            fi
             cp "$DIR/ic_launcher.png" "$DIR/ic_launcher_round.png"
           done
 
