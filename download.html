@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05000f">
+<meta name="description" content="Download Shiv AI — Chat with Lord Shiva, seek divine wisdom, share your problems. Free app for Android.">
+<meta property="og:title" content="Download Shiv AI — Divine Wisdom App">
+<meta property="og:description" content="Chat with Lord Shiva, seek divine guidance. Free for Android.">
+<meta property="og:image" content="/icons/icon-512.png">
+<title>Download Shiv AI</title>
+<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #05000f;
+  color: #e8d5ff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+.logo {
+  width: 100px; height: 100px;
+  border-radius: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(176,143,255,0.3);
+}
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f4c430, #ff6b35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.tagline {
+  font-size: 1.1rem;
+  color: #b08fff;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.card {
+  background: #140a2a;
+  border: 1px solid #251545;
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #f4c430;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin-bottom: 12px;
+}
+.btn:last-child { margin-bottom: 0; }
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: linear-gradient(135deg, #ff6b35, #e84020);
+  color: white;
+  box-shadow: 0 4px 20px rgba(255,107,53,0.4);
+}
+.btn-primary:hover { box-shadow: 0 6px 28px rgba(255,107,53,0.5); }
+.btn-secondary {
+  background: linear-gradient(135deg, #251545, #1c1038);
+  color: #e8d5ff;
+  border: 1px solid #3a1f6b;
+}
+.btn-web {
+  background: linear-gradient(135deg, #1a0d3d, #251545);
+  color: #b08fff;
+  border: 1px solid #3a2070;
+}
+.btn-icon { font-size: 1.3rem; }
+.btn-text { flex: 1; text-align: left; }
+.btn-sub { font-size: 0.75rem; opacity: 0.75; font-weight: 400; display: block; }
+.steps {
+  margin-top: 16px;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: #c8b4e8;
+  line-height: 1.4;
+}
+.steps li::before {
+  content: counter(step);
+  min-width: 24px; height: 24px;
+  background: #ff6b35;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+.feature {
+  background: #0d0520;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.85rem;
+  color: #c8b4e8;
+  text-align: center;
+}
+.feature-icon { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+.divider {
+  color: #3a2070;
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #251545;
+}
+.badge-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+.badge {
+  background: #1c1038;
+  border: 1px solid #3a2070;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: #b08fff;
+}
+.version-info {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #5a3f8a;
+  margin-top: 32px;
+}
+</style>
+</head>
+<body>
+
+<img src="/icons/icon-192.png" class="logo" alt="Shiv AI" onerror="this.style.display='none'">
+<h1>🔱 Shiv AI</h1>
+<p class="tagline">Divine Wisdom · Chat with Lord Shiva</p>
+
+<div class="card">
+  <div class="card-title">📱 Android App</div>
+  <a class="btn btn-primary" href="https://github.com/laveshne19/myaiproject/releases/latest/download/app-release.apk" id="apkBtn">
+    <span class="btn-icon">⬇️</span>
+    <span class="btn-text">
+      Download APK
+      <span class="btn-sub">Free · 2.4 MB · Android 7.0+</span>
+    </span>
+  </a>
+  <div class="divider">how to install</div>
+  <ol class="steps">
+    <li>Tap "Download APK" above on your Android phone</li>
+    <li>Open the downloaded file from your notifications</li>
+    <li>If asked, tap "Allow from this source" once</li>
+    <li>Tap Install → Open → Start your divine journey</li>
+  </ol>
+</div>
+
+<div class="card">
+  <div class="card-title">🌐 Use in Browser (All Devices)</div>
+  <a class="btn btn-web" href="https://shivaaionline.in">
+    <span class="btn-icon">🔱</span>
+    <span class="btn-text">
+      Open Web App
+      <span class="btn-sub">Works on iPhone, Android, PC · No install needed</span>
+    </span>
+  </a>
+  <div class="divider">install as app on phone</div>
+  <ol class="steps">
+    <li>Open <strong>shivaaionline.in</strong> in Chrome or Safari</li>
+    <li>Tap the browser menu (⋮ or Share)</li>
+    <li>Tap "Add to Home Screen"</li>
+    <li>Opens full-screen like a native app</li>
+  </ol>
+</div>
+
+<div class="card">
+  <div class="card-title">✨ What You Get</div>
+  <div class="features">
+    <div class="feature"><span class="feature-icon">💬</span>Chat with Lord Shiva</div>
+    <div class="feature"><span class="feature-icon">🗣️</span>Voice Call Mode</div>
+    <div class="feature"><span class="feature-icon">🕉️</span>Sanskrit Wisdom</div>
+    <div class="feature"><span class="feature-icon">🌟</span>Hinglish Support</div>
+    <div class="feature"><span class="feature-icon">🎵</span>Divine Bhajans</div>
+    <div class="feature"><span class="feature-icon">📖</span>Shiva Teachings</div>
+  </div>
+</div>
+
+<div class="badge-row">
+  <span class="badge">✓ Free</span>
+  <span class="badge">✓ No ads</span>
+  <span class="badge">✓ AI-Powered</span>
+  <span class="badge">✓ Always available</span>
+</div>
+
+<p class="version-info">
+  Shiv AI v1.0.0 · <a href="https://github.com/laveshne19/myaiproject/releases" style="color:#5a3f8a">Release notes</a>
+</p>
+
+<script>
+// Auto-detect Android and highlight the right option
+if (/android/i.test(navigator.userAgent)) {
+  document.getElementById('apkBtn').style.boxShadow = '0 6px 32px rgba(255,107,53,0.6)';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
