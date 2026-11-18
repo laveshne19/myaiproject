@@ -150,7 +150,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         error: isApiError
           ? "Shiv AI is momentarily in deep meditation. Please try again in a moment."
-          : "The divine signal flickered. Please try again."
+          : "The divine signal flickered. Please try again.",
+        _debug: { status: err.status, type: err.type || err.name, msg: err.message }
       })
     };
   }
