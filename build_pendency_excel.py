@@ -356,7 +356,7 @@ def main():
     hdr = ["Ref", "Category", "Item", "Period", "Working", "Amount (Rs)", "Amount basis", "Statement check",
            "Statement ref", "Email subject", "Last mail", "IML contact", "Status / next step"]
     fills = [AMB if r[5] is None else RED for r in PENDING]
-    end = table(ws, 4, hdr, PENDING, widths=[6, 18, 42, 13, 48, 14, 20, 26, 26, 44, 13, 22, 50],
+    end = reg_end = table(ws, 4, hdr, PENDING, widths=[6, 18, 42, 13, 48, 14, 20, 26, 26, 44, 13, 22, 50],
                 money=("Amount (Rs)",), fills=fills, wrap=("Item", "Working", "Status / next step", "Email subject", "Statement check", "Statement ref"))
     ws.cell(row=end + 2, column=5, value="Total quantified pending").font = Font(bold=True)
     c = ws.cell(row=end + 2, column=6, value=f"=SUM(F5:F{end})")
@@ -470,16 +470,16 @@ def main():
     ws5 = wb.create_sheet("SUBD 2%")
     title(ws5, "SubD 2% claim: Atul Communication (Sub-D), outlet code 90190",
           "Taxable values from the Jun-Nov 26 sales file sent on 19 Nov 2026. IML settled up to Jun-26 (DG 29.07.26 -20,271.95).")
-    rows = [[m, v, 0.02, None, n] for m, v, n in SUBD]
-    end = table(ws5, 4, ["Month", "Sub-D taxable (Rs)", "Rate", "CN due (Rs)", "Note"], rows,
-                widths=[10, 18, 8, 16, 52], money=("Sub-D taxable (Rs)", "CN due (Rs)"))
+    rows = [[m, v, 0.02, None, "Settled" if n.startswith("Already") else "Pending", n] for m, v, n in SUBD]
+    end = table(ws5, 4, ["Month", "Sub-D taxable (Rs)", "Rate", "CN due (Rs)", "Status", "Note"], rows,
+                widths=[10, 18, 8, 16, 10, 52], money=("Sub-D taxable (Rs)", "CN due (Rs)"))
     for i in range(5, end + 1):
-        ws5.cell(row=i, column=4, value=f'=IF(E{i}="",B{i}*C{i},0)').number_format = INR
+        ws5.cell(row=i, column=4, value=f"=B{i}*C{i}").number_format = INR
         ws5.cell(row=i, column=3).number_format = "0%"
     ws5.cell(row=end + 1, column=1, value="Pending").font = Font(bold=True)
     for col in ("B", "D"):
         c = ws5[f"{col}{end + 1}"]
-        c.value = f'=SUMIF(E5:E{end},"",{col}5:{col}{end})' if col == "B" else f"=SUM(D5:D{end})"
+        c.value = f'=SUMIF(E5:E{end},"Pending",{col}5:{col}{end})'
         c.number_format = INR
         c.font = Font(bold=True)
     ws5.cell(row=end + 3, column=1, value="Whole claim file is Rs 39,98,836 taxable (47,18,626 gross) across outlets. "
@@ -521,7 +521,7 @@ def main():
     c.font = Font(bold=True)
     ws8.cell(row=end + 5, column=1, value="Balance is a debit (Nalanda owes IML). Pending CNs in the register will reduce it once IML posts them.")
     ws8.cell(row=end + 6, column=1, value="Quantified pending CNs from the register").font = Font(bold=True)
-    c = ws8.cell(row=end + 6, column=3, value="=SUM('PENDING REGISTER'!F5:F40)")
+    c = ws8.cell(row=end + 6, column=3, value=f"=SUM('PENDING REGISTER'!F5:F{reg_end})")
     c.number_format = INR
     ws8.cell(row=end + 7, column=1, value="Balance after quantified pending CNs").font = Font(bold=True)
     c = ws8.cell(row=end + 7, column=3, value=f"=C{end + 1}-C{end + 6}")
