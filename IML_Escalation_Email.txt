@@ -1,0 +1,255 @@
+════════════════════════════════════════════════════════════════════════════════
+ ESCALATION EMAIL — PENDING CREDIT NOTES FROM IML (boAt)
+ Nalanda Enterprises | Customer Code: 0001100164
+ Date: 25 November 2026
+════════════════════════════════════════════════════════════════════════════════
+
+TO:
+  fico.sapsupport@imaginemarketingindia.com
+  atinder.singh@imaginemarketingindia.com
+  prateek.makhija@imaginemarketingindia.com
+
+CC:
+  abhishek.roshan@imaginemarketingindia.com
+  bansraj.yadav@imaginemarketingindia.com
+  lavesh.bansal@nalandaenterprises.com
+  laveshne19@gmail.com
+
+SUBJECT:
+  URGENT: Pending Credit Notes — Nalanda Enterprises (Cust. 0001100164) |
+  Total ₹42,00,000+ Unresolved | Formal Escalation — Immediate Action Required
+
+════════════════════════════════════════════════════════════════════════════════
+
+Dear Team,
+
+Greetings from Nalanda Enterprises.
+
+I am writing this formal escalation on behalf of Nalanda Enterprises
+(Customer Code: 0001100164) with respect to multiple credit notes that are
+either pending issuance or pending settlement in our account with
+Imagine Marketing India Ltd (IML / boAt).
+
+Despite several follow-ups over the past months, these matters remain
+unresolved. We are therefore putting this on record and requesting
+IMMEDIATE resolution on each point listed below.
+
+──────────────────────────────────────────────────────────────────────────────
+ SECTION A: CREDIT NOTES NOT YET ISSUED — IMMEDIATE ISSUANCE REQUIRED
+──────────────────────────────────────────────────────────────────────────────
+
+1. MONTHLY SCHEME CREDIT NOTES — OCT-2026 & NOV-2026
+   ───────────────────────────────────────────────────
+   The monthly scheme credit notes (Normal Primary + Additional Primary +
+   Secondary Support + TOT/Add-TieUp) for the months of October 2026 and
+   November 2026 have NOT been issued by IML as of today.
+
+   Historically, monthly scheme CNs are issued within 25–30 days of month-end.
+   October 2026 CNs should have been issued by 25 November 2026.
+   November 2026 CNs are due by 25 December 2026.
+
+   Both are showing as ABSENT in our SAP account statement (Customer
+   0001100164), confirming that no document has been generated.
+
+   Action Required:
+   → Please issue the Oct-26 and Nov-26 Monthly Scheme CNs (all types) at
+     the earliest and share the CN numbers/amounts for our records.
+
+
+2. SHORTAGE CREDIT NOTES (4 ITEMS — FROM INVOICE SHORTAGES)
+   ──────────────────────────────────────────────────────────
+   The following short-deliveries were reported with CCTV evidence and
+   debit notes. No credit note has been received against any of these:
+
+   ┌─────────────────────────────────────────────────────────────────────────┐
+   │ #  │ Invoice No.  │ Date        │ Product               │ Short Qty    │
+   ├─────────────────────────────────────────────────────────────────────────┤
+   │ 1  │ 9062717596   │ 29-Jul-2026 │ Airdopes 141 Elite    │ 6 units      │
+   │    │              │             │ ANC Black             │              │
+   ├─────────────────────────────────────────────────────────────────────────┤
+   │ 2  │ 9062717596   │ 29-Jul-2026 │ Airdopes 313          │ 19 units     │
+   │    │              │             │ Jade Green            │              │
+   ├─────────────────────────────────────────────────────────────────────────┤
+   │ 3  │ 9272721256   │ 14-Jul-2026 │ Ultima Summit         │ 1 unit       │
+   │    │              │             │ Onyx Black            │              │
+   ├─────────────────────────────────────────────────────────────────────────┤
+   │ 4  │ 9272717324   │ 17-Jun-2026 │ AIRDOPES PLUS 214     │ 1 unit       │
+   │    │              │             │ Lavender Haze         │              │
+   └─────────────────────────────────────────────────────────────────────────┘
+
+   These shortages have been formally reported to your logistics team
+   with supporting evidence (CCTV footage / debit note copies).
+   Shortage items on Invoice 9272721256 and 9272717324 have already had
+   debit note copies submitted along with video evidence where applicable.
+
+   Action Required:
+   → Please issue shortage credit notes for all 4 items above immediately.
+     If any additional documentation is required, please inform us and we
+     will provide it within 24 hours.
+
+
+3. HIVE DASHCAM E1 — 10+1 FOC SCHEME CN (17 UNITS)
+   ─────────────────────────────────────────────────
+   We purchased 170 units of Hive Dashcam E1 on primary billing under the
+   active 10+1 FOC scheme. This entitles us to a Free-of-Cost credit note
+   for 17 units (170 ÷ 10 = 17 FOC units).
+
+   This was raised via email to Mr. Atinder Singh on 22 October 2026.
+   Mr. Abhishek Roshan acknowledged the email and responded that the matter
+   would be "checked and reverted" — however, NO credit note has been
+   issued till date.
+
+   This FOC CN has been pending for over ONE MONTH with no resolution.
+
+   Action Required:
+   → Please issue the FOC credit note for 17 units of Hive Dashcam E1
+     at the invoiced/MRP value. Reference: Email dated 22-Oct-2026.
+
+
+4. DOA CREDIT NOTE — 4 BOXES DISPATCHED OCT 2026
+   ─────────────────────────────────────────────────
+   DOA material was dispatched to IML on 18 October 2026 via BlueDart
+   with the following details:
+
+   Courier Docket No.: 51989523106 (BlueDart)
+   Portal Box IDs:     BOX7D002000059 | BOX7D002000060
+                       BOX7D002000061 | BOX7D002000062
+
+   Debit note copies were included with the shipment as required. However,
+   your consignee initially refused delivery. We immediately raised the
+   issue and requested re-delivery. The status was last updated on
+   29 October 2026.
+
+   No credit note has been received against the returned DOA material.
+
+   Action Required:
+   → Please confirm receipt of all 4 boxes in your system and issue the
+     credit note (against submitted debit notes) at the earliest.
+     Contact Person: Bansraj Yadav (bansraj.yadav@imaginemarketingindia.com)
+
+
+5. SUB-DISTRIBUTOR (2%) CREDIT NOTE — OCT-2025 TO NOV-2026
+   ──────────────────────────────────────────────────────────
+   We operate a sub-distributor network in Himachal Pradesh (Gupta
+   Electronics, Subathu, Solan) and are entitled to a 2% SubD support
+   credit note on our primary billing to them.
+
+   Current status:
+   - Settled up to:         September 2025
+   - In account (uncleared): DG 4106271965 (₹20,271.95) — Jul-2026
+   - NOT ISSUED:            October 2025 through June 2026 balance
+   - NOT ISSUED:            July 2026 through November 2026
+
+   Total estimated pending SubD CN: ~₹59,701.05
+
+   This has been pending since August 2025 and was raised with
+   Mr. Abhishek Roshan / Mr. Sufian Ahmad multiple times.
+
+   Action Required:
+   → Please issue all pending SubD CNs from Oct-25 through Nov-26
+     at the earliest. Reference: Email thread since Aug-2025.
+
+
+──────────────────────────────────────────────────────────────────────────────
+ SECTION B: CREDIT NOTES ISSUED BUT PENDING SETTLEMENT — ₹42,00,942.54
+──────────────────────────────────────────────────────────────────────────────
+
+In addition to the above, our SAP account statement (Customer 0001100164)
+shows ₹42,00,942.54 in credit notes that have been ISSUED by IML but have
+NOT been applied/settled against our outstanding invoices as of the
+statement date.
+
+These date back to April 2026 — with some documents now 7+ months old
+and still uncleared. A summary of the pending months:
+
+   ┌────────────────────────────┬──────────────────────┐
+   │ Month                      │ Approx. Amount (₹)   │
+   ├────────────────────────────┼──────────────────────┤
+   │ Mar-26 (issued Apr-26)     │       8,07,672.41    │
+   │ Apr-26 (issued May-26)     │          62,434.84   │
+   │ May-26 (issued Jun-Jul-26) │       4,43,914.53    │
+   │ Jun-26 (issued Jul-26)     │       6,32,678.12    │
+   │ Jul-26 (issued Aug-26)     │       6,68,165.68    │
+   │ Aug-26 (issued Sep-26)     │       5,31,814.60    │
+   │ Sep-26 (issued Oct-26)     │       5,56,610.65    │
+   │ SubD + Demo + Others       │       1,42,651.71    │
+   ├────────────────────────────┼──────────────────────┤
+   │ TOTAL UNCLEARED            │      ₹42,00,942.54   │
+   └────────────────────────────┴──────────────────────┘
+
+This is in addition to outstanding balances on invoices. The net result
+is an unacceptably large open balance on our account.
+
+Action Required:
+→ Please apply/settle all the above issued credit notes against the
+  respective outstanding invoices in your SAP system immediately.
+→ Share a reconciled statement once applied.
+
+
+──────────────────────────────────────────────────────────────────────────────
+ SUMMARY OF PENDING CLAIMS
+──────────────────────────────────────────────────────────────────────────────
+
+   ┌──────────────────────────────────────────────────┬─────────────────────┐
+   │ Category                                         │ Status              │
+   ├──────────────────────────────────────────────────┼─────────────────────┤
+   │ Oct-26 Monthly Scheme CN (all types)             │ NOT ISSUED          │
+   │ Nov-26 Monthly Scheme CN (all types)             │ NOT ISSUED          │
+   │ 4 Shortage CNs (Inv. 9062717596, 9272721256,    │ NOT ISSUED          │
+   │   9272717324)                                    │                     │
+   │ Hive Dashcam E1 FOC — 17 units                   │ NOT ISSUED          │
+   │ DOA CN (4 boxes, Docket 51989523106)             │ NOT ISSUED          │
+   │ SubD CN Oct-25 to Nov-26 (~₹59,701)              │ PARTIAL / PENDING   │
+   │ ₹42,00,942.54 in issued CNs (Mar-Sep 26)        │ ISSUED - NOT SETTLED│
+   └──────────────────────────────────────────────────┴─────────────────────┘
+
+The cumulative pending amount represents a significant financial liability
+on your books towards Nalanda Enterprises. We request that this be treated
+as an URGENT matter and all pending credit notes be issued/settled within
+7 (SEVEN) working days from the date of this email.
+
+
+──────────────────────────────────────────────────────────────────────────────
+ ESCALATION NOTE
+──────────────────────────────────────────────────────────────────────────────
+
+If the above matters are not resolved within 7 working days, we will be
+constrained to:
+
+  1. Escalate the matter to IML Senior Management and Regional Head.
+  2. Put all future purchase orders on HOLD pending resolution.
+  3. Pursue the claims through formal legal/commercial channels if
+     necessary.
+
+We sincerely hope this will not be required and that this matter can be
+resolved amicably at the earliest.
+
+
+──────────────────────────────────────────────────────────────────────────────
+ REQUEST FOR ACKNOWLEDGEMENT
+──────────────────────────────────────────────────────────────────────────────
+
+Please acknowledge receipt of this email and confirm:
+
+  1. The name and designation of the person responsible for each category.
+  2. Expected date of issuance/settlement for each pending item.
+  3. Any documentation required from our end.
+
+We are happy to arrange a call or meeting to resolve these at the earliest.
+
+
+Warm regards,
+
+Lavesh Bansal
+Proprietor / Authorized Representative
+Nalanda Enterprises
+Customer Code: 0001100164
+Contact: laveshne19@gmail.com | lavesh.bansal@nalandaenterprises.com
+
+
+────────────────────────────────────────────────────────────────────────────
+Reference Documents Attached:
+  1. Nalanda_IML_Pending_CNs_Escalation.xlsx  (complete pending tracker)
+  2. Account Statement — Customer 0001100164 (supporting)
+  3. Shortage.xlsx (shortage detail)
+────────────────────────────────────────────────────────────────────────────
